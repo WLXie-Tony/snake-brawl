@@ -84,6 +84,20 @@ body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--f-body
 .map[aria-checked="true"]{border-color:var(--candy);background:rgba(255,201,60,.1)}
 .map:focus-visible{outline:2px solid var(--candy);outline-offset:2px}
 .maptip{margin:-6px 0 0;color:var(--muted);font-size:13px;line-height:1.5;min-height:1.5em}
+/* the map choice: a compact row in the lobby and the friends sheet, opening a sheet with every map */
+.maprow{display:grid;grid-template-columns:64px minmax(0,1fr) auto;align-items:center;gap:12px;width:100%;padding:7px 10px 7px 8px;border-radius:14px;
+  border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--ink);cursor:pointer;text-align:left;font:inherit}
+.maprow canvas{width:64px;height:40px;border-radius:8px;display:block}
+.maprow .mr-t{display:grid;gap:1px;min-width:0}
+.maprow .mr-t small{font-size:12px;letter-spacing:.14em;color:var(--muted)}
+.maprow .mr-t b{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.maprow .mr-go{display:flex;align-items:center;gap:2px;color:var(--candy);font:700 13px var(--f-body)}
+.maprow .mr-go svg{width:16px;height:16px}
+.maprow:active{transform:translateY(1px)}
+.maprow:focus-visible{outline:2px solid var(--candy);outline-offset:2px}
+.maps.mapgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px;overflow:visible;padding:2px;touch-action:auto}
+.mapgrid .map{width:auto}
+.mapgrid .map canvas{width:100%;height:auto;aspect-ratio:160/104}
 .actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .btn{height:50px;border-radius:14px;border:0;font-family:var(--f-display);font-size:20px;cursor:pointer;color:var(--ink);
   transition:transform .08s ease,box-shadow .08s ease,opacity .2s}
@@ -392,6 +406,7 @@ html[lang="en"]{--f-display:"Fredoka","ZCOOL KuaiLe",system-ui,sans-serif}
       <label class="lbl" for="nick" data-i="nick"></label>
       <input id="nick" maxlength="10" autocomplete="off" enterkeyhint="done" spellcheck="false">
     </div>
+    <button id="mapRow" class="maprow" type="button" data-i-al="mapChangeAria"><canvas width="128" height="80" aria-hidden="true"></canvas><span class="mr-t"><small data-i="map"></small><b class="mr-n"></b></span><span class="mr-go"><span data-i="mapChange"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></span></button>
     <p id="lobbyMsg" class="msg" hidden></p>
     <button id="btnPlay" class="btn primary big" type="button"><span data-i="play"></span><small id="playSub"></small></button>
     <div id="qdurs" class="seg qdur" role="radiogroup" data-i-al="qdurAria">
@@ -410,11 +425,7 @@ html[lang="en"]{--f-display:"Fredoka","ZCOOL KuaiLe",system-ui,sans-serif}
   <div class="card wide">
     <div class="sheet-h"><h2 data-i="friends"></h2><button id="friendsDone" class="btn ghost small" type="button" data-i="close"></button></div>
     <p id="sheetMsg" class="msg" role="alert" hidden></p>
-    <div class="field">
-      <span class="lbl" id="mapLbl" data-i="map"></span>
-      <div id="maps" class="maps" role="radiogroup" aria-labelledby="mapLbl"></div>
-      <p id="mapTip" class="maptip"></p>
-    </div>
+    <button id="mapRow2" class="maprow" type="button" data-i-al="mapChangeAria"><canvas width="128" height="80" aria-hidden="true"></canvas><span class="mr-t"><small data-i="map"></small><b class="mr-n"></b></span><span class="mr-go"><span data-i="mapChange"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></span></button>
     <div class="field">
       <span class="lbl" id="durLbl" data-i="durLbl"></span>
       <div id="durs" class="seg" role="radiogroup" aria-labelledby="durLbl">
@@ -433,6 +444,15 @@ html[lang="en"]{--f-display:"Fredoka","ZCOOL KuaiLe",system-ui,sans-serif}
       <p id="netHelp" class="help" hidden data-i="netHelpP2P"></p>
     </div>
 
+  </div>
+</section>
+
+<section id="mapSheet" class="screen sheet" hidden>
+  <div class="card wide">
+    <div class="sheet-h"><h2 id="mapTitle" data-i="map"></h2><button id="mapDone" class="btn primary small" type="button" data-i="done"></button></div>
+    <p class="help" data-i="mapAll"></p>
+    <div id="maps" class="maps mapgrid" role="radiogroup" aria-labelledby="mapTitle"></div>
+    <p id="mapTip" class="maptip"></p>
   </div>
 </section>
 
@@ -561,7 +581,8 @@ en:{
   title:'Snake Brawl',brand:'Snake Brawl',
   tagline:'Team up with friends, grab power-ups, fire your weapons and cut rivals in two.',
   nick:'Nickname',skin:'Skin',btnLocker:'Locker',map:'Map',durLbl:'Round length · applies when you create a room',
-  dur3:'3 min',dur5:'5 min',dur10:'10 min',durInf:'No limit',qdurAria:'Match length',host:'Create room',solo:'Practice',
+  dur3:'3 min',dur5:'5 min',dur10:'10 min',durInf:'No limit',qdurAria:'Match length',mapChange:'Change',mapChangeAria:'Change map',
+  mapAll:'Used for Play, Practice and any room you create.',host:'Create room',solo:'Practice',
   friendsRooms:"Friends' rooms",netConnecting:'Connecting…',
   roomEmpty:'When a friend taps “Create room”, it shows up here. Tap “Join” to play together.',
   netHelpClaude:'Online play needs both phones signed in to claude.ai, with this page shared with your friend. Practice works without it.',
@@ -662,7 +683,8 @@ zh:{
   title:'蛇蛇乱斗',brand:'蛇蛇乱斗',
   tagline:'和朋友进同一个房间，抢道具、放大招，把对手截成两段。',
   nick:'昵称',skin:'皮肤',btnLocker:'衣柜',map:'地图',durLbl:'对局时长 · 创建房间时生效',
-  dur3:'3 分钟',dur5:'5 分钟',dur10:'10 分钟',durInf:'不限时',qdurAria:'对局时长',host:'创建房间',solo:'单人练习',
+  dur3:'3 分钟',dur5:'5 分钟',dur10:'10 分钟',durInf:'不限时',qdurAria:'对局时长',mapChange:'更换',mapChangeAria:'更换地图',
+  mapAll:'开始乱斗、单人练习和你创建的房间都用这张地图。',host:'创建房间',solo:'单人练习',
   friendsRooms:'朋友的房间',netConnecting:'正在连接联机服务…',
   roomEmpty:'朋友点「创建房间」后，房间会出现在这里，点「加入」就能一起玩。',
   netHelpClaude:'联机需要两台手机都登录 claude.ai，并且这个页面已经分享给对方。单人练习不受影响。',
@@ -2347,7 +2369,8 @@ function animObstacles(now,dt){const me=G.me&&G.me.alive?G.me:null;if(lavaTex)la
     if(u.canopy){const near=me&&Math.abs(me.x-o.x)<o.r*2.4&&me.y<o.y+o.r&&me.y>o.y-o.r*4.5,t=near?0.4:1;u.canopy.opacity+=(t-u.canopy.opacity)*Math.min(1,dt*8);}}}
 
 /* ================= 3D: camera, overlay, frame ================= */
-const PITCH=54*Math.PI/180,TAN_HALF=Math.tan(20*Math.PI/180),cam={x:0,y:0,dist:1800,shake:0,bk:0};
+/* lx,ly: the look-ahead offset, which follows the snake's heading slowly; kp, kl: how fast the view follows the head and the heading */
+const PITCH=54*Math.PI/180,TAN_HALF=Math.tan(20*Math.PI/180),cam={x:0,y:0,dist:1800,shake:0,bk:0,lx:0,ly:0,kp:5,kl:1.3};
 const _v3=new THREE_SAFE_VEC(),_p3=new THREE_SAFE_VEC();
 let VW=window.innerWidth,VH=window.innerHeight,perfAcc=0,perfN=0;
 function THREE_SAFE_VEC(){return typeof THREE!=='undefined'?new THREE.Vector3():{x:0,y:0,z:0};}
@@ -2357,12 +2380,15 @@ function proj(x,h,z){_p3.set(x,h,z).project(camera);return {sx:(_p3.x*0.5+0.5)*V
 R3.groundAt=function(sx,sy){return groundPoint(sx/VW*2-1,-(sy/VH*2-1));};
 R3.shake=function(a){cam.shake=Math.max(cam.shake,a);};
 function updateCamera(dt,now){let tx=cam.x,ty=cam.y,r=12;const me=G.me;
-  if(me&&G.mode!=='demo'){const lead=me.boosting?115:70;tx=me.x+Math.cos(me.angle)*lead;ty=me.y+Math.sin(me.angle)*lead;r=radiusOf(me.mass)+(me.gs-1)*7;}
+  /* the view looks a little ahead of the snake, but that look-ahead swings round slowly: weaving left and right
+     averages out instead of throwing the whole view from side to side */
+  if(me&&G.mode!=='demo'){const lead=me.boosting?115:70,kl=1-Math.exp(-dt*cam.kl);cam.lx+=(Math.cos(me.angle)*lead-cam.lx)*kl;cam.ly+=(Math.sin(me.angle)*lead-cam.ly)*kl;
+    tx=me.x+cam.lx;ty=me.y+cam.ly;r=radiusOf(me.mass)+(me.gs-1)*7;}
   else{let t=null;if(now>G.demoT||!all.some(s=>s.key===G.demoKey&&s.alive)){const c=all.filter(s=>s.alive&&s.kind!=='c');if(c.length){t=c[(Math.random()*c.length)|0];G.demoKey=t.key;G.demoT=now+14000;}}
     t=t||all.find(s=>s.key===G.demoKey&&s.alive);if(t){tx=t.x;ty=t.y;r=t.r;}}
   const aspect=VW/Math.max(1,VH),zoom=1+(r-10)/52;
   let dist=aspect<1?510*zoom/(2*TAN_HALF*aspect):640*zoom*Math.sin(PITCH)/(2*TAN_HALF);if(G.mode==='demo')dist*=1.2;dist=clamp(dist,500,7000);
-  const k=1-Math.exp(-dt*7),kz=1-Math.exp(-dt*2.2);
+  const k=1-Math.exp(-dt*(me&&G.mode!=='demo'?cam.kp:7)),kz=1-Math.exp(-dt*2.2);
   if(Math.hypot(tx-cam.x,ty-cam.y)>1500){cam.x=tx;cam.y=ty;}else{cam.x+=(tx-cam.x)*k;cam.y+=(ty-cam.y)*k;}cam.dist+=(dist-cam.dist)*kz;
   /* boosting pulls the camera back a touch so speed reads on screen */
   const boosting=!!(me&&me.alive&&me.boosting&&G.mode!=='demo');cam.bk+=((boosting?1:0)-cam.bk)*(1-Math.exp(-dt*(boosting?3.5:2.5)));
@@ -2385,7 +2411,7 @@ function drawEdgeWarn(g,now,me){if(!me)return;const dc=Math.hypot(me.x,me.y)||1,
 const streaks=[];let streakT=0;
 function drawStreaks(g,now,me){const dt=Math.min(0.05,(now-(streakT||now))/1000);streakT=now;
   const on=!!(me&&me.boosting);let vx=0,vy=0;
-  if(me){const p0=proj(me.x,0,me.y),p1=proj(me.x+Math.cos(me.angle)*100,0,me.y+Math.sin(me.angle)*100);vx=p1.sx-p0.sx;vy=p1.sy-p0.sy;const l=Math.hypot(vx,vy)||1;vx/=l;vy/=l;}
+  if(me){const ll=Math.hypot(cam.lx,cam.ly)||1,p0=proj(me.x,0,me.y),p1=proj(me.x+cam.lx/ll*100,0,me.y+cam.ly/ll*100);vx=p1.sx-p0.sx;vy=p1.sy-p0.sy;const l=Math.hypot(vx,vy)||1;vx/=l;vy/=l;}
   /* new streaks appear in a ring around the snake, never on top of it */
   if(on){let n=dt*44;while(n>0){if(Math.random()<n){const m=Math.min(VW,VH),rr=m*(0.3+Math.random()*0.45),an=Math.random()*TAU;
       streaks.push({x:VW/2+Math.cos(an)*rr*(VW>VH?1.4:1),y:VH/2+Math.sin(an)*rr*(VH>VW?1.5:1),len:70+Math.random()*90,w:1.5+Math.random()*1.5,life:0.3,max:0.3});}n-=1;}}
@@ -2717,7 +2743,14 @@ function buildMaps(){mapsEl.textContent='';[-1].concat(MAPS.map((m,i)=>i)).forEa
   const c=document.createElement('canvas');c.width=160;c.height=104;drawMapPreview(c,mi);const s=document.createElement('span');s.textContent=mi<0?t('random'):MAPS[mi].name;b.append(c,s);
   b.addEventListener('click',()=>{prof.map=mi;saveProf();if(mi<0)randMap=(Math.random()*MAPS.length)|0;markMap();if(G.mode==='demo')resetWorld(true,(Math.random()*4294967295)>>>0,demoMap());});mapsEl.append(b);});}
 function markMap(){[...mapsEl.children].forEach(b=>b.setAttribute('aria-checked',String(+b.dataset.mi===prof.map)));
-  mapTip.textContent=prof.map<0?t('randomTip'):MAPS[prof.map].tip;}
+  mapTip.textContent=prof.map<0?t('randomTip'):MAPS[prof.map].tip;paintMapRows();}
+/* the chosen map shows in the lobby and in the friends sheet; either row opens the map sheet */
+const mapSheet=$('#mapSheet');
+function paintMapRows(){for(const row of document.querySelectorAll('.maprow')){drawMapPreview(row.querySelector('canvas'),prof.map);
+  row.querySelector('.mr-n').textContent=prof.map<0?t('random'):MAPS[prof.map].name;}}
+document.querySelectorAll('.maprow').forEach(b=>b.addEventListener('click',()=>{mapSheet.hidden=false;}));
+$('#mapDone').addEventListener('click',()=>{mapSheet.hidden=true;});
+mapSheet.addEventListener('click',e=>{if(e.target===mapSheet)mapSheet.hidden=true;});
 buildMaps();markMap();
 
 /* round length */
@@ -2796,7 +2829,9 @@ function startSolo(){showLobbyMsg('');resetWorld(true,newSeed(),pickMap());G.roo
 /* the main entry: a 3 or 10 minute brawl against bots. The very first one is gentler and always on the plain arena,
    unless this player already has plenty of games behind them */
 function startQuick(){showLobbyMsg('');const easy=!prof.st.qm&&!prof.vet&&prof.st.games<5,gentle=!easy&&!prof.vet&&(prof.st.qm|0)<4;
-  resetWorld(true,newSeed(),easy?0:(Math.random()*MAPS.length)|0,{easy,gentle});
+  /* the map the player picked; on Random the gentle first match uses the plain arena */
+  const map=prof.map>=0?prof.map:(easy?0:(Math.random()*MAPS.length)|0);
+  resetWorld(true,newSeed(),map,{easy,gentle});
   G.mode='quick';G.code=null;G.roomDur=prof.qdur||180000;beginRound(1,performance.now());startGame('quick');lobbyPresence();}
 /* brand-new players get the tutorial first; anyone who already played a match goes straight in (the guide can replay it) */
 function playMain(){if(!prof.tut&&!prof.st.games&&!prof.vet)startTutorial();else startQuick();}
@@ -2815,7 +2850,7 @@ function spotNearFriend(){const fr=remote.filter(v=>v.kind==='p'&&v.alive);if(!f
   return null;}
 function spawnMe(now){gather();const p=((G.mode==='host'||G.mode==='guest')&&spotNearFriend())||safeSpot(),life=(G.me?G.me.life:0)+1;
   G.me=new Snake({key:myKey,name:prof.name,skin:prof.skin,kind:'p',owner:myKey,x:p.x,y:p.y,angle:Math.atan2(-p.y,-p.x)+(Math.random()-.5),mass:10,life});
-  G.me.invulnT=now+3000;inp.ang=G.me.angle;inp.has=false;G.kills=0;G.bestRank=99;cam.x=p.x;cam.y=p.y;fireState='';G.deathCause='';G.lastLost=0;
+  G.me.invulnT=now+3000;inp.ang=G.me.angle;inp.has=false;G.kills=0;G.bestRank=99;cam.x=p.x;cam.y=p.y;cam.lx=0;cam.ly=0;fireState='';G.deathCause='';G.lastLost=0;
   /* a little pop where you appear (the view box moves with the camera now, so the effect is not culled) */
   V.x0=p.x-2000;V.x1=p.x+2000;V.y0=p.y-2000;V.y1=p.y+2000;
   if(G.mode!=='tut'){const col=skinMain(SKINS[prof.skin]);vfx('ring',{x:p.x,y:p.y,col,r0:16,r1:200,dur:650});burst(p.x,p.y,16,22,col,240,650,11,0.9);}
@@ -3099,7 +3134,7 @@ langHooks.push(()=>{paintSound();fireState='';updateFire();if(!hud.hidden)update
 /* ================= locker: collection, unlocks, equip; account strip; reward panels ================= */
 const lockerEl=$('#locker'),lkGrid=$('#lkGrid'),lkPrev=$('#lkPrev');
 const LK={tab:'s',sel:null,state:null,prevT:0};
-function closeSheets(){lockerEl.hidden=true;guideSheet.hidden=true;friendsSheet.hidden=true;$('#acctSheet').hidden=true;}
+function closeSheets(){lockerEl.hidden=true;guideSheet.hidden=true;friendsSheet.hidden=true;$('#acctSheet').hidden=true;$('#mapSheet').hidden=true;}
 /* '§' in a label becomes a little coin icon */
 function fillCoin(el,str){el.textContent='';const parts=String(str).split('§');parts.forEach((p,i)=>{if(i){const c=document.createElement('i');c.className='coin';el.append(c);}if(p)el.append(p);});}
 function isNew(cat,id){return prof.newIds.includes(cat+':'+id);}
