@@ -918,12 +918,12 @@ const STANDALONE=/*@STANDALONE*/true;
 const TAU=Math.PI*2;
 /* arena radius; food, obstacles and lava eruptions scale with its area so the bigger map keeps the same density.
    Power-ups are kept sparser on purpose (fewer weapons per snake means longer lives) */
-const R=7200, FOOD_SLOTS=8192, FOOD_GENS=4, MAX_DROPS=220, BOT_COUNT=60, MAX_ITEMS=72, ITEM_EVERY=1600;
+const R=7200, FOOD_SLOTS=8192, FOOD_GENS=4, MAX_DROPS=1800, BOT_COUNT=100, MAX_ITEMS=72, ITEM_EVERY=1600;
 const AREA_K=(R*R)/(2600*2600);
 /* timed matches end in a closing ring: the arena edge moves in to this radius */
 const ZONE_MIN=1800;
 /* bumped whenever two builds can no longer play together; rooms from other versions are not joinable */
-const NET_VER=5;
+const NET_VER=6;
 const B64='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
 const B64I=new Int16Array(128).fill(-1);for(let i=0;i<64;i++)B64I[B64.charCodeAt(i)]=i;
 /* fixed-width base64 numbers for the compact network strings */
@@ -1344,7 +1344,7 @@ const FOOD_COLORS=['#ff4d5e','#ff9f1c','#ffd93d','#9be564','#2ed573','#1fd1e0','
 const FOOD_RGB=FOOD_COLORS.map(hexRgb);
 const botNames=()=>BOT_NAMES_L[LANG]||BOT_NAMES_L.en;
 const G={mode:'demo',auth:true,seed:1,map:0,obstacles:[],code:null,drops:new Map(),dropSeq:0,items:new Map(),itemSeq:0,itemT:0,eruptT:0,
-  bots:[],clones:[],cloneSeq:0,me:null,events:[],evSeq:0,lastEv:0,evInit:false,kills:0,bestRank:99,streak:0,lastKillT:0,round:{id:0,end:0,over:false},rs:{id:0,best:0,kills:0,deaths:0,pk:0},deathSeq:0,dd:null,worldReady:true,botPts:BOT_PTS,
+  bots:[],clones:[],cloneSeq:0,me:null,events:[],evSeq:0,lastEv:0,evInit:false,kills:0,bestRank:Infinity,streak:0,lastKillT:0,round:{id:0,end:0,over:false},rs:{id:0,best:0,kills:0,deaths:0,pk:0},deathSeq:0,dd:null,worldReady:true,botPts:BOT_PTS,
   hostSeenAt:0,roomCount:1,lastFg:'',lastD:'',lastIt:'',lastWAt:0,demoT:0,demoKey:null,
   adoptKey:'',mineSeq:0,projs:[],mines:[],outHits:[],hitSeq:0,outFx:[],fxSeq:0,outDl:[],dlSeq:0,vfx:[],parts:[],floats:[],
   sc:new Map(),easy:false,tutWorld:false,tut:null,deathCause:'',lastLost:0,botTier:[],zr:R,zoneMsg:0,king:null,kingT:0};
@@ -1372,16 +1372,17 @@ function foodNear(x,y,rad,out){out.length=0;const x0=fgIx(x-rad),x1=fgIx(x+rad),
 function setFood(i,gen,now){foodGen[i]=gen;food[i]=foodAt(G.seed,i,gen,now);fgPlace(i);}
 function setAllFood(now){for(let i=0;i<FOOD_SLOTS;i++){food[i]=foodAt(G.seed,i,foodGen[i],now);fgPlace(i);}}
 function bumpFood(i,now){setFood(i,(foodGen[i]+1)%FOOD_GENS,now);}
-function addDrop(x,y,v,c,now){const d=Math.hypot(x,y),Z=G.zr-12;if(d>Z){x*=Z/d;y*=Z/d;}
+function addDrop(x,y,v,c,now,crumb=false){const d=Math.hypot(x,y),Z=G.zr-12;if(d>Z){x*=Z/d;y*=Z/d;}
   const so=inSolid(x,y,8);if(so){const dx=x-so.x,dy=y-so.y,dd=Math.hypot(dx,dy)||1;x=so.x+dx/dd*(so.r+12);y=so.y+dy/dd*(so.r+12);}
-  /* when full, the oldest little boost crumb goes first so a big snake's remains stay until someone eats them */
-  if(G.drops.size>=MAX_DROPS){let k=null,n=0;for(const d of G.drops.values()){if(d.v<=2){k=d.id;break;}if(++n>=80)break;}
-    if(k==null)k=G.drops.keys().next().value;G.drops.delete(k);}
-  G.dropSeq=(G.dropSeq+1)%4096;G.drops.delete(G.dropSeq);
-  G.drops.set(G.dropSeq,{id:G.dropSeq,x,y,v:clamp(Math.round(v),1,35),c:clamp(c|0,0,63),born:now,ph:G.dropSeq*1.7});}
+  /* Boost crumbs may replace crumbs, never a corpse; low-value corpse orbs still count as remains. */
+  if(G.drops.size>=MAX_DROPS){let k=null;for(const d of G.drops.values())if(d.crumb){k=d.id;break;}
+    if(k==null){if(crumb)return;k=G.drops.keys().next().value;}G.drops.delete(k);}
+  do{G.dropSeq=(G.dropSeq+1)%4096;}while(G.drops.has(G.dropSeq));
+  G.drops.set(G.dropSeq,{id:G.dropSeq,x,y,v:clamp(Math.round(v),1,35),c:clamp(c|0,0,63),born:now,crumb,ph:G.dropSeq*1.7});}
 /* colour index for drops: 0..9 food palette, 10+ skin index */
 function dropRgb(c){return c<10?FOOD_RGB[c]:skinMain(SKINS[(c-10)%SKINS.length]);}
 function spawnDeathDrops(P,mass,skin,now){const n2=P.length>>1;if(!n2||mass<1)return;
+  if(n2===1&&mass<=2){addDrop(P[0],P[1],mass,10+(skin|0),now,true);return;}
   const cnt=clamp(Math.round(mass/5),3,45),v=clamp(Math.round(mass*0.75/cnt),1,35),c=10+(skin|0);
   if(n2===1){for(let k=0;k<cnt;k++)addDrop(P[0]+(Math.random()-.5)*30,P[1]+(Math.random()-.5)*30,v,c,now);return;}
   const cum=[0];let total=0;for(let i=1;i<n2;i++){total+=Math.hypot(P[i*2]-P[i*2-2],P[i*2+1]-P[i*2-1]);cum.push(total);}
@@ -1406,13 +1407,13 @@ function safeSpot(){let best={x:0,y:0},bestD=-1;
   return best;}
 function pickName(){const used=new Set(G.bots.map(b=>b.name)),names=botNames();const free=names.filter(n=>!used.has(n));const pool=free.length?free:names;return pool[(Math.random()*pool.length)|0];}
 /* computer snakes come in three temperaments. Easy ones mostly graze and never attack, normal ones fight when it suits them,
-   hard ones hunt, cut you off and use their weapons. look: how far ahead they watch for danger, think: seconds between decisions,
+   hard ones hunt, cut you off and use their weapons. think: seconds between decisions,
    hunt: share of the tier that chases snakes, huntR: chase range, fire: weapon eagerness, items: how much they want power-ups,
    arm: chance to spawn holding a weapon */
 const BOT_TIERS=[
-  {look:0.8, think:[0.16,0.3], hunt:0,  huntR:0,  fire:0,    items:0.4, itemR:420,arm:0,   esc:0.15},
-  {look:1,   think:[0.12,0.22],hunt:0.65,huntR:1000,fire:0.45,items:1,  itemR:520,arm:0.08,esc:0.35},
-  {look:1.25,think:[0.09,0.15],hunt:1,  huntR:1800,fire:1.15,items:1.6,itemR:700,arm:0.4, esc:0.6},
+  {think:[0.16,0.3], hunt:0,   huntR:0,   fire:0,   items:0.4,itemR:420,arm:0},
+  {think:[0.12,0.22],hunt:0.65,huntR:1000,fire:0.45,items:1,  itemR:520,arm:0.08},
+  {think:[0.09,0.15],hunt:1,   huntR:1800,fire:1.15,items:1.6,itemR:700,arm:0.4},
 ];
 const tierOf=b=>BOT_TIERS[b.tier|0];
 /* about 35% easy, 45% normal and 20% hard, shuffled. The very first match is all easy, and the next few quick
@@ -1423,7 +1424,7 @@ function tierMix(n,easy,gentle){const out=[];if(easy){for(let i=0;i<n;i++)out.pu
 function makeBot(i,life,now,mass){const p=safeSpot();const m=mass!=null?mass:12+Math.pow(Math.random(),2)*(G.easy?70:220);
   const b=new Snake({key:'b'+i,name:pickName(),skin:(Math.random()*SKINS.length)|0,kind:'b',x:p.x,y:p.y,angle:Math.atan2(-p.y,-p.x)+(Math.random()-.5)*2,mass:m,life});
   b.tier=G.botTier[i]|0;b.thinkT=Math.random()*0.3;
-  b.nav={goal:null,checkAt:now+4000,checkX:b.x,checkY:b.y,roamAt:now+4000+Math.random()*5000,forceUntil:0,avoidUntil:0,side:i%2?1:-1};
+  b.nav={goal:null,checkAt:now+4000,checkX:b.x,checkY:b.y,roamAt:now+4000+Math.random()*5000,forceUntil:0,side:i%2?1:-1};
   if(!G.easy&&Math.random()<tierOf(b).arm)b.weapon={t:IT.zap+((Math.random()*6)|0),n:1};return b;}
 
 /* the first match only offers a handful of easy-to-read power-ups */
@@ -1443,7 +1444,7 @@ function resetWorld(auth,seed,map,opts){const now=performance.now();G.zr=R;G.kin
   G.easy=!!(opts&&opts.easy);G.tutWorld=!!(opts&&opts.tut);G.tut=null;
   G.auth=auth;G.seed=seed>>>0;G.map=map|0;G.obstacles=genObstacles(G.map,G.seed);foodGen.fill(0);setAllFood(now);
   G.drops.clear();G.dropSeq=0;G.items.clear();G.itemSeq=0;G.itemT=0;G.eruptT=now+5000;G.bots=[];G.clones=[];G.events=[];G.evSeq=0;G.lastEv=0;G.evInit=false;
-  G.kills=0;G.bestRank=99;G.dd=null;G.botPts=BOT_PTS;G.worldReady=auth;G.worldRound=0;G.lastWorldT=-1;G.pendingWorld=null;G.hostSeenAt=now;G.lastFg='';G.lastD='';G.lastIt='';G.roomCount=1;
+  G.kills=0;G.bestRank=Infinity;G.dd=null;G.botPts=BOT_PTS;G.worldReady=auth;G.worldRound=0;G.lastWorldT=-1;G.pendingWorld=null;G.hostSeenAt=now;G.lastFg='';G.lastD='';G.lastIt='';G.roomCount=1;
   G.adoptKey=auth?'':'none';G.projs=[];G.mines=[];G.outHits=[];G.outFx=[];G.outDl=[];G.vfx=[];G.parts.length=0;G.floats=[];
   pendFood.clear();pendDrop.clear();pendItem.clear();myEats=[];streams.clear();guests.clear();hostPeer=null;remote.length=0;slurps.length=0;
   G.botTier=tierMix(BOT_COUNT,G.easy,!!(opts&&opts.gentle));
@@ -1496,7 +1497,7 @@ function eat(s,now){if(s.kind==='c')return;const hx=s.x,hy=s.y,mag=act(s,'magnet
     if(G.auth)bumpFood(i,now);
     else{const pf=pendFood.get(i);if(pf&&pf.gen===foodGen[i])continue;pendFood.set(i,{gen:foodGen[i],t:now});myEats.push({k:'f'+i+'.'+foodGen[i].toString(36),t:now});}
     s.mass+=f.v*FOOD_MASS*mult;gainScore(s,f.v*FOOD_MASS*mult);s.lastEat=now;if(s===G.me){sfx('eat');if(G.tut)G.tut.eats++;missionAdd('eat',1);}slurp(f.x,f.y,FOOD_RGB[f.c],s,now,3+f.v*1.8,mag);}
-  for(const d of G.drops.values()){const dx=d.x-hx,dy=d.y-hy,rr=mag?300:base+6+d.v*0.5;if(dx*dx+dy*dy>=rr*rr)continue;
+  for(const d of G.drops.values()){if(now-d.born<350)continue;const dx=d.x-hx,dy=d.y-hy,rr=mag?300:base+6+d.v*0.5;if(dx*dx+dy*dy>=rr*rr)continue;
     if(G.auth)G.drops.delete(d.id);
     else{if(pendDrop.has(d.id))continue;pendDrop.set(d.id,now);myEats.push({k:'d'+d.id.toString(36),t:now});}
     s.mass+=d.v*mult;gainScore(s,d.v*mult);s.lastEat=now;if(s===G.me){sfx('eat');if(G.tut)G.tut.eats++;missionAdd('eat',1);}slurp(d.x,d.y,dropRgb(d.c),s,now,4+Math.sqrt(d.v)*2.6,mag);}
@@ -1669,7 +1670,7 @@ function hostUpkeep(now){
   if(eliminationPhase(now))for(const it of G.items.values())if(it.t===IT.heart)it.t=IT.shield;
   if(!G.tutWorld&&canRespawn(now))for(let i=0;i<G.bots.length;i++){const b=G.bots[i];if(!b.alive&&now>=b.respawnAt)G.bots[i]=makeBot(i,b.life+1,now);}
   if(G.items.size<MAX_ITEMS&&now>G.itemT){G.itemT=now+ITEM_EVERY;spawnItem(now);}
-  for(const [id,d] of G.drops)if(now-d.born>45000)G.drops.delete(id);
+  for(const [id,d] of G.drops)if(now-d.born>(d.crumb?12000:60000))G.drops.delete(id);
   if(MAPS[G.map].erupt&&now>G.eruptT){G.eruptT=now+(6000+Math.random()*4000)/AREA_K;const pools=G.obstacles.filter(o=>o.type==='lava');
     if(pools.length){const o=pools[(Math.random()*pools.length)|0];erupt(o,now);pushFx(['E',o.i],now);}}}
 function erupt(o,now){if(G.auth)for(let k=0;k<9;k++){const a=Math.random()*TAU,d=o.r+50+Math.random()*160;addDrop(o.x+Math.cos(a)*d,o.y+Math.sin(a)*d,4+Math.random()*5,[1,2,8][(Math.random()*3)|0],now);}
@@ -1706,11 +1707,44 @@ function botGoalValid(g,b,now){if(!g||now>=g.until||Math.hypot(g.x-b.x,g.y-b.y)<
   if(g.kind==='drop')return G.drops.get(g.ref.id)===g.ref;
   if(g.kind==='hunt')return g.ref.alive&&!(g.ref.fl&(F.ghost|F.hide|F.blink|F.shield))&&Math.hypot(g.ref.x-b.x,g.ref.y-b.y)<tierOf(b).huntR*1.4;
   return true;}
+const botThreats=[];
+/* Test the actual turning arc, including the next think interval. A fixed 69-degree dodge still
+   points into a broad snake body, and holding it for 900 ms used to drive bots straight into it. */
+function botSafeHeading(b,desired,now,T){const M=MAPS[G.map],r0=radiusOf(b.mass),horizon=T.think[1]+0.7;
+  const turbo=act(b,'turbo',now),factor=(1-Math.min(.14,(r0-9)*.005))*(M.speed||1)*(b.gs>1.02?1+(b.gs-1)*.12:1);
+  const scan=(turbo?TURBO_SPEED:(b.boost||b.boosting?BOOST_SPEED:BASE_SPEED))*factor*(horizon+0.2)+b.r+50,th=botThreats;th.length=0;
+  const add=(x,y,r,vx=0,vy=0)=>th.push(x,y,r*r,vx,vy);
+  for(const o of all){if(o===b||!o.alive||o.owner===b.owner)continue;const margin=b.r*.6+o.r*.85+14,lim=scan+o.r;
+    if(!(o.maxx<b.x-lim||o.minx>b.x+lim||o.maxy<b.y-lim||o.miny>b.y+lim)){
+      const body=o.body;for(let i=0;i<body.length;i+=4){const dx=body[i]-b.x,dy=body[i+1]-b.y;if(dx*dx+dy*dy<lim*lim)add(body[i],body[i+1],margin);}}
+    const speed=(o.fl&F.turbo?TURBO_SPEED:(o.fl&F.boost?BOOST_SPEED:BASE_SPEED))*(M.speed||1),reach=scan+speed*horizon;
+    if((o.x-b.x)*(o.x-b.x)+(o.y-b.y)*(o.y-b.y)<reach*reach)add(o.x,o.y,margin,Math.cos(o.angle)*speed,Math.sin(o.angle)*speed);}
+  for(const o of G.obstacles){if(o.meta.zone==='hide')continue;const lim=scan+o.r+(o.meta.grav?30:0);
+    if((o.x-b.x)*(o.x-b.x)+(o.y-b.y)*(o.y-b.y)<lim*lim)add(o.x,o.y,o.r+b.r+18+(o.meta.grav?30:0));}
+  eachMine(m=>{if(m.owner!==b.owner&&(m.x-b.x)*(m.x-b.x)+(m.y-b.y)*(m.y-b.y)<scan*scan)add(m.x,m.y,b.r+36);});
+  if(!th.length)return desired;
+  /* Braking is immediate for manual boost; turbo still has to make the wider turn at full speed. */
+  b.boost=false;
+  const speed=(turbo?TURBO_SPEED:BASE_SPEED)*factor*(act(b,'frozen',now)?.5:act(b,'stun',now)?.6:1);
+  const dt=horizon/9,turn=turnRate(r0)*(M.turn||1)*(turbo?1.15:1)*dt,edge=G.zr-b.r-25;
+  const clearance=target=>{let x=b.x,y=b.y,a=b.angle,min=Infinity;
+    for(let k=1;k<=9;k++){const oldx=x,oldy=y,d=angDiff(a,target);a+=clamp(d,-turn,turn);x+=Math.cos(a)*speed*dt;y+=Math.sin(a)*speed*dt;
+      min=Math.min(min,edge*edge-x*x-y*y);
+      const time=k*dt;for(let i=0;i<th.length;i+=5){const x0=oldx-th[i]-th[i+3]*(time-dt),y0=oldy-th[i+1]-th[i+4]*(time-dt),
+          dx=x-oldx-th[i+3]*dt,dy=y-oldy-th[i+4]*dt,den=dx*dx+dy*dy,u=den?clamp(-(x0*dx+y0*dy)/den,0,1):0;
+        const px=x0+dx*u,py=y0+dy*u;min=Math.min(min,px*px+py*py-th[i+2]);}}
+    return min;};
+  let best=desired,bestClear=clearance(desired),bestPref=-Infinity;
+  if(bestClear>=0)return desired;
+  for(const offset of [b.nav.side*Math.PI/2,-b.nav.side*Math.PI/2,Math.PI,0.65,-0.65,2.35,-2.35]){
+    const angle=b.angle+offset,c=clearance(angle),pref=Math.cos(angDiff(angle,desired))+0.15*Math.cos(offset);
+    if((c>=0&&(bestClear<0||pref>bestPref))||(c<0&&bestClear<0&&c>bestClear)){best=angle;bestClear=c;bestPref=pref;}}
+  return best;}
 function botThink(b,now){const T=tierOf(b),hx=b.x,hy=b.y,r=b.r,dc=Math.hypot(hx,hy);
   if(b.weapon&&T.fire>0)botWeapon(b,now,T);
-  const nav=b.nav||(b.nav={goal:null,checkAt:now+4000,checkX:hx,checkY:hy,roamAt:now+5000,forceUntil:0,avoidUntil:0,side:1});
+  const nav=b.nav||(b.nav={goal:null,checkAt:now+4000,checkX:hx,checkY:hy,roamAt:now+5000,forceUntil:0,side:1});
   if(now>=nav.checkAt){if(Math.hypot(hx-nav.checkX,hy-nav.checkY)<240&&!act(b,'frozen',now)){
-      nav.goal=null;nav.forceUntil=now+6500;nav.roamAt=now;nav.avoidUntil=0;nav.side=-nav.side;}
+      nav.goal=null;nav.forceUntil=now+6500;nav.roamAt=now;nav.side=-nav.side;}
     nav.checkAt=now+4000;nav.checkX=hx;nav.checkY=hy;}
   const Z=G.zr-(G.zr<R-1?200:0),zr2=(G.zr-120)*(G.zr-120);
   /* Hysteresis keeps an inward trip active until well clear of the rim. */
@@ -1722,7 +1756,10 @@ function botThink(b,now){const T=tierOf(b),hx=b.x,hy=b.y,r=b.r,dc=Math.hypot(hx,
     let prey=nav.goal&&nav.goal.kind==='hunt'?nav.goal.ref:null,pd=prey?Math.hypot(prey.x-hx,prey.y-hy):T.huntR;
     if(!prey)for(const o of all){if(o===b||!o.alive||o.owner===b.owner||o.kind==='c'||(o.fl&(F.ghost|F.hide|F.blink|F.shield)))continue;
       const d=Math.hypot(o.x-hx,o.y-hy);if(d<pd&&b.mass>o.mass*(hard?0.7:0.9)){prey=o;pd=d;}}
-    if(prey){const lead=60+prey.r*4+(hard?pd*0.25:0);nav.goal={kind:'hunt',ref:prey,x:prey.x+Math.cos(prey.angle)*lead,y:prey.y+Math.sin(prey.angle)*lead,until:now+3000};}}
+    if(prey){const ca=Math.cos(prey.angle),sa=Math.sin(prey.angle);
+      if(nav.preyKey!==prey.key){nav.preyKey=prey.key;nav.huntSide=(hx-prey.x)*-sa+(hy-prey.y)*ca>=0?1:-1;}
+      const lead=clamp(160+pd*(hard?0.25:0.1),200,450),side=nav.huntSide*(r+prey.r+110);
+      nav.goal={kind:'hunt',ref:prey,x:prey.x+ca*lead-sa*side,y:prey.y+sa*lead+ca*side,until:now+3000};}}
   if(!nav.goal&&now>=nav.roamAt){nav.goal=botRoamGoal(b,now);nav.roamAt=now+18000+Math.random()*5000;}
   if(!nav.goal){let best=null,bs=0;
     const choose=(o,kind,weight,range,slot)=>{const dx=o.x-hx,dy=o.y-hy,d2=dx*dx+dy*dy;if(d2>range*range||o.x*o.x+o.y*o.y>zr2||inSolid(o.x,o.y,r+15))return;
@@ -1736,21 +1773,9 @@ function botThink(b,now){const T=tierOf(b),hx=b.x,hy=b.y,r=b.r,dc=Math.hypot(hx,
   if(now>=nav.roamAt&&nav.goal.kind!=='return'&&nav.goal.kind!=='hunt'&&nav.goal.kind!=='roam'){
     nav.goal=botRoamGoal(b,now);nav.roamAt=now+18000+Math.random()*5000;}
   const goal=nav.goal,desired=Math.atan2(goal.y-hy,goal.x-hx);
-  b.target=desired;b.boost=goal.kind==='hunt'&&hard&&b.mass>45&&Math.hypot(goal.x-hx,goal.y-hy)<500;
-  const ca=Math.cos(b.angle),sa=Math.sin(b.angle),look=(100+r*3+(b.boosting?120:0))*T.look;let ax=0,ay=0,danger=0;
-  if(!guarded(b,now))for(const o of all){if(o===b||!o.alive||o.owner===b.owner)continue;const lim=look+o.r;
-    if(o.maxx<hx-lim||o.minx>hx+lim||o.maxy<hy-lim||o.miny>hy+lim)continue;const bd=o.body;
-    for(let i=0;i<bd.length;i+=4){const dx=bd[i]-hx,dy=bd[i+1]-hy,d2=dx*dx+dy*dy;if(d2>lim*lim)continue;
-      const d=Math.sqrt(d2)||1,fr=(dx*ca+dy*sa)/d;if(fr<-0.3)continue;const w=(1-d/lim)*(fr+0.5);ax-=dx/d*w;ay-=dy/d*w;danger+=w;}}
-  for(const o of G.obstacles){const m=o.meta;if(m.zone==='hide')continue;const lim=look+o.r+(m.grav?o.r*1.3:0),dx=o.x-hx,dy=o.y-hy,d=Math.hypot(dx,dy)||1;
-    if(d>lim)continue;const fr=(dx*ca+dy*sa)/d;if(fr<-0.2)continue;const w=(1-d/lim)*(fr+0.6)*(m.bounce?0.5:1.6);ax-=dx/d*w;ay-=dy/d*w;danger+=w;}
-  eachMine(m=>{if(m.owner===b.owner)return;const dx=m.x-hx,dy=m.y-hy,d=Math.hypot(dx,dy)||1,lim=look+30;if(d>lim)return;const fr=(dx*ca+dy*sa)/d;if(fr<-0.2)return;
-    const w=(1-d/lim)*(fr+0.6)*1.4;ax-=dx/d*w;ay-=dy/d*w;danger+=w;});
-  if(danger>0.35){if(now>=nav.avoidUntil){const away=Math.atan2(ay,ax),turn=angDiff(b.angle,away);
-      if(Math.abs(turn)<2.4)nav.side=turn>=0?1:-1;
-      nav.avoidAngle=Math.abs(turn)>2.4?b.angle+nav.side*1.2:away;nav.avoidUntil=now+900;}
-    b.target=nav.avoidAngle;b.boost=danger>3&&b.mass>40&&Math.random()<T.esc;}
-  else if(now<nav.avoidUntil){b.target=nav.avoidAngle;b.boost=false;}}
+  const dist=Math.hypot(goal.x-hx,goal.y-hy);
+  b.boost=goal.kind==='hunt'&&hard&&b.mass>45&&dist>350&&dist<900&&Math.abs(angDiff(b.angle,desired))<0.45;
+  b.target=botSafeHeading(b,desired,now,T);}
 /* split clones circle their target and close in, so the target has to break out or get boxed in */
 function cloneThink(c,now){let t=c.preyKey?findSnake(c.preyKey):null;
   if(!t||!t.alive||(t.fl&F.ghost)||t.owner===c.owner){t=nearestEnemy(c,1500,true,true);c.preyKey=t?t.key:null;}
@@ -1867,10 +1892,11 @@ function claimBonus(){const dm=missionsToday();if(dm.b||!dm.list.every(m=>m.c))r
 /* ================= remote interpolation ================= */
 function updateRemote(now){if(G.round.over)return;remote.length=0;frameNo++;
   for(const st of streams.values()){const S=st.snaps;if(!S.length)continue;
-    if(now-st.lastRecv>3000){st.views.clear();continue;}
+    if(now-st.lastRecv>3000){st.views.clear();st.far=null;continue;}
     const rt=now-st.off()-NET_DELAY;let a=S[S.length-1],b=a;
     if(rt<S[0].t){a=b=S[0];}else{for(let i=S.length-1;i>=0;i--){if(S[i].t<=rt){a=S[i];b=S[i+1]||S[i];break;}}}
     const f=b.t>a.t?clamp((rt-a.t)/(b.t-a.t),0,1):1;
+    st.far=b.data.far||null;
     for(const nb of b.data.snakes){let v=st.views.get(nb.k);if(!v){v=new RView(nb.k);st.views.set(nb.k,v);}v.seen=frameNo;
       v.apply(a.data.byKey.get(nb.k),nb,f);
       if(v.wasAlive&&!v.alive)deathBurst(v);v.wasAlive=v.alive;if(v.alive)remote.push(v);}
@@ -1909,13 +1935,13 @@ function handlePeer(p,now){const pr=p.presence;if(!pr||typeof pr!=='object')retu
     else{const suf=String(e.k||'').split('_').pop().replace(/[^a-z0-9]/gi,'').slice(0,6);n.k='c'+id+'_'+suf;n.o='p'+id;}
     data.snakes.push(n);}
   for(const n of data.snakes)data.byKey.set(n.k,n);
-  if(host&&typeof pr.fb==='string'&&pr.fb.length<=FB_W*64&&pr.fb.length%FB_W===0){const fb=pr.fb;data.far=[];data.farKeys=new Set();
-    for(let i=0;i<fb.length;i+=FB_W){const ix=d64(fb,i,1),fl=d64(fb,i+1,1),x=d64(fb,i+2,2),y=d64(fb,i+4,2),v=d64(fb,i+6,3);
-      if(!(ix>=0)||!(fl>=0)||!(x>=0)||!(y>=0)||!(v>=0))continue;const k='b'+ix;if(data.byKey.has(k))continue;
+  if(host&&typeof pr.fb==='string'&&pr.fb.length<=FB_W*BOT_COUNT&&pr.fb.length%FB_W===0){const fb=pr.fb;data.far=[];data.farKeys=new Set();
+    for(let i=0;i<fb.length;i+=FB_W){const ix=d64(fb,i,2),fl=d64(fb,i+2,1),x=d64(fb,i+3,2),y=d64(fb,i+5,2),v=d64(fb,i+7,3);
+      if(!(ix>=0&&ix<BOT_COUNT)||!(fl>=0)||!(x>=0)||!(y>=0)||!(v>=0))continue;const k='b'+ix;if(data.byKey.has(k))continue;
       data.far.push({k,big:fl&1,x:x*FB_Q-R,y:y*FB_Q-R,v});data.farKeys.add(k);}}
   let st=streams.get(p.peer);if(!st){st=new Stream();streams.set(p.peer,st);}
   if(!st.push(pt,data,now))return;
-  if(data.eye)st.eye=data.eye;st.far=data.far||null;
+  if(data.eye)st.eye=data.eye;
   st.info={nm:cleanName(pr.nm)||t('noname'),skin:pr.me?clamp(pr.me.s|0,0,SKINS.length-1):0,st:Array.isArray(pr.st)?pr.st.slice(0,6).map(v=>v|0):null,key:'p'+id,alive:!!(pr.me&&pr.me.a),kfx:clamp(pr.ck|0,0,KFX.length-1)};
   if(Array.isArray(pr.em)){const sq=pr.em[0]|0;if(sq>0&&sq!==st.emSeq){st.emSeq=sq;showEmote('p'+id,clamp(pr.em[1]|0,0,EMOTES.length-1),now);}}
   if(Array.isArray(pr.mn))st.mines=pr.mn.slice(0,24).filter(m=>Array.isArray(m)).map(m=>({id:m[0]|0,x:+m[1]||0,y:+m[2]||0,owner:host?(safeKey(m[3])||'h'):'p'+id,armed:!!m[4]}));
@@ -1946,7 +1972,7 @@ function ingestHostS(pr){if(Array.isArray(pr.rd))syncRound(pr.rd,performance.now
 function applyToken(tk,now){if(typeof tk!=='string'||tk.length>12)return;
   if(tk[0]==='f'){const dot=tk.indexOf('.');if(dot<2)return;const slot=parseInt(tk.slice(1,dot),10),gen=parseInt(tk.slice(dot+1),36);
     if(slot>=0&&slot<FOOD_SLOTS&&foodGen[slot]===gen)bumpFood(slot,now);}
-  else if(tk[0]==='d'){const id=parseInt(tk.slice(1),36);if(Number.isFinite(id))G.drops.delete(id);}
+  else if(tk[0]==='d'){const id=parseInt(tk.slice(1),36),d=G.drops.get(id);if(d&&now-d.born>=350)G.drops.delete(id);}
   else if(tk[0]==='i'){const id=parseInt(tk.slice(1),36);if(Number.isFinite(id))G.items.delete(id);}}
 function ingestGuest(peer,pr,id,now){if(G.round.over)return;let g=guests.get(peer);const skin=pr.me&&(pr.me.s|0)>=0&&(pr.me.s|0)<SKINS.length?pr.me.s|0:0;
   const name=cleanName(pr.me?pr.me.n:pr.nm)||t('noname');
@@ -1989,8 +2015,8 @@ function pruneOut(now){if(G.outHits.length)G.outHits=G.outHits.filter(h=>now-h.t
   if(G.outDl.length)G.outDl=G.outDl.filter(d=>now-d.t<3000);if(myEats.length)myEats=myEats.filter(e=>now-e.t<3000).slice(-50);}
 function dlList(){const out=[];let bytes=0;for(let i=G.outDl.length-1;i>=0;i--){const d=G.outDl[i],sz=d.p.length+16;if(bytes+sz>1100)break;bytes+=sz;out.unshift([d.seq,d.m,d.p]);}return out;}
 /* the host sends full outlines only for bots near some guest; the leaderboard leaders get a head position,
-   and every other bot is a 9-character summary (index, size flag, rough position, ranking value) */
-const NEAR_R=2400,TOP_BRIEF=6,FB_W=9,FB_Q=8;
+   and every other bot is a 10-character summary (index, size flag, rough position, ranking value) */
+const NEAR_R=2400,TOP_BRIEF=6,FB_W=10,FB_Q=8;
 function sendS(now){const me=G.me,host=G.mode==='host';
   const hx=G.outHits.slice(-8).map(h=>[h.seq].concat(h.a)),fxl=G.outFx.slice(-10).map(f=>[f.seq].concat(f.a));
   const mn=G.mines.slice(-12).map(m=>[m.id,Math.round(m.x),Math.round(m.y),host?m.owner:0,now>=m.arm?1:0]);
@@ -1998,11 +2024,11 @@ function sendS(now){const me=G.me,host=G.mode==='host';
   for(const st of streams.values())if(st.eye)eyes.push(st.eye);
   const eyeD2=s=>{let m=Infinity;for(const e of eyes){const dx=s.x-e[0],dy=s.y-e[1],d=dx*dx+dy*dy;if(d<m)m=d;}return m;};
   const timed=!!G.round.end,valOf=s=>timed?(G.sc.get(s.key)||0):s.mass;
-  const summary=b=>e64(+b.key.slice(1),1)+e64(b.mass>=100?1:0,1)+e64(clamp((b.x+R)/FB_Q,0,4095),2)+e64(clamp((b.y+R)/FB_Q,0,4095),2)+e64(clamp(valOf(b),0,262143),3);
+  const summary=b=>e64(+b.key.slice(1),2)+e64(b.mass>=100?1:0,1)+e64(clamp((b.x+R)/FB_Q,0,4095),2)+e64(clamp((b.y+R)/FB_Q,0,4095),2)+e64(clamp(valOf(b),0,262143),3);
   if(host&&!G.round.over){const alive=G.bots.filter(b=>b.alive),top=new Set(alive.slice().sort((a,b)=>valOf(b)-valOf(a)).slice(0,TOP_BRIEF));
     for(const b of alive){if(eyeD2(b)<NEAR_R*NEAR_R)full.push(b);else if(top.has(b))brief.push(b);else fb+=summary(b);}}
   let pts=G.botPts,o=null,bytes=0;
-  for(let k=0;k<16;k++){
+  for(let k=0;k<BOT_COUNT+16;k++){
     o={r:host?'h':'g',ri:G.round.id,id:myId,t:Math.round(now),nm:prof.name,me:me?netOf(me,ME_PTS):null,os:full.map(s=>netOf(s,pts)).concat(clones.map(s=>netOf(s,Math.min(pts,16))),brief.map(s=>netOf(s,1))),hx,fx:k<6?fxl:fxl.slice(-4),mn};
     /* presence updates are merged, so the host always sends fb (even empty) or an old list would linger */
     if(host)o.fb=fb;
@@ -2013,7 +2039,8 @@ function sendS(now){const me=G.me,host=G.mode==='host';
     bytes=utf8len(JSON.stringify(o));if(bytes<=PRES_LIMIT)break;
     /* too big: first send fewer outline points, then turn the bots farthest from any guest into summaries */
     if(pts>8)pts=Math.max(8,pts-4);
-    else if(full.length){full.sort((a,b)=>eyeD2(b)-eyeD2(a));for(const b of full.splice(0,4))fb+=summary(b);}
+    /* P2P accepts larger packets: keep nearby bodies visible when the old room API budget is exceeded. */
+    else if(!STANDALONE&&full.length){full.sort((a,b)=>eyeD2(b)-eyeD2(a));for(const b of full.splice(0,4))fb+=summary(b);}
     else break;}
   G.botPts=pts<BOT_PTS&&bytes<PRES_LIMIT-500?pts+1:pts;
   RS.presence(o).catch(e=>{if(e&&e.code==='invalid_argument')G.botPts=Math.max(8,G.botPts-6);});}
@@ -2487,7 +2514,7 @@ function fillFood(now){const P=foodGeo.attributes.position.array,T=foodGeo.attri
   for(let i=0;i<FOOD_SLOTS;i++){const f=food[i];if(f.x<V.x0-m||f.x>V.x1+m||f.y<V.y0-m||f.y>V.y1+m)continue;
     if(!G.auth){const pf=pendFood.get(i);if(pf&&pf.gen===foodGen[i])continue;}const a=Math.min(1,Math.max(0,(now-f.born)/400));put(f.x,7,f.y,FOOD_RGB[f.c],a,(3+f.v*1.8)*FOOD_SIZE,f.ph);}
   for(const d of G.drops.values()){if(d.x<V.x0-m||d.x>V.x1+m||d.y<V.y0-m||d.y>V.y1+m)continue;if(!G.auth&&pendDrop.has(d.id))continue;
-    const a=Math.min(1,Math.max(0,(now-d.born)/300));put(d.x,8,d.y,dropRgb(d.c),a,(4+Math.sqrt(d.v)*2.6)*FOOD_SIZE,d.ph);}
+    const a=0.35+0.65*Math.min(1,Math.max(0,(now-d.born)/350));put(d.x,8,d.y,dropRgb(d.c),a,(4+Math.sqrt(d.v)*2.6)*FOOD_SIZE,d.ph);}
   for(let i=slurps.length-1;i>=0;i--){const p=slurps[i],q=(now-p.t)/p.dur;if(q>=1){slurps.splice(i,1);continue;}if(k>=FOOD_CAP)break;
     const e=q*q;put(lerp(p.x,p.s.x,e),8+q*10,lerp(p.y,p.s.y,e),p.rgb,1-q*0.4,p.rad*FOOD_SIZE*(1-q*0.6),0);}
   foodGeo.setDrawRange(0,k);for(const n of ['position','tint','size','phase','alpha']){const a=foodGeo.attributes[n];a.updateRange.offset=0;a.updateRange.count=Math.max(1,k)*a.itemSize;a.needsUpdate=true;}}
@@ -3084,7 +3111,7 @@ function spotNearFriend(){const fr=remote.filter(v=>v.kind==='p'&&v.alive);if(!f
   return null;}
 function spawnMe(now){if(!canRespawn(now)){boostBtn.hidden=true;fireBtn.hidden=true;emoBtn.hidden=true;toast(t('eliminated'));return false;}gather();const p=((G.mode==='host'||G.mode==='guest')&&spotNearFriend())||safeSpot(),life=(G.me?G.me.life:0)+1;
   G.me=new Snake({key:myKey,name:prof.name,skin:prof.skin,kind:'p',owner:myKey,x:p.x,y:p.y,angle:Math.atan2(-p.y,-p.x)+(Math.random()-.5),mass:10,life});
-  G.me.invulnT=now+3000;resetInput();inp.ang=G.me.angle;G.kills=0;G.bestRank=99;cam.x=p.x;cam.y=p.y;cam.lx=0;cam.ly=0;fireState='';G.deathCause='';G.lastLost=0;
+  G.me.invulnT=now+3000;resetInput();inp.ang=G.me.angle;G.kills=0;G.bestRank=Infinity;cam.x=p.x;cam.y=p.y;cam.lx=0;cam.ly=0;fireState='';G.deathCause='';G.lastLost=0;
   /* a little pop where you appear (the view box moves with the camera now, so the effect is not culled) */
   V.x0=p.x-2000;V.x1=p.x+2000;V.y0=p.y-2000;V.y1=p.y+2000;
   if(G.mode!=='tut'){const col=skinMain(SKINS[prof.skin]);vfx('ring',{x:p.x,y:p.y,col,r0:16,r1:200,dur:650});burst(p.x,p.y,16,22,col,240,650,11,0.9);}
@@ -3106,7 +3133,7 @@ function showOver(){if(!G.me||G.me.alive||G.round.over||G.mode==='demo')return;c
   else{who.append(t('overByPre'));const em=document.createElement('em');em.textContent=L.kn;who.append(em,t('overByPost'));}
   const lostEl=$('#oLost');lostEl.hidden=!(L.lost>0);if(L.lost>0)lostEl.textContent=L.kn&&L.kn[0]!=='#'?t('lostBy',{k:L.kn,n:L.lost}):t('lostPts',{n:L.lost});
   const tipEl=$('#oTip'),ck=L.cause||'';tipEl.hidden=!TIP_KEYS.has(ck);if(!tipEl.hidden)tipEl.textContent='💡 '+t('tip.'+ck.replace('#',''));
-  $('#oLen').textContent=L.len||0;$('#oKills').textContent=L.kills||0;$('#oRank').textContent=L.rank&&L.rank<99?t('rankN',{n:L.rank}):'-';
+  $('#oLen').textContent=L.len||0;$('#oKills').textContent=L.kills||0;$('#oRank').textContent=Number.isFinite(L.rank)&&L.rank>0?t('rankN',{n:L.rank}):'-';
   renderRewards($('#oRew'),G.lastAward);
   if(!canRespawn()){tipEl.hidden=false;tipEl.textContent=t('eliminated');}
   $('#btnAgain').textContent=t(canRespawn()?'respawn':'spectate');over.hidden=false;boostBtn.hidden=true;fireBtn.hidden=true;emoBtn.hidden=true;emoBar.hidden=true;}
@@ -3685,7 +3712,7 @@ paintCloud();
 /* ================= anonymous play statistics =================
    Only sent when the page has an account server, and players can turn it off in the account sheet.
    A random device id (not the account token), a session id, and small events like "match started" or "died to lava". */
-const GAME_VER='16';
+const GAME_VER='17';
 const PLATFORM=/iPhone|iPad|iPod/.test(navigator.userAgent)||(navigator.maxTouchPoints>1&&/Mac/.test(navigator.platform||''))?'ios':/Android/.test(navigator.userAgent)?'android':'desktop';
 const STATS=(()=>{let dev=store.get('ssld-dev','');if(typeof dev!=='string'||!/^[a-z0-9]{12,24}$/.test(dev)){dev=(Math.random().toString(36).slice(2,10)+Math.random().toString(36).slice(2,10)).replace(/[^a-z0-9]/g,'').slice(0,16).padEnd(12,'0');store.set('ssld-dev',dev);}
   return {dev,sid:(Math.random().toString(36).slice(2,12)+'000000').slice(0,10),q:[],on:CLOUD&&store.get('ssld-stats',true)!==false,perf:null};})();
