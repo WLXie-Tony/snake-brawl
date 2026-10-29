@@ -159,6 +159,10 @@ body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--f-body
 .len{display:flex;align-items:baseline;gap:8px}
 .len b{font-family:var(--f-display);font-weight:400;font-size:36px;line-height:1;font-variant-numeric:tabular-nums}
 .sub{display:flex;gap:10px;font-size:13px;font-variant-numeric:tabular-nums;opacity:.9}
+.spectator{position:absolute;left:50%;bottom:calc(128px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);display:flex;align-items:center;gap:8px;max-width:calc(100vw - 24px);padding:5px;border-radius:999px;background:var(--panel);border:1px solid var(--line);text-shadow:none;pointer-events:auto}
+.spectator span{font-size:13px;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.spectator button{width:40px;height:40px;border:0;border-radius:50%;background:var(--panel-soft);color:var(--ink);font-size:24px;cursor:pointer}
+.spectator button:focus-visible{outline:2px solid var(--candy);outline-offset:2px}
 .hearts{display:flex;gap:3px;min-height:18px}
 .hearts img{width:18px;height:18px}
 .buffs{display:flex;flex-wrap:wrap;gap:5px;max-width:52vw}
@@ -395,6 +399,11 @@ html[lang="en"]{--f-display:"Fredoka","ZCOOL KuaiLe",system-ui,sans-serif}
   </div>
   <ol id="board" class="board" data-i-al="boardAria"></ol>
   <canvas id="mini" width="200" height="200" aria-hidden="true"></canvas>
+  <div id="spectatorBar" class="spectator" hidden>
+    <button id="btnWatchPrev" type="button" data-i-al="watchPrev">‹</button>
+    <span id="spectatorName" aria-live="polite"></span>
+    <button id="btnWatchNext" type="button" data-i-al="watchNext">›</button>
+  </div>
   <div class="bottomc">
     <div id="hCode" class="codebar" hidden></div>
     <div id="feed" class="feed" aria-live="polite"></div>
@@ -674,6 +683,7 @@ en:{
   'tip.zone':'Near the end of a timed match the arena closes in. Head for the middle early; the red ring on the minimap is the edge.',
   zoneSoon:'Elimination starts in 10 s',zoneGo:'The ring is closing — elimination begins!',zoneSub:'Head inward. No respawns; hearts and shields cannot save you from the ring.',
   eliminated:'You are eliminated. Watch the survivors or return to the lobby.',spectate:'Watch match',
+  watching:'Watching · {n}',watchWaiting:'Waiting for a survivor…',watchPrev:'Watch previous snake',watchNext:'Watch next snake',
   'tip.lava':'Lava melts your length. Steer around the orange pools.',
   'tip.spike':'Ice spikes are deadly. You turn slower on ice, so start turning early.',
   'tip.tree':'Trees are solid. Bushes are safe to hide in, trees are not.',
@@ -786,6 +796,7 @@ zh:{
   'tip.zone':'限时局最后阶段场地会缩小，提前往中间走，小地图上的红圈就是边界。',
   zoneSoon:'10 秒后进入缩圈淘汰阶段',zoneGo:'缩圈开始，进入淘汰阶段！',zoneSub:'向中心移动；死亡不能复活，爱心和护盾都不能抵挡缩圈。',
   eliminated:'你已被淘汰，可以观战或返回大厅。',spectate:'观战',
+  watching:'观战 · {n}',watchWaiting:'等待存活的蛇…',watchPrev:'观战上一条蛇',watchNext:'观战下一条蛇',
   'tip.lava':'熔岩会烫掉长度，绕开橙色的熔岩池。',
   'tip.spike':'冰刺一碰就死。冰面上转弯慢，要提前转。',
   'tip.tree':'大树是实心的。草丛可以钻，大树不行。',
@@ -923,7 +934,7 @@ const AREA_K=(R*R)/(2600*2600);
 /* timed matches end in a closing ring: the arena edge moves in to this radius */
 const ZONE_MIN=1800;
 /* bumped whenever two builds can no longer play together; rooms from other versions are not joinable */
-const NET_VER=6;
+const NET_VER=7;
 const B64='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
 const B64I=new Int16Array(128).fill(-1);for(let i=0;i<64;i++)B64I[B64.charCodeAt(i)]=i;
 /* fixed-width base64 numbers for the compact network strings */
@@ -1259,15 +1270,12 @@ function decPts(s){if(typeof s!=='string'||s.length>6000)return null;const p=s.s
   const out=new Array(p.length);let x=0,y=0;
   for(let i=0;i<p.length;i+=2){const a=+p[i],b=+p[i+1];if(!Number.isFinite(a)||!Number.isFinite(b))return null;x+=a;y+=b;
     if(Math.abs(x)>R+400||Math.abs(y)>R+400)return null;out[i]=x;out[i+1]=y;}return out;}
-/* snake outlines on the network: the head as two 3-char numbers, then 2-char signed steps (base64), about half the size of encPts */
-const NP_OFF=2047;
-function encNetPts(a){let lx=Math.round(a[0]),ly=Math.round(a[1]);let s=e64(clamp(lx+R,0,262143),3)+e64(clamp(ly+R,0,262143),3);
-  for(let i=2;i<a.length;i+=2){const dx=clamp(Math.round(a[i])-lx,-NP_OFF,NP_OFF),dy=clamp(Math.round(a[i+1])-ly,-NP_OFF,NP_OFF);lx+=dx;ly+=dy;s+=e64(dx+NP_OFF,2)+e64(dy+NP_OFF,2);}return s;}
-function decNetPts(s){if(typeof s!=='string'||s.length<6||s.length>1206||(s.length-6)%4)return null;
-  let x=d64(s,0,3)-R,y=d64(s,3,3)-R;if(!Number.isFinite(x)||!Number.isFinite(y))return null;const out=[x,y];
-  for(let i=6;i<s.length;i+=4){const dx=d64(s,i,2),dy=d64(s,i+2,2);if(!Number.isFinite(dx)||!Number.isFinite(dy))return null;x+=dx-NP_OFF;y+=dy-NP_OFF;
-    if(Math.abs(x)>R+400||Math.abs(y)>R+400)return null;out.push(x,y);}
-  return Math.abs(out[0])>R+400||Math.abs(out[1])>R+400?null:out;}
+/* Absolute 4-unit coordinates use four characters per point without clipping long outline steps. */
+const NP_OFF=8192,NP_Q=4;
+function encNetPts(a){if(!a||a.length<2||a.length>602||(a.length&1))return '';let s='';
+  for(let i=0;i<a.length;i++){if(!Number.isFinite(a[i])||Math.abs(a[i])>R+400)return '';s+=e64(Math.round((a[i]+NP_OFF)/NP_Q),2);}return s;}
+function decNetPts(s){if(typeof s!=='string'||s.length<4||s.length>1204||s.length%4)return null;const out=[];
+  for(let i=0;i<s.length;i+=2){const v=d64(s,i,2)*NP_Q-NP_OFF;if(!Number.isFinite(v)||Math.abs(v)>R+400)return null;out.push(v);}return out;}
 function subsample(b,maxPts){const n=b.length>>1;if(n<=maxPts)return b.slice();const st=Math.ceil(n/maxPts),o=[];
   for(let i=0;i<n;i+=st)o.push(b[i*2],b[i*2+1]);if((n-1)%st)o.push(b[n*2-2],b[n*2-1]);return o;}
 
@@ -1324,8 +1332,12 @@ class RView{
     this.name='';this.skin=0;this.boosting=false;this.kind=k[0]==='b'?'b':(k[0]==='c'?'c':'p');this.isBot=this.kind==='b';this.owner=k;this.life=1;
     this.minx=this.miny=this.maxx=this.maxy=0;this.seen=0;this.remote=true;this.score=0;}
   apply(na,nb,f){this.name=nb.n;this.skin=nb.s;this.alive=nb.a;this.fl=nb.f;this.boosting=!!(nb.f&F.boost);this.life=nb.l;this.owner=nb.o||this.key;this.score=nb.sc|0;this.tier=nb.d|0;
-    const same=na&&na!==nb&&na.l===nb.l&&na.a&&nb.a&&Math.abs(na.P.length-nb.P.length)<=2,B=nb.P,A=same?na.P:B,n=B.length,net=this.net;net.length=n;
-    if(same){for(let i=0;i<n;i++)net[i]=i<A.length?A[i]+(B[i]-A[i])*f:B[i];this.mass=lerp(na.m,nb.m,f);this.gs=lerp(na.g,nb.g,f);}
+    /* Network samples are evenly spaced along the body: align that progress when the LOD changes. */
+    const same=na&&na!==nb&&na.l===nb.l&&na.a&&nb.a,B=nb.P,A=same?na.P:B,full=A.length>2&&B.length>2,n=same&&full?Math.max(A.length,B.length):B.length,net=this.net;net.length=n;
+    if(same){for(let i=0;i<n;i+=2){const u=i/Math.max(2,n-2),ap=u*(A.length/2-1),bp=u*(B.length/2-1),ai=Math.floor(ap)*2,bi=Math.floor(bp)*2;
+        for(let axis=0;axis<2;axis++){const bv=lerp(B[bi+axis],B[Math.min(bi+2,B.length-2)+axis],bp-Math.floor(bp));
+          const av=full?lerp(A[ai+axis],A[Math.min(ai+2,A.length-2)+axis],ap-Math.floor(ap)):A[axis]+bv-B[axis];net[i+axis]=lerp(av,bv,f);}}
+      this.mass=lerp(na.m,nb.m,f);this.gs=lerp(na.g,nb.g,f);}
     else{for(let i=0;i<n;i++)net[i]=B[i];this.mass=nb.m;this.gs=nb.g;}
     this.lm=nb.q||1;this.r=radiusOf(this.mass)*this.gs;const sp=segSp(this.r);
     densify(net,sp,this.body,Math.floor(lengthOf(this.mass)*this.lm*this.gs/sp)+2);
@@ -1398,6 +1410,18 @@ function ownedList(){const o=[];if(G.round.over)return o;if(G.me&&G.me.alive)o.p
 function gather(){all.length=0;if(G.me&&G.me.alive)all.push(G.me);if(G.auth)for(const b of G.bots)if(b.alive)all.push(b);
   for(const c of G.clones)if(c.alive)all.push(c);for(const v of remote)all.push(v);}
 function findSnake(k){for(const s of all)if(s.key===k)return s;return null;}
+function viewSubject(now=performance.now()){
+  if(G.mode!=='demo'&&G.me&&G.me.alive)return G.me;
+  const candidates=all.filter(s=>s.alive&&s.kind!=='c');
+  if(G.mode==='demo'){let s=candidates.find(s=>s.key===G.demoKey);if(!s||now>G.demoT){s=candidates[(Math.random()*candidates.length)|0];G.demoT=now+14000;}if(s)G.demoKey=s.key;return s||null;}
+  let s=candidates.find(s=>s.key===G.watchKey);
+  if(!s)s=candidates.find(s=>s.kind==='p')||candidates.find(s=>!s.remote||s.body.length>2)||candidates[0];
+  G.watchKey=s?s.key:null;if(s)G.demoKey=s.key;return s||null;
+}
+function cycleView(dir){if(G.mode==='demo'||G.round.over||(G.me&&G.me.alive))return;
+  const candidates=all.filter(s=>s.alive&&s.kind!=='c');if(!candidates.length)return;
+  const current=viewSubject(),index=candidates.indexOf(current),next=candidates[(index+(dir<0?-1:1)+candidates.length)%candidates.length];
+  G.watchKey=next.key;cam.lx=cam.ly=0;updateHud();}
 function safeSpot(){let best={x:0,y:0},bestD=-1;
   const check=(o,x,y,md)=>{if(!o||!o.alive)return md;const b=o.body;for(let i=0;i<b.length;i+=6){const dx=b[i]-x,dy=b[i+1]-y,d=dx*dx+dy*dy;if(d<md)md=d;}return md;};
   for(let k=0;k<40;k++){const a=Math.random()*TAU,rr=Math.sqrt(Math.random())*G.zr*0.78,x=Math.cos(a)*rr,y=Math.sin(a)*rr;
@@ -1440,7 +1464,7 @@ function eliminationPhase(now=performance.now()){return !!(G.round.end&&G.roomDu
 function canRespawn(now=performance.now()){return !G.round.over&&!eliminationPhase(now);}
 function zoneR(now){if(!G.round.end||!G.roomDur||G.tutWorld)return R;const z=zoneSpan(),f=clamp((now-z.start)/(z.stop-z.start),0,1);
   return f<=0?R:R-(R-ZONE_MIN)*f*f*(3-2*f);}
-function resetWorld(auth,seed,map,opts){const now=performance.now();G.zr=R;G.king=null;
+function resetWorld(auth,seed,map,opts){const now=performance.now();G.zr=R;G.king=null;G.watchKey=null;
   G.easy=!!(opts&&opts.easy);G.tutWorld=!!(opts&&opts.tut);G.tut=null;
   G.auth=auth;G.seed=seed>>>0;G.map=map|0;G.obstacles=genObstacles(G.map,G.seed);foodGen.fill(0);setAllFood(now);
   G.drops.clear();G.dropSeq=0;G.items.clear();G.itemSeq=0;G.itemT=0;G.eruptT=now+5000;G.bots=[];G.clones=[];G.events=[];G.evSeq=0;G.lastEv=0;G.evInit=false;
@@ -1929,7 +1953,8 @@ function handlePeer(p,now){const pr=p.presence;if(!pr||typeof pr!=='object')retu
   const prev=streams.get(p.peer);if(prev&&prev.snaps.length&&pt<=prev.snaps[prev.snaps.length-1].t)return;
   if(G.mode==='guest'&&host&&Array.isArray(pr.rd))syncRound(pr.rd,now);
   if((pr.ri|0)!==G.round.id)return;
-  if(pr.me){const n=decNet(pr.me);if(n){n.k='p'+id;n.o=n.k;data.snakes.push(n);data.eye=[n.P[0],n.P[1]];}}
+  if(pr.me){const n=decNet(pr.me);if(n){n.k='p'+id;n.o=n.k;data.snakes.push(n);if(n.a)data.eye=[n.P[0],n.P[1]];}}
+  if(!(pr.me&&pr.me.a)&&Array.isArray(pr.vp)&&pr.vp.length===2&&pr.vp.every(Number.isFinite)&&Math.hypot(pr.vp[0],pr.vp[1])<=R)data.eye=pr.vp.slice();
   if(Array.isArray(pr.os))for(const e of pr.os.slice(0,BOT_COUNT+6)){const n=decNet(e);if(!n)continue;
     if(host){n.k=safeKey(e.k);if(!n.k)continue;n.o=n.k[0]==='c'?(safeKey(e.o)||n.k):n.k;}
     else{const suf=String(e.k||'').split('_').pop().replace(/[^a-z0-9]/gi,'').slice(0,6);n.k='c'+id+'_'+suf;n.o='p'+id;}
@@ -2018,6 +2043,7 @@ function dlList(){const out=[];let bytes=0;for(let i=G.outDl.length-1;i>=0;i--){
    and every other bot is a 10-character summary (index, size flag, rough position, ranking value) */
 const NEAR_R=2400,TOP_BRIEF=6,FB_W=10,FB_Q=8;
 function sendS(now){const me=G.me,host=G.mode==='host';
+  const vp=(!me||!me.alive)&&G.mode!=='demo'&&Number.isFinite(cam.x)&&Number.isFinite(cam.y)&&Math.hypot(cam.x,cam.y)<=R?[cam.x,cam.y]:null;
   const hx=G.outHits.slice(-8).map(h=>[h.seq].concat(h.a)),fxl=G.outFx.slice(-10).map(f=>[f.seq].concat(f.a));
   const mn=G.mines.slice(-12).map(m=>[m.id,Math.round(m.x),Math.round(m.y),host?m.owner:0,now>=m.arm?1:0]);
   const full=[],brief=[],clones=G.clones.filter(c=>c.alive),eyes=[];let fb='';
@@ -2029,7 +2055,7 @@ function sendS(now){const me=G.me,host=G.mode==='host';
     for(const b of alive){if(eyeD2(b)<NEAR_R*NEAR_R)full.push(b);else if(top.has(b))brief.push(b);else fb+=summary(b);}}
   let pts=G.botPts,o=null,bytes=0;
   for(let k=0;k<BOT_COUNT+16;k++){
-    o={r:host?'h':'g',ri:G.round.id,id:myId,t:Math.round(now),nm:prof.name,me:me?netOf(me,ME_PTS):null,os:full.map(s=>netOf(s,pts)).concat(clones.map(s=>netOf(s,Math.min(pts,16))),brief.map(s=>netOf(s,1))),hx,fx:k<6?fxl:fxl.slice(-4),mn};
+    o={r:host?'h':'g',ri:G.round.id,id:myId,t:Math.round(now),nm:prof.name,me:me?netOf(me,ME_PTS):null,vp,os:full.map(s=>netOf(s,pts)).concat(clones.map(s=>netOf(s,Math.min(pts,16))),brief.map(s=>netOf(s,1))),hx,fx:k<6?fxl:fxl.slice(-4),mn};
     /* presence updates are merged, so the host always sends fb (even empty) or an old list would linger */
     if(host)o.fb=fb;
     o.st=[G.round.id,Math.round(G.sc.get(myKey)||0),G.rs.kills,G.rs.deaths,Math.floor(G.rs.best)];o.ck=KFX_ID[prof.kfx]|0;if(G.myEmo&&now-G.myEmo.t<3000)o.em=[G.myEmo.seq,G.myEmo.i];
@@ -2590,7 +2616,7 @@ function drawVfx(now){let kr=0,kb=0,kl=0,kc=0;const keep=[];
         boltGeom(o.core,e.pts,3.2);boltGeom(o.glow,e.pts,13);o.core.material.opacity=0.95*(1-q*0.6);o.glow.material.opacity=0.5*(1-q);
         if(B&&Math.random()<0.5)burst(x2,z2,20,2,[1,0.95,0.5],200,300,8,0.8);break;}}}
   G.vfx=keep;poolHide('ring',kr);poolHide('boom',kb);poolHide('col',kc);for(let i=kl;i<pools.bolt.length;i++){pools.bolt[i].core.visible=pools.bolt[i].glow.visible=false;}}
-function animObstacles(now,dt){const me=G.me&&G.me.alive?G.me:null;if(lavaTex)lavaTex.offset.set(now*0.00002,now*0.000013);
+function animObstacles(now,dt){const me=viewSubject(now);if(lavaTex)lavaTex.offset.set(now*0.00002,now*0.000013);
   for(const g of obsMeshes){const u=g.userData,o=u.o;
     if(u.halo)u.halo.material.opacity=0.28+0.12*Math.sin(now*0.003+o.i);
     if(u.spin)u.spin.rotation.y=now*0.0003+o.i;
@@ -2610,15 +2636,12 @@ function groundPoint(nx,ny){_v3.set(nx,ny,0.5).unproject(camera);_v3.sub(camera.
 function proj(x,h,z){_p3.set(x,h,z).project(camera);return {sx:(_p3.x*0.5+0.5)*VW,sy:(-_p3.y*0.5+0.5)*VH,ok:_p3.z<1&&_p3.z>-1};}
 R3.groundAt=function(sx,sy){return groundPoint(sx/VW*2-1,-(sy/VH*2-1));};
 R3.shake=function(a){cam.shake=Math.max(cam.shake,a);};
-function updateCamera(dt,now){let tx=cam.x,ty=cam.y,r=12;const me=G.me,following=me&&me.alive&&G.mode!=='demo';
+function updateCamera(dt,now){let tx=cam.x,ty=cam.y,r=12;const me=G.me,subject=viewSubject(now),following=me&&me.alive&&G.mode!=='demo';
   /* the view looks a little ahead of the snake, but that look-ahead swings round slowly: weaving left and right
      averages out instead of throwing the whole view from side to side */
   if(following){const lead=me.boosting?115:70,kl=1-Math.exp(-dt*cam.kl);cam.lx+=(Math.cos(me.angle)*lead-cam.lx)*kl;cam.ly+=(Math.sin(me.angle)*lead-cam.ly)*kl;
     tx=me.x+cam.lx;ty=me.y+cam.ly;r=radiusOf(me.mass)+(me.gs-1)*7;}
-  else{let t=all.find(s=>s.key===G.demoKey&&s.alive&&s.kind!=='c');
-    if(G.mode!=='demo')t=all.find(s=>s.alive&&s.kind==='p')||t;
-    if(!t||(G.mode==='demo'&&now>G.demoT)){const c=all.filter(s=>s.alive&&s.kind!=='c');if(c.length)t=c[(Math.random()*c.length)|0];G.demoT=now+14000;}
-    if(t){G.demoKey=t.key;tx=t.x;ty=t.y;r=t.r;}}
+  else if(subject){tx=subject.x;ty=subject.y;r=subject.r;}
   const aspect=VW/Math.max(1,VH),zoom=1+(r-10)/52;
   let dist=aspect<1?510*zoom/(2*TAN_HALF*aspect):640*zoom*Math.sin(PITCH)/(2*TAN_HALF);if(G.mode==='demo')dist*=1.2;dist=clamp(dist,500,7000);
   const k=1-Math.exp(-dt*(following?cam.kp:7)),kz=1-Math.exp(-dt*2.2);
@@ -2676,7 +2699,7 @@ function drawOverlay(now){const g=octx,dpr=Math.min(2,window.devicePixelRatio||1
         const ty=p.sy-rad-(big?22:14);g.strokeText(big?String(sec):sec+'s',p.sx,ty);g.fillStyle=big?'#ff8a5b':'#ffffff';g.fillText(big?String(sec):sec+'s',p.sx,ty);}
       ri++;}}
   drawEdgeWarn(g,now,me);drawStreaks(g,now,me);
-  for(const s of all){if(s===G.me||!s.alive||(s.fl&(F.ghost|F.hide)))continue;if(s.x<V.x0||s.x>V.x1||s.y<V.y0||s.y>V.y1)continue;
+  for(const s of all){if(s===G.me||!s.alive||(s.remote&&s.body.length<4)||(s.fl&(F.ghost|F.hide)))continue;if(s.x<V.x0||s.x>V.x1||s.y<V.y0||s.y>V.y1)continue;
     const king=s.key===G.king,p=proj(s.x,s.r*2.3+14+(king?Math.max(s.r*1.12,14)*2.5:0),s.y);if(!p.ok)continue;const pl=s.kind==='p',hard=s.isBot&&s.tier===2;
     /* hunters (hard bots) wear a red name so you know to give them room */
     const lbl=s.kind==='c'?t('clone',{n:s.name}):s.name;g.font=(pl?'700 13px ':(s.kind==='c'||hard?'700 12px ':'500 12px '))+BODY_FONT;g.lineWidth=3.5;g.strokeStyle='rgba(5,8,16,.7)';g.strokeText(lbl,p.sx,p.sy);
@@ -2695,7 +2718,7 @@ function drawOverlay(now){const g=octx,dpr=Math.min(2,window.devicePixelRatio||1
 R3.frame=function(now,dt,realDt){VW=window.innerWidth;VH=window.innerHeight;updateCamera(dt,now);
   const sc=(VH*R3.pixelRatio)/(2*TAN_HALF);foodMat.uniforms.uTime.value=now/1000;foodMat.uniforms.uScale.value=sc;partMat.uniforms.uScale.value=sc;
   shadowsBegin();
-  for(const s of all){if(!s.alive)continue;const m=s.r*2+60;if(s.maxx<V.x0-m||s.minx>V.x1+m||s.maxy<V.y0-m||s.miny>V.y1+m)continue;
+  for(const s of all){if(!s.alive||(s.remote&&s.body.length<4))continue;const m=s.r*2+60;if(s.maxx<V.x0-m||s.minx>V.x1+m||s.maxy<V.y0-m||s.miny>V.y1+m)continue;
     meshFor(s).update(s,now,dt,1,s===G.me);if(!(s.fl&(F.ghost|F.hide))||s===G.me)shadowSnake(s);}
   for(const [k,sm] of snakeMeshes)if(sm.seen!==now){sm.root.visible=false;if(now-sm.seen>3000){sm.dispose();snakeMeshes.delete(k);}}
   drawItems(now);drawShots(now);fillFood(now);stepParts(dt);drawVfx(now);animObstacles(now,dt);updateZoneMeshes(now);shadowsEnd();
@@ -3111,7 +3134,7 @@ function spotNearFriend(){const fr=remote.filter(v=>v.kind==='p'&&v.alive);if(!f
   return null;}
 function spawnMe(now){if(!canRespawn(now)){boostBtn.hidden=true;fireBtn.hidden=true;emoBtn.hidden=true;toast(t('eliminated'));return false;}gather();const p=((G.mode==='host'||G.mode==='guest')&&spotNearFriend())||safeSpot(),life=(G.me?G.me.life:0)+1;
   G.me=new Snake({key:myKey,name:prof.name,skin:prof.skin,kind:'p',owner:myKey,x:p.x,y:p.y,angle:Math.atan2(-p.y,-p.x)+(Math.random()-.5),mass:10,life});
-  G.me.invulnT=now+3000;resetInput();inp.ang=G.me.angle;G.kills=0;G.bestRank=Infinity;cam.x=p.x;cam.y=p.y;cam.lx=0;cam.ly=0;fireState='';G.deathCause='';G.lastLost=0;
+  G.me.invulnT=now+3000;G.watchKey=null;$('#spectatorBar').hidden=true;resetInput();inp.ang=G.me.angle;G.kills=0;G.bestRank=Infinity;cam.x=p.x;cam.y=p.y;cam.lx=0;cam.ly=0;fireState='';G.deathCause='';G.lastLost=0;
   /* a little pop where you appear (the view box moves with the camera now, so the effect is not culled) */
   V.x0=p.x-2000;V.x1=p.x+2000;V.y0=p.y-2000;V.y1=p.y+2000;
   if(G.mode!=='tut'){const col=skinMain(SKINS[prof.skin]);vfx('ring',{x:p.x,y:p.y,col,r0:16,r1:200,dur:650});burst(p.x,p.y,16,22,col,240,650,11,0.9);}
@@ -3119,7 +3142,7 @@ function spawnMe(now){if(!canRespawn(now)){boostBtn.hidden=true;fireBtn.hidden=t
 /* leaving mid-life still banks the xp earned so far */
 function bankLife(){if(G.me&&G.me.alive&&G.mode!=='demo'&&G.mode!=='tut'&&G.life&&!G.life.done)finishLife(false,0,performance.now());}
 function goLobby(msg){if(G.mode!=='demo')track('leave',{m:G.mode,e:msg?1:0});bankLife();leaveRooms();flowTok++;if(STANDALONE){P2P.close();ROOM=null;}clearTimeout(overTimer);G.me=null;resultsEl.hidden=true;G.roomDur=0;beginRound(0,performance.now());resetWorld(true,newSeed(),demoMap());G.mode='demo';G.code=null;busy=false;
-  hud.hidden=true;boostBtn.hidden=true;fireBtn.hidden=true;emoBtn.hidden=true;emoBar.hidden=true;over.hidden=true;connecting.hidden=true;lobby.hidden=false;joyHide();inp.boost=false;boostBtn.classList.remove('on');
+  hud.hidden=true;$('#spectatorBar').hidden=true;boostBtn.hidden=true;fireBtn.hidden=true;emoBtn.hidden=true;emoBar.hidden=true;over.hidden=true;connecting.hidden=true;lobby.hidden=false;joyHide();inp.boost=false;boostBtn.classList.remove('on');
   tutBox.hidden=true;hud.classList.remove('tutmode');boostBtn.classList.remove('tutpulse');fireBtn.classList.remove('tutpulse');
   showLobbyMsg(msg||'');if(msg)friendsSheet.hidden=false;lobbyPresence();releaseWake();paintAcct();paintMissions();}
 let overTimer=0;
@@ -3140,7 +3163,7 @@ function showOver(){if(!G.me||G.me.alive||G.round.over||G.mode==='demo')return;c
 
 /* ================= timed rounds ================= */
 const resultsEl=$('#results'),resList=$('#resList'),btnNext=$('#btnNext');let lastTickSec=-1,resT=0;
-function beginRound(id,now){G.round={id,end:id&&G.roomDur?now+G.roomDur:0,over:false,award:null,awarded:false,rows:null};G.rs={id,best:0,kills:0,deaths:0,pk:0};G.sc=new Map();G.streak=0;lastTickSec=-1;G.zoneMsg=0;resultsEl.hidden=true;}
+function beginRound(id,now){G.round={id,end:id&&G.roomDur?now+G.roomDur:0,over:false,award:null,awarded:false,rows:null};G.rs={id,best:0,kills:0,deaths:0,pk:0};G.sc=new Map();G.streak=0;G.watchKey=null;lastTickSec=-1;G.zoneMsg=0;resultsEl.hidden=true;$('#spectatorBar').hidden=true;}
 function showPlayUI(){resultsEl.hidden=true;over.hidden=true;boostBtn.hidden=false;fireBtn.hidden=false;emoBtn.hidden=false;}
 function syncRound(rd,now){const id=rd[0]|0,left=+rd[1],isOver=!!rd[2];if(!id||id<G.round.id)return;
   /* the room's round length, so this phone can work out the closing ring itself */
@@ -3165,7 +3188,7 @@ function checkElimination(now){if(!G.auth||G.round.over||!eliminationPhase(now))
   if(alive<=1)roundOver(now);}
 function roundOver(now){if(G.round.over)return;if(G.me&&G.me.alive){G.rs.best=Math.max(G.rs.best,G.me.mass);if(G.life)G.life.peak=Math.max(G.life.peak,G.me.mass);}
   if(!G.round.rows){G.round.rows=roundRows();G.round.total=G.round.rows.length;}G.round.over=true;sfx('end');
-  clearTimeout(overTimer);over.hidden=true;boostBtn.hidden=true;fireBtn.hidden=true;emoBtn.hidden=true;emoBar.hidden=true;resetInput();toast(t('roundOverTitle'));
+  clearTimeout(overTimer);over.hidden=true;$('#spectatorBar').hidden=true;boostBtn.hidden=true;fireBtn.hidden=true;emoBtn.hidden=true;emoBar.hidden=true;resetInput();toast(t('roundOverTitle'));
   const id=G.round.id;setTimeout(()=>{if(G.round.id===id&&G.round.over)showResults();},800);}
 const myScore=()=>Math.round(G.sc.get(myKey)||0);
 function resRow(r,rank){const li=document.createElement('li');if(r.me)li.className='me';const rk=document.createElement('b');rk.className='rk';rk.textContent=rank;
@@ -3264,6 +3287,8 @@ function uiHurt(kind,name,keep){sfx('hurt');const k=['z','a','f','g','m'].includ
 
 /* ================= HUD ================= */
 const hCode=$('#hCode'),hTimer=$('#hTimer'),hLen=$('#hLen'),hKills=$('#hKills'),hRank=$('#hRank'),board=$('#board'),hRoom=$('#hRoom'),netWarn=$('#netWarn'),hHearts=$('#hHearts'),hBuffs=$('#hBuffs');
+$('#btnWatchPrev').addEventListener('click',()=>cycleView(-1));
+$('#btnWatchNext').addEventListener('click',()=>cycleView(1));
 const mini=$('#mini'),mctx=mini.getContext('2d');
 let fireState='',heartState=-1,buffState='';
 function updateFire(){const me=G.me,w=me&&me.alive?me.weapon:null,key=w?w.t+':'+w.n+':'+LANG:'none:'+LANG;if(key===fireState)return;fireState=key;fireBtn.textContent='';
@@ -3284,22 +3309,25 @@ function updateKing(now){if(G.mode==='demo'||G.mode==='tut'||G.round.over){if(G.
   const nk=top?top.key:null;if(nk===G.king)return;const was=G.king;G.king=nk;
   if(nk===myKey){missionAdd('king',1);if(now-kingToastT>4000){kingToastT=now;toast(t('crownYou'),t('crownYouSub'));sfx('levelup');}}
   else if(was===myKey&&G.me&&G.me.alive&&now-kingToastT>4000){kingToastT=now;toast(t('crownLost'));}}
-function updateHud(){if(hud.hidden)return;const me=G.me,now=performance.now(),timed=!!G.round.end;
+function updateHud(){if(hud.hidden)return;const me=G.me,now=performance.now(),timed=!!G.round.end,watching=G.mode!=='demo'&&(!me||!me.alive),focus=watching?viewSubject(now):me;
   const val=s=>timed?scoreOf(s):Math.floor(s.mass);
   const ranked=all.filter(s=>s.alive&&s.kind!=='c').sort((a,b)=>val(b)-val(a)||b.mass-a.mass);
-  $('#hLenLbl').textContent=timed?t('score'):t('lenLbl');hLen.textContent=me?(timed?myScore():Math.floor(me.mass)):0;
-  hKills.textContent=(timed&&me?t('hudLen',{n:Math.floor(me.mass)})+' · ':'')+t('hudKills',{n:G.kills});
-  const idx=me&&me.alive?ranked.indexOf(me):-1;
+  $('#spectatorBar').hidden=!watching||G.round.over||!over.hidden||!resultsEl.hidden;
+  $('#spectatorName').textContent=focus?t('watching',{n:focus.name}):t('watchWaiting');
+  const canSwitch=watching&&!G.round.over&&ranked.length>1;$('#btnWatchPrev').disabled=!canSwitch;$('#btnWatchNext').disabled=!canSwitch;
+  $('#hLenLbl').textContent=timed?t('score'):t('lenLbl');hLen.textContent=focus?val(focus):'—';
+  hKills.textContent=watching?(focus?t('hudLen',{n:Math.floor(focus.mass)}):t('watchWaiting')):(timed&&me?t('hudLen',{n:Math.floor(me.mass)})+' · ':'')+t('hudKills',{n:G.kills});
+  const idx=focus&&focus.alive?ranked.indexOf(focus):-1;
   /* a guest only gets summaries of far-away bots; they still count for the rank */
-  const far=hostFar();let farN=0,farAbove=0;if(far&&idx>=0){const mv=val(me);farN=far.length;for(const f of far)if(f.v>mv)farAbove++;}
+  const far=hostFar();let farN=0,farAbove=0;if(far&&idx>=0){const mv=val(focus);farN=far.length;for(const f of far)if(f.v>mv)farAbove++;}
   const myRank=idx+1+farAbove;
-  if(idx>=0){G.bestRank=Math.min(G.bestRank,myRank);hRank.textContent=t('hudRank',{r:myRank,n:ranked.length+farN});}else hRank.textContent='';
+  if(idx>=0){if(!watching)G.bestRank=Math.min(G.bestRank,myRank);hRank.textContent=t('hudRank',{r:myRank,n:ranked.length+farN});}else hRank.textContent='';
   board.textContent='';
-  const addRow=(s,rank)=>{const li=document.createElement('li');li.className=s===me?'me':(s.isBot?'':'p');
+  const addRow=(s,rank)=>{const li=document.createElement('li');li.className=s===focus?'me':(s.isBot?'':'p');
     const n=document.createElement('b');n.textContent=s.key===G.king?'👑':rank;n.style.fontWeight='600';const i=document.createElement('i');i.style.background=skinCss(SKINS[s.skin]);
     const nm=document.createElement('span');nm.textContent=s===me?prof.name:s.name;const sc=document.createElement('b');sc.textContent=val(s);li.append(n,i,nm,sc);board.append(li);};
   ranked.slice(0,6).forEach((s,k)=>addRow(s,k+1));
-  if(idx>=6){const g=document.createElement('li');g.className='gap';g.textContent='⋯';board.append(g);addRow(me,myRank);}
+  if(idx>=6){const g=document.createElement('li');g.className='gap';g.textContent='⋯';board.append(g);addRow(focus,myRank);}
   const hc=me&&me.alive&&!eliminationPhase(now)?me.hearts:0;if(hc!==heartState){heartState=hc;hHearts.textContent='';for(let k=0;k<hc;k++){const im=document.createElement('img');im.src=HEART;im.alt='';hHearts.append(im);}hHearts.setAttribute('aria-label',t('heartsAria',{n:hc}));}
   hBuffs.textContent='';if(me&&me.alive)for(const [k,icon] of BUFF_SHOW){const left=(me.bf[k]||0)-now;if(left<=0)continue;const it=ITEMS[IT[icon]],dur=it.dur||(k==='frozen'?WEAPON_BALANCE.freezeMs:WEAPON_BALANCE.zapSlowMs);
     const d=document.createElement('div');d.className='buff';const ring=document.createElement('span');ring.className='ring';ring.style.setProperty('--c',it.color);ring.style.setProperty('--p',clamp(left/dur,0,1).toFixed(3));
@@ -3333,7 +3361,7 @@ function drawMini(){if(hud.hidden)return;const s=mini.width,g=mctx,c=s/2,k=(c-7)
     else if(!(o.fl&F.ghost)){g.fillStyle=skinCss(SKINS[o.skin]);g.beginPath();g.arc(c+o.x*k,c+o.y*k,7,0,TAU);g.fill();}
     if(king){g.lineWidth=2.5;g.strokeStyle='#ffd23f';g.beginPath();g.arc(c+o.x*k,c+o.y*k,10,0,TAU);g.stroke();}}
   const far=hostFar();if(far){g.fillStyle='rgba(230,236,255,.35)';for(const f of far){if(!f.big)continue;g.beginPath();g.arc(c+f.x*k,c+f.y*k,3.5,0,TAU);g.fill();}}
-  if(G.me&&G.me.alive){g.fillStyle='#fff';g.beginPath();g.arc(c+G.me.x*k,c+G.me.y*k,7,0,TAU);g.fill();g.lineWidth=3;g.strokeStyle=G.king===myKey?'#ffd23f':skinCss(SKINS[G.me.skin]);g.stroke();}}
+  const focus=viewSubject();if(focus){g.fillStyle='#fff';g.beginPath();g.arc(c+focus.x*k,c+focus.y*k,7,0,TAU);g.fill();g.lineWidth=3;g.strokeStyle=G.king===focus.key?'#ffd23f':skinCss(SKINS[focus.skin]);g.stroke();}}
 
 /* ================= emotes ================= */
 const emoBtn=$('#emoBtn'),emoBar=$('#emoBar');let emoReadyAt=0,emoSeq=0;
@@ -3712,7 +3740,7 @@ paintCloud();
 /* ================= anonymous play statistics =================
    Only sent when the page has an account server, and players can turn it off in the account sheet.
    A random device id (not the account token), a session id, and small events like "match started" or "died to lava". */
-const GAME_VER='17';
+const GAME_VER='18';
 const PLATFORM=/iPhone|iPad|iPod/.test(navigator.userAgent)||(navigator.maxTouchPoints>1&&/Mac/.test(navigator.platform||''))?'ios':/Android/.test(navigator.userAgent)?'android':'desktop';
 const STATS=(()=>{let dev=store.get('ssld-dev','');if(typeof dev!=='string'||!/^[a-z0-9]{12,24}$/.test(dev)){dev=(Math.random().toString(36).slice(2,10)+Math.random().toString(36).slice(2,10)).replace(/[^a-z0-9]/g,'').slice(0,16).padEnd(12,'0');store.set('ssld-dev',dev);}
   return {dev,sid:(Math.random().toString(36).slice(2,12)+'000000').slice(0,10),q:[],on:CLOUD&&store.get('ssld-stats',true)!==false,perf:null};})();
