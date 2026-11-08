@@ -461,6 +461,8 @@ a.linkbtn{text-decoration:none}
 .seg.modes button{height:44px;display:flex;align-items:center;justify-content:center;gap:5px;padding:0 4px;font-size:13px;line-height:1.1}
 .seg.modes button i{font-style:normal;font-size:16px}
 .seg.modes button span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.seg.modes button.wide{grid-column:1/-1}
+.mode-new{flex:none;padding:1px 6px;border-radius:999px;background:var(--danger);color:#fff;font:800 10px/1.4 var(--f-body);font-style:normal}
 @media(max-width:360px){.seg.modes button{font-size:12px;gap:3px}.seg.modes button i{font-size:14px}}
 .qdur button{height:34px;font-size:13px;border-radius:10px}
 .btn.friends{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:0 12px}
@@ -497,6 +499,19 @@ a.linkbtn{text-decoration:none}
 .tutbtns{display:flex;justify-content:center;align-items:center;gap:14px}
 .tutbtns .linkbtn{padding:4px 2px;font-size:13px;color:var(--muted)}
 .tutpulse{animation:tutp 1s ease-in-out infinite}
+/* how a mode works, the first time it is played: over a light veil, the match running behind it */
+.miwrap{position:fixed;inset:0;z-index:6;display:grid;place-items:center;padding:16px;background:rgba(14,22,40,.34);pointer-events:auto;text-shadow:none}
+.modeintro{width:min(100%,340px);box-sizing:border-box;padding:16px 18px 16px;border-radius:20px;background:var(--panel);border:1px solid var(--line-strong);
+  box-shadow:0 16px 40px rgba(20,30,60,.3);text-align:center;color:var(--ink);animation:miIn .3s ease-out}
+@keyframes miIn{from{opacity:0;transform:translateY(-10px) scale(.96)}}
+.mi-h{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:6px}
+.mi-h i{font-style:normal;font-size:30px;line-height:1}
+.mi-h b{font:400 24px var(--f-display);color:var(--gold-ink);line-height:1.2}
+.modeintro p{margin:6px 0 0;font:700 15px var(--f-body);line-height:1.4}
+.modeintro p.mi-s{font-weight:500;font-size:13.5px;color:var(--muted)}
+.modeintro .btn{margin-top:14px;min-width:150px}
+/* the control and gold line: what to do on the first line, the clock on the second (the column is narrow on phones) */
+#controlHud{white-space:pre-line}
 @keyframes tutp{50%{box-shadow:0 0 0 12px rgba(255,201,60,.32)}}
 .lost{margin:-8px 0 0;color:var(--danger-ink);font-weight:700;font-size:14.5px}
 .tip{margin:0;padding:9px 12px;border-radius:12px;background:var(--fill);color:var(--soft-ink);font-size:13px;line-height:1.5}
@@ -551,6 +566,8 @@ a.linkbtn{text-decoration:none}
   </div>
   <div id="netWarn" class="netwarn" hidden></div>
   <div id="hTimer" class="timer" hidden>5:00</div>
+  <div id="modeIntro" class="miwrap" hidden><div class="modeintro" role="dialog" aria-modal="true" aria-labelledby="miName"><div class="mi-h"><i id="miIcon"></i><b id="miName"></b></div>
+    <p id="miL1"></p><p id="miL2" class="mi-s"></p><p id="miL3" class="mi-s"></p><button id="miGo" class="btn primary" type="button" data-i="introGo"></button></div></div>
   <div id="tutBox" class="tutbox" hidden><p id="tutText"></p><div class="tutbar"><i id="tutFill"></i></div><div class="tutbtns"><button id="tutGo" class="btn primary small" type="button" hidden data-i="tutStart"></button><button id="tutSkip" class="linkbtn" type="button" data-i="skip"></button></div></div>
 </div>
 <div id="joy" class="joy" hidden><div class="knob" id="knob"></div></div>
@@ -607,6 +624,7 @@ a.linkbtn{text-decoration:none}
       <button type="button" role="radio" data-rule="team"><i>⚔️</i><span data-i="mode.team"></span></button>
       <button type="button" role="radio" data-rule="frenzy"><i>🎁</i><span data-i="mode.frenzy"></span></button>
       <button type="button" role="radio" data-rule="duel"><i>🤺</i><span data-i="mode.duel"></span></button>
+      <button type="button" role="radio" data-rule="escape" class="wide"><i>🏃</i><span data-i="mode.escape"></span><b class="mode-new" data-i="newBadge"></b></button>
     </div>
     <p id="ruleTip" class="help"></p>
     <button id="btnFriends" class="btn ghost friends" type="button"><span data-i="friendsBtn"></span><i id="roomBadge" class="badge" hidden></i></button>
@@ -897,15 +915,15 @@ en:{
   zoneSoon:'Elimination starts in 10 s',zoneGo:'The ring is closing. Elimination begins!',zoneSub:'Get inside the ring: it closes on a random spot, the dashed circle on the map. No respawns; hearts and shields cannot save you from the ring.',
   eliminated:'You are eliminated. Watch the survivors or return to the lobby.',spectate:'Watch match',
   watching:'Watching · {n}',watchWaiting:'Waiting for a survivor…',watchPrev:'Watch previous snake',watchNext:'Watch next snake',
-  ruleAria:'Game rules',ruleClassic:'Classic brawl',ruleControl:'Energy control',ruleClassicTip:'Grow, outmaneuver rivals, and survive the closing ring.',ruleControlTip:'Hold the golden zone alone for +8 score/s. Contested zones pause scoring. Zones rotate every 35 s; no time limit becomes 3 min.',
-  controlHeld:'Holding · +8 score/s',controlContested:'Contested · scoring paused',controlTaken:'Held by {n}',controlGo:'Capture the golden zone',controlNext:'Next zone in {n}s',controlChip:'Control',
+  ruleAria:'Game rules',ruleClassic:'Classic brawl',ruleControl:'Energy control',ruleClassicTip:'Grow, outmaneuver rivals, and survive the closing ring.',ruleControlTip:"Hold the golden zone alone for +8 score/s. Contested zones pause scoring. A gold arrow shows the way; the zone moves every 45 s and the next spot shows first as a dashed ring. No time limit becomes 3 min.",
+  controlHeld:'Holding · +8 score/s',controlContested:'Contested · scoring paused',controlTaken:'Held by {n}',controlGo:"Follow the arrow to the zone",controlNext:"Moves in {n}s",controlChip:'Control',
   'mode.classic':'Classic','mode.control':'Control','mode.gold':'Gold Rush','mode.team':'Teams','mode.frenzy':'Frenzy','mode.duel':'Duel',
   ruleGold:'Gold Rush',ruleTeam:'Team Battle',ruleFrenzy:'Item Frenzy',ruleDuel:'Duel',
-  ruleGoldTip:'Gold veins keep appearing. Coins are your score, and when you die every coin you carry drops for others to grab. Most gold at the end wins; no time limit plays 3 minutes.',
+  ruleGoldTip:"Gold veins keep appearing near you and a gold arrow points to the closest. Coins are your score, and when you die every coin you carry drops for others to grab. Most gold at the end wins; no time limit plays 3 minutes.",
   ruleTeamTip:'Red against blue. You and your friends are red. Teammates pass through each other and weapons never hit them. The higher team total wins; no time limit plays 3 minutes.',
   ruleFrenzyTip:'Power-ups everywhere and everyone spawns with a weapon. Fast and chaotic.',
   ruleDuelTip:'A small ring and no computer snakes (one strong one when you play alone). No respawns within a round and the ring edge is deadly. First to two rounds wins.',
-  goldLbl:'Gold',goldVein:'A gold vein appeared: look for the ring on the minimap',teamRed:'Red',teamBlue:'Blue',teamWins:'{t} team wins! {a} : {b}',teamDraw:'The teams are level',
+  goldLbl:'Gold',goldVein:"A gold vein appeared: follow the gold arrow",teamRed:'Red',teamBlue:'Blue',teamWins:'{t} team wins! {a} : {b}',teamDraw:'The teams are level',
   duelRound:'Round {n}',duelBest:'best of three',duelTook:'Round {n}: {p} wins',duelYouTook:'Round {n}: you win!',duelDraw:'Round {n}: nobody survived, a draw',
   resWins:'Rounds won ',resGold:'Gold ',resNoteGold:'Ranked by the gold carried at the end.',resNoteTeam:'Teams are compared by total score. You and your friends play red.',resNoteDuel:'The first to win two rounds takes the match.',duelWait:'Warming up against a bot until a friend joins',duelStart:'A friend is here: the duel starts!',duelBestLong:'First to win two rounds',
   'tip.lava':'Lava melts your length. Steer around the orange pools.',
@@ -1023,15 +1041,15 @@ zh:{
   zoneSoon:'10 秒后进入缩圈淘汰阶段',zoneGo:'缩圈开始，进入淘汰阶段！',zoneSub:'往圈里走，圈会缩到一个随机的位置（小地图上的白色虚线圈）。死亡不能复活，爱心和护盾都不能抵挡缩圈。',
   eliminated:'你已被淘汰，可以观战或返回大厅。',spectate:'观战',
   watching:'观战 · {n}',watchWaiting:'等待存活的蛇…',watchPrev:'观战上一条蛇',watchNext:'观战下一条蛇',
-  ruleAria:'玩法',ruleClassic:'经典乱斗',ruleControl:'能量据点',ruleClassicTip:'吃能量成长，利用走位击败对手，在缩圈中生存。',ruleControlTip:'独占金色据点每秒 +8 分，多条蛇进入时停止计分。每 35 秒轮换，不限时选项自动使用 3 分钟。',
-  controlHeld:'占领中 · 每秒 +8 分',controlContested:'争夺中 · 暂停计分',controlTaken:'{n} 占领中',controlGo:'前往金色据点争夺积分',controlNext:'{n} 秒后轮换',controlChip:'据点',
+  ruleAria:'玩法',ruleClassic:'经典乱斗',ruleControl:'能量据点',ruleClassicTip:'吃能量成长，利用走位击败对手，在缩圈中生存。',ruleControlTip:"独占金色据点每秒 +8 分，多条蛇进入时停止计分。金色箭头会指路；据点每 45 秒转移一次，下一个位置会先用虚线圈标出来。不限时选项自动使用 3 分钟。",
+  controlHeld:'占领中 · 每秒 +8 分',controlContested:'争夺中 · 暂停计分',controlTaken:'{n} 占领中',controlGo:"跟着箭头去据点",controlNext:"{n} 秒后转移",controlChip:'据点',
   'mode.classic':'经典乱斗','mode.control':'能量据点','mode.gold':'金币狂潮','mode.team':'团队对抗','mode.frenzy':'道具狂欢','mode.duel':'双人决斗',
   ruleGold:'金币狂潮',ruleTeam:'团队对抗',ruleFrenzy:'道具狂欢',ruleDuel:'双人决斗',
-  ruleGoldTip:'地图上会不断冒出金矿，金币就是分数。被淘汰会掉光身上的金币，别人可以捡走。结束时金币最多的赢，不限时选项自动用 3 分钟。',
+  ruleGoldTip:"你附近会不断冒出金矿，金色箭头指向最近的一个。金币就是分数，被淘汰会掉光身上的金币，别人可以捡走。结束时金币最多的赢，不限时选项自动用 3 分钟。",
   ruleTeamTip:'红蓝两队对抗，你和朋友都在红队。队友之间不会互撞，武器也不会打到队友。全队得分加起来高的一方赢，不限时选项自动用 3 分钟。',
   ruleFrenzyTip:'道具和武器多好几倍，出生就带一件武器，节奏很快很乱。',
   ruleDuelTip:'小圆形场地，没有电脑蛇（一个人玩时会有一条很强的电脑蛇当对手）。每局不能复活，碰到圈边就出局，先赢两局的获胜。',
-  goldLbl:'金币',goldVein:'新的金矿出现了，看小地图上的光圈',teamRed:'红队',teamBlue:'蓝队',teamWins:'{t}获胜！{a} : {b}',teamDraw:'两队打平了',
+  goldLbl:'金币',goldVein:"金矿出现了，跟着金色箭头去抢",teamRed:'红队',teamBlue:'蓝队',teamWins:'{t}获胜！{a} : {b}',teamDraw:'两队打平了',
   duelRound:'第 {n} 局',duelBest:'三局两胜',duelTook:'第 {n} 局：{p} 赢了',duelYouTook:'第 {n} 局：你赢了！',duelDraw:'第 {n} 局：同归于尽，算平局',
   resWins:'胜局 ',resGold:'金币 ',resNoteGold:'按结束时身上的金币排名。',resNoteTeam:'按全队总分比输赢，你和朋友都在红队。',resNoteDuel:'先赢两局的获胜。',duelWait:'朋友还没进来，先和电脑蛇热身',duelStart:'朋友来了，决斗开始！',duelBestLong:'先赢两局的获胜',
   'tip.lava':'熔岩会烫掉长度，绕开橙色的熔岩池。',
@@ -1671,12 +1689,12 @@ es:{
   "ruleClassic":"Batalla clásica",
   "ruleControl":"Control de energía",
   "ruleClassicTip":"Crece, muévete mejor que tus rivales y sobrevive al círculo que se cierra.",
-  "ruleControlTip":"Controla la zona dorada sin rivales dentro para ganar +8 puntos/s. Si está en disputa, no suma puntos. Las zonas cambian cada 35 s; con la opción sin límite, la partida dura 3 min.",
+  "ruleControlTip":"Controla la zona dorada sin rivales dentro para ganar +8 puntos/s. Si está en disputa, no suma puntos. Una flecha dorada te guía; la zona se mueve cada 45 s y la siguiente aparece antes como un círculo discontinuo. Con la opción sin límite, la partida dura 3 min.",
   "controlHeld":"Controlando · +8 puntos/s",
   "controlContested":"En disputa · puntos en pausa",
   "controlTaken":"En manos de {n}",
-  "controlGo":"Captura la zona dorada",
-  "controlNext":"Próxima zona en {n} s",
+  "controlGo":"Sigue la flecha hasta la zona",
+  "controlNext":"Se mueve en {n} s",
   "controlChip":"Control",
   "mode.classic":"Clásico",
   "mode.control":"Control",
@@ -1688,12 +1706,12 @@ es:{
   "ruleTeam":"Batalla por equipos",
   "ruleFrenzy":"Frenesí de potenciadores",
   "ruleDuel":"Duelo",
-  "ruleGoldTip":"No paran de salir vetas de oro. Las monedas son tus puntos y, al morir, sueltas todas las que llevas para que otros las recojan. Gana quien tenga más oro al final; con la opción sin límite, se juegan 3 minutos.",
+  "ruleGoldTip":"Siguen apareciendo vetas de oro cerca de ti y una flecha dorada señala la más cercana. Las monedas son tus puntos y, al morir, sueltas todas las que llevas para que otros las recojan. Gana quien tenga más oro al final; con la opción sin límite, se juegan 3 minutos.",
   "ruleTeamTip":"Rojo contra azul. Juegas en rojo con tus amigos. Los compañeros de equipo se atraviesan y las armas nunca los dañan. Gana el equipo con más puntos en total; con la opción sin límite, se juegan 3 minutos.",
   "ruleFrenzyTip":"Potenciadores por todas partes y todos aparecen con un arma. Rápido y caótico.",
   "ruleDuelTip":"Un círculo pequeño y sin bots (salvo uno fuerte si juegas en solitario). No se reaparece dentro de una ronda y el borde del círculo es mortal. Gana quien se lleve primero dos rondas.",
   "goldLbl":"Oro",
-  "goldVein":"Apareció una veta de oro: busca la marca en el minimapa",
+  "goldVein":"Apareció una veta de oro: sigue la flecha dorada",
   "teamRed":"Rojo",
   "teamBlue":"Azul",
   "teamWins":"¡Gana el equipo {t}! {a} : {b}",
@@ -2448,12 +2466,12 @@ pt:{
   "ruleClassic":"Batalha clássica",
   "ruleControl":"Domínio de energia",
   "ruleClassicTip":"Cresça, engane os rivais e sobreviva ao círculo.",
-  "ruleControlTip":"Fique sozinho na zona dourada para ganhar +8 pontos/s. Zona disputada pausa a contagem. As zonas mudam a cada 35 s; “Sem limite” vira 3 min.",
+  "ruleControlTip":"Fique sozinho na zona dourada para ganhar +8 pontos/s. Zona disputada pausa a contagem. Uma seta dourada mostra o caminho; a zona muda a cada 45 s e a próxima aparece antes como um círculo tracejado. “Sem limite” vira 3 min.",
   "controlHeld":"Dominando · +8 pontos/s",
   "controlContested":"Disputada · contagem pausada",
   "controlTaken":"Dominada por {n}",
-  "controlGo":"Conquiste a zona dourada",
-  "controlNext":"Próxima zona em {n} s",
+  "controlGo":"Siga a seta até a zona",
+  "controlNext":"Muda em {n} s",
   "controlChip":"Domínio",
   "mode.classic":"Clássico",
   "mode.control":"Domínio",
@@ -2465,12 +2483,12 @@ pt:{
   "ruleTeam":"Batalha de Times",
   "ruleFrenzy":"Frenesi de Itens",
   "ruleDuel":"Duelo",
-  "ruleGoldTip":"Veios de ouro não param de aparecer. As moedas são seus pontos, e quando você morre todas as moedas que carrega caem para os outros pegarem. Quem tiver mais ouro no final vence; “Sem limite” vira 3 minutos.",
+  "ruleGoldTip":"Veios de ouro não param de aparecer perto de você e uma seta dourada aponta o mais próximo. As moedas são seus pontos, e quando você morre todas as moedas que carrega caem para os outros pegarem. Quem tiver mais ouro no final vence; “Sem limite” vira 3 minutos.",
   "ruleTeamTip":"Vermelho contra azul. Você e seus amigos são do vermelho. Colegas de time atravessam uns aos outros e as armas nunca os atingem. Vence o time com mais pontos somados; “Sem limite” vira 3 minutos.",
   "ruleFrenzyTip":"Power-ups por todo lado e todo mundo nasce com uma arma. Rápido e caótico.",
   "ruleDuelTip":"Arena pequena e sem bots (um bot forte quando você joga sozinho). Sem renascer durante a rodada, e a borda do círculo é mortal. Quem vencer duas rodadas primeiro ganha.",
   "goldLbl":"Ouro",
-  "goldVein":"Apareceu um veio de ouro: procure o anel no minimapa",
+  "goldVein":"Apareceu um veio de ouro: siga a seta dourada",
   "teamRed":"Vermelho",
   "teamBlue":"Azul",
   "teamWins":"Time {t} venceu! {a} : {b}",
@@ -3225,12 +3243,12 @@ ja:{
   "ruleClassic":"クラシックバトル",
   "ruleControl":"陣取りバトル",
   "ruleClassicTip":"大きく育ってライバルを出し抜き、縮むリングの中で生き残ろう。",
-  "ruleControlTip":"金色のゾーンを1匹だけで占領すると毎秒+8スコア。取り合いになると加算ストップ。ゾーンは35秒ごとに移動し、時間無制限は3分になります。",
+  "ruleControlTip":"金色のゾーンを1匹だけで占領すると毎秒+8スコア。取り合いになると加算ストップ。金色の矢印が道案内。ゾーンは45秒ごとに移動し、次の場所は先に点線の円で表示されます。時間無制限は3分になります。",
   "controlHeld":"占領中 · 毎秒+8スコア",
   "controlContested":"取り合い中 · 加算ストップ",
   "controlTaken":"{n}が占領中",
-  "controlGo":"金色のゾーンを占領しよう",
-  "controlNext":"次のゾーンまで{n}秒",
+  "controlGo":"矢印についていこう",
+  "controlNext":"あと{n}秒で移動",
   "controlChip":"陣取り",
   "mode.classic":"クラシック",
   "mode.control":"陣取り",
@@ -3242,12 +3260,12 @@ ja:{
   "ruleTeam":"チームバトル",
   "ruleFrenzy":"アイテムフィーバー",
   "ruleDuel":"タイマン勝負",
-  "ruleGoldTip":"金鉱が次々に出現！集めたゴールドがスコアになり、やられると持っているゴールドをすべて落として、ほかのヘビに拾われます。最後に一番多く持っていた人の勝ち。時間無制限は3分になります。",
+  "ruleGoldTip":"近くに金鉱が次々に出現し、金色の矢印が一番近い金鉱を指します。集めたゴールドがスコアになり、やられると持っているゴールドをすべて落として、ほかのヘビに拾われます。最後に一番多く持っていた人の勝ち。時間無制限は3分になります。",
   "ruleTeamTip":"赤チーム対青チーム。あなたと友だちは赤チームです。味方同士はすり抜けられ、武器も当たりません。チームの合計スコアが高い方の勝ち。時間無制限は3分になります。",
   "ruleFrenzyTip":"アイテムがそこらじゅうに出現し、全員が武器を持ってスタート。スピーディーで大混戦！",
   "ruleDuelTip":"小さなリングで、CPUのヘビはなし（1人で遊ぶときは強いCPUが1匹）。ラウンド中は復活できず、リングの端に触れるとアウト。2本先取で勝利。",
   "goldLbl":"ゴールド",
-  "goldVein":"金鉱が出現：ミニマップのリングを探そう",
+  "goldVein":"金鉱が出現！金色の矢印についていこう",
   "teamRed":"赤",
   "teamBlue":"青",
   "teamWins":"{t}チームの勝利！{a} : {b}",
@@ -4002,12 +4020,12 @@ ko:{
   "ruleClassic":"클래식 난투",
   "ruleControl":"에너지 점령전",
   "ruleClassicTip":"몸을 키우고, 상대를 따돌리고, 좁혀 오는 자기장에서 살아남으세요.",
-  "ruleControlTip":"황금 구역을 혼자 차지하면 초당 +8점. 다른 뱀이 함께 있으면 점수가 멈춰요. 구역은 35초마다 옮겨 가고, ‘제한 없음’은 3분으로 진행돼요.",
+  "ruleControlTip":"황금 구역을 혼자 차지하면 초당 +8점. 다른 뱀이 함께 있으면 점수가 멈춰요. 금색 화살표가 길을 알려 주고, 구역은 45초마다 옮겨 가며 다음 위치는 먼저 점선 원으로 보여요. ‘제한 없음’은 3분으로 진행돼요.",
   "controlHeld":"점령 중 · 초당 +8점",
   "controlContested":"쟁탈 중 · 점수 정지",
   "controlTaken":"{n} 점령 중",
-  "controlGo":"황금 구역을 점령하세요",
-  "controlNext":"{n}초 후 구역 이동",
+  "controlGo":"화살표를 따라가세요",
+  "controlNext":"{n}초 후 이동",
   "controlChip":"점령전",
   "mode.classic":"클래식",
   "mode.control":"점령전",
@@ -4019,12 +4037,12 @@ ko:{
   "ruleTeam":"팀 대전",
   "ruleFrenzy":"아이템 대잔치",
   "ruleDuel":"결투",
-  "ruleGoldTip":"금광이 계속 나타나요. 모은 골드가 곧 점수이고, 죽으면 가지고 있던 골드를 모두 떨어뜨려서 다른 뱀이 주워 갈 수 있어요. 끝날 때 골드가 가장 많은 뱀이 이겨요. ‘제한 없음’은 3분으로 진행돼요.",
+  "ruleGoldTip":"근처에 금광이 계속 나타나고, 금색 화살표가 가장 가까운 금광을 가리켜요. 모은 골드가 곧 점수이고, 죽으면 가지고 있던 골드를 모두 떨어뜨려서 다른 뱀이 주워 갈 수 있어요. 끝날 때 골드가 가장 많은 뱀이 이겨요. ‘제한 없음’은 3분으로 진행돼요.",
   "ruleTeamTip":"레드 팀 대 블루 팀! 나와 친구들은 레드 팀이에요. 팀원끼리는 서로 통과하고, 무기에도 맞지 않아요. 팀 점수 합계가 높은 쪽이 이겨요. ‘제한 없음’은 3분으로 진행돼요.",
   "ruleFrenzyTip":"곳곳에 아이템이 가득하고, 모두 무기를 하나씩 들고 시작해요. 빠르고 정신없어요!",
   "ruleDuelTip":"작은 원형 경기장에 봇은 없어요(혼자 하면 강한 봇 하나가 상대해요). 라운드 중에는 부활할 수 없고, 가장자리에 닿으면 죽어요. 2라운드를 먼저 이기면 승리!",
   "goldLbl":"골드",
-  "goldVein":"금광이 나타났어요: 미니맵에서 동그라미를 찾아보세요",
+  "goldVein":"금광이 나타났어요. 금색 화살표를 따라가세요",
   "teamRed":"레드",
   "teamBlue":"블루",
   "teamWins":"{t} 팀 승리! {a} : {b}",
@@ -4558,6 +4576,20 @@ Object.assign(I18N.es,{"item.frost":"Aura gélida","item.frost.d":"Durante 14 s,
 Object.assign(I18N.pt,{"item.frost":"Aura Gélida","item.frost.d":"Por 14 s, rivais perto de você ficam com 60% da velocidade e não conseguem acelerar","item.wave":"Onda de Choque","item.wave.d":"Empurra para longe todas as cobras ao seu redor e atordoa por 1,2 s. Também apaga tiros, minas e clones por perto","item.venom":"Veneno","item.venom.d":"2 tiros. Envenena por 8 s a cobra atingida: ela perde tamanho sem parar, deixando energia para trás","item.hole":"Buraco Negro","item.hole.d":"Joga à frente um buraco negro que puxa os rivais por 7 s. O centro arranca tamanho bem rápido","hurt.v":"Você foi envenenado","hurtN.v":"{n} te envenenou","hurt.w":"Uma onda de choque te empurrou","hurtN.w":"Onda de choque de {n}","hurt.h":"Um buraco negro te pegou","hurtN.h":"Buraco negro de {n}","tip.wh":"Buracos negros puxam você. Vire e acelere para sair antes que o centro te destrua."});
 Object.assign(I18N.ja,{"item.frost":"フロストオーラ","item.frost.d":"14秒間、近くのライバルは速度が60%になり、ダッシュできない","item.wave":"衝撃波","item.wave.d":"周りのヘビをすべて吹き飛ばし、1.2秒間気絶させる。近くの弾、地雷、分身も消える","item.venom":"毒液","item.venom.d":"2発。当たったヘビは8秒間毒になり、長さが減り続けて後ろにエネルギーとして落ちる","item.hole":"ブラックホール","item.hole.d":"前方にブラックホールを投げ、7秒間ライバルを引き寄せる。中心に入ると長さがどんどん削られる","hurt.v":"毒をくらった","hurtN.v":"{n}の毒液をくらった","hurt.w":"衝撃波で吹き飛ばされた","hurtN.w":"{n}の衝撃波で吹き飛ばされた","hurt.h":"ブラックホールに捕まった","hurtN.h":"{n}のブラックホールに捕まった","tip.wh":"ブラックホールは引き寄せてきます。中心に飲まれる前に、向きを変えてダッシュで抜け出しましょう。"});
 Object.assign(I18N.ko,{"item.frost":"서리 오라","item.frost.d":"14초 동안 내 근처의 상대는 속도가 60%로 줄고 부스트를 쓸 수 없어요","item.wave":"충격파","item.wave.d":"주변의 뱀을 모두 밀어내고 1.2초 동안 기절시켜요. 근처의 탄, 지뢰, 분신도 없애요","item.venom":"독액","item.venom.d":"2발. 맞은 뱀은 8초 동안 중독돼 길이가 계속 줄고, 줄어든 만큼 뒤에 에너지로 떨어져요","item.hole":"블랙홀","item.hole.d":"앞으로 블랙홀을 던져 7초 동안 상대를 끌어당겨요. 중심에 빨려 들면 길이가 빠르게 줄어요","hurt.v":"중독됐어요","hurtN.v":"{n}의 독액에 중독됐어요","hurt.w":"충격파에 밀려났어요","hurtN.w":"{n}의 충격파에 밀려났어요","hurt.h":"블랙홀에 붙잡혔어요","hurtN.h":"{n}의 블랙홀에 붙잡혔어요","tip.wh":"블랙홀은 나를 끌어당겨요. 중심에 빨려 들기 전에 방향을 틀고 부스트로 빠져나오세요."});
+/* v24: how control and gold rush work, the arrow and the next zone */
+Object.assign(I18N.en,{"controlGoNext":"Head for the dashed ring","introGo":"Got it","controlSoon":"Next zone in {n}s","objNext":"Next","goldGo":"Coins are your score\nFollow the arrow","intro.control.1":"Follow the gold arrow to the zone","intro.control.2":"Alone inside: +8 a second. Another snake in it pauses scoring","intro.control.3":"It moves every 45 s. The next spot shows first as a dashed ring","intro.gold.1":"Coins are your score. Follow the gold arrow to a gold vein","intro.gold.2":"Die and you drop every coin. Most gold at the end wins"});
+Object.assign(I18N.zh,{"controlGoNext":"去虚线圈等下一个据点","introGo":"知道了","controlSoon":"{n} 秒后转移到虚线圈","objNext":"下一个","goldGo":"金币就是分数\n跟着箭头去金矿","intro.control.1":"跟着金色箭头找到据点","intro.control.2":"一个人待在圈里每秒 +8 分，有别的蛇进来就暂停","intro.control.3":"每 45 秒换个地方，下一个会先用虚线圈标出来","intro.gold.1":"金币就是分数，跟着金色箭头去抢金矿","intro.gold.2":"被吃掉会掉光身上的金币，结束时金币最多的赢"});
+Object.assign(I18N.es,{"controlGoNext":"Ve al círculo discontinuo","introGo":"Entendido","controlSoon":"Próxima zona en {n} s","objNext":"Siguiente","goldGo":"Las monedas son tus puntos\nSigue la flecha","intro.control.1":"Sigue la flecha dorada hasta la zona","intro.control.2":"Solo dentro: +8 por segundo. Si entra otra serpiente, se pausa","intro.control.3":"Cambia de sitio cada 45 s. La siguiente aparece antes como un círculo discontinuo","intro.gold.1":"Las monedas son tus puntos. Sigue la flecha dorada hasta una veta","intro.gold.2":"Si mueres, sueltas todas tus monedas. Gana quien tenga más oro al final"});
+Object.assign(I18N.pt,{"controlGoNext":"Vá para o círculo tracejado","introGo":"Entendi","controlSoon":"Próxima zona em {n} s","objNext":"Próxima","goldGo":"Moedas são seus pontos\nSiga a seta","intro.control.1":"Siga a seta dourada até a zona","intro.control.2":"Sozinho dentro: +8 por segundo. Se outra cobra entrar, a contagem para","intro.control.3":"Ela muda de lugar a cada 45 s. A próxima aparece antes como um círculo tracejado","intro.gold.1":"As moedas são seus pontos. Siga a seta dourada até um veio de ouro","intro.gold.2":"Se morrer, você solta todas as moedas. Quem tiver mais ouro no final vence"});
+Object.assign(I18N.ja,{"controlGoNext":"点線の円へ向かおう","introGo":"わかった","controlSoon":"あと{n}秒で次のゾーン","objNext":"次","goldGo":"ゴールドがスコア\n矢印についていこう","intro.control.1":"金色の矢印についていってゾーンへ","intro.control.2":"1匹だけで入っていると毎秒+8。ほかのヘビが入ると止まります","intro.control.3":"ゾーンは45秒ごとに移動。次の場所は先に点線の円で表示されます","intro.gold.1":"ゴールドがスコア。金色の矢印についていって金鉱へ","intro.gold.2":"やられると持っているゴールドを全部落とします。最後に一番多い人の勝ち"});
+Object.assign(I18N.ko,{"controlGoNext":"점선 원으로 가세요","introGo":"알겠어요","controlSoon":"{n}초 후 다음 구역","objNext":"다음","goldGo":"골드가 점수예요\n화살표를 따라가요","intro.control.1":"금색 화살표를 따라 구역으로 가세요","intro.control.2":"혼자 안에 있으면 초당 +8점. 다른 뱀이 들어오면 멈춰요","intro.control.3":"구역은 45초마다 옮겨 가요. 다음 위치는 먼저 점선 원으로 보여요","intro.gold.1":"골드가 곧 점수예요. 금색 화살표를 따라 금광으로 가세요","intro.gold.2":"죽으면 가진 골드를 모두 떨어뜨려요. 끝날 때 골드가 가장 많으면 승리"});
+/* v25: the escape mode */
+Object.assign(I18N.en,{"mode.escape":"Escape","ruleEscapeTip":"Run from one side of the arena to the exit on the other within 3 minutes. Alone, hunter snakes chase you and more keep coming; you have 3 lives and plenty of power-ups. With friends, some run and some chase; a runner who gets out swaps roles for the next round.","intro.escape.1":"Follow the green arrow to the exit. Get there within 3 minutes to win","intro.escape.2":"Hunter snakes keep chasing you. You have 3 lives and lots of power-ups to fight back","intro.escape.3":"With friends, some run and some chase. Chasers cannot enter the exit; get out and you swap roles","escHunter":"Hunter {n}","escGo":"Run to the exit","escLeft":"{d} to go","escHuntersIn":"Hunters set off in {n}s","escChase":"Stop the runners","escWaitGo":"Go in {n}s","escRunnerLeft":"Runner {d} from the exit","escSafeHud":"You got out","escOutHud":"You were caught","escSafe":"You escaped!","escSafeSub":"{n}s to spare","escSomeoneSafe":"{n} got out!","escSomeoneOut":"{n} was caught","escStartT":"Run!","escStartSub":"Hunters set off in {n}s","escYouRun":"You're running","escYouRunSub":"Follow the green arrow to the exit","escYouChase":"You're chasing","escYouChaseSub":"Follow the red arrow and stop the runners","escWin":"You escaped!","escStopped":"Stopped them! Nobody got out","escCaught":"Caught!","escTimeUp":"Time's up, you didn't make it","escLost":"You didn't get out","escGotAway":"They got away","resNoteEscape":"Shockwave, ghost, black hole and freeze all help you shake off chasers.","escRew":"Win bonus"});
+Object.assign(I18N.zh,{"mode.escape":"逃逃大作战","ruleEscapeTip":"3 分钟内从地图一边跑到另一边的逃生门。一个人玩时有追杀蛇一直追你，而且越来越多；你有 3 条命，道具很多。和朋友玩时有人跑有人追，跑到了的人下一局换去追。","intro.escape.1":"跟着绿色箭头跑到逃生门，3 分钟内到就赢","intro.escape.2":"追杀蛇会一直追你，你有 3 条命，道具很多，可以反杀","intro.escape.3":"和朋友玩时有人跑有人追，追的人进不了逃生门的圈；跑到了就换过来","escHunter":"追杀者{n}","escGo":"跑到逃生门","escLeft":"还剩 {d}","escHuntersIn":"追杀蛇 {n} 秒后出发","escChase":"拦住跑的人","escWaitGo":"{n} 秒后出发","escRunnerLeft":"他离门还有 {d}","escSafeHud":"你已经逃出去了","escOutHud":"你被抓住了","escSafe":"逃脱成功！","escSafeSub":"还剩 {n} 秒","escSomeoneSafe":"{n} 逃出去了！","escSomeoneOut":"{n} 被抓住了","escStartT":"快跑！","escStartSub":"追杀蛇 {n} 秒后出发","escYouRun":"这一局你跑","escYouRunSub":"跟着绿色箭头跑到逃生门","escYouChase":"这一局你追","escYouChaseSub":"跟着红色箭头去拦住跑的人","escWin":"逃脱成功！","escStopped":"拦住了！没让他们跑掉","escCaught":"被追上了","escTimeUp":"时间到，没跑出去","escLost":"没跑出去","escGotAway":"让他们跑掉了","resNoteEscape":"冲击波、隐身、黑洞和冰冻弹都能帮你甩掉追的人。","escRew":"胜利奖励"});
+Object.assign(I18N.es,{"mode.escape":"Escapada","ruleEscapeTip":"Corre de un lado del mapa a la salida del otro en menos de 3 minutos. Solo, te persiguen serpientes cazadoras y cada vez llegan más; tienes 3 vidas y muchos objetos. Con amigos, unos huyen y otros persiguen; quien logra salir cambia de papel en la siguiente ronda.","intro.escape.1":"Sigue la flecha verde hasta la salida. Llega en menos de 3 minutos para ganar","intro.escape.2":"Las cazadoras no dejan de perseguirte. Tienes 3 vidas y muchos objetos para contraatacar","intro.escape.3":"Con amigos, unos huyen y otros persiguen. Los perseguidores no entran en la salida; si sales, cambiáis de papel","escHunter":"Cazadora {n}","escGo":"Corre a la salida","escLeft":"Faltan {d}","escHuntersIn":"Las cazadoras salen en {n} s","escChase":"Atrapa a quien huye","escWaitGo":"Sales en {n} s","escRunnerLeft":"Le faltan {d} a la salida","escSafeHud":"Ya saliste","escOutHud":"Te atraparon","escSafe":"¡Escapaste!","escSafeSub":"Sobraron {n} s","escSomeoneSafe":"¡{n} salió!","escSomeoneOut":"Atraparon a {n}","escStartT":"¡Corre!","escStartSub":"Las cazadoras salen en {n} s","escYouRun":"Te toca huir","escYouRunSub":"Sigue la flecha verde hasta la salida","escYouChase":"Te toca perseguir","escYouChaseSub":"Sigue la flecha roja y atrapa a quien huye","escWin":"¡Escapaste!","escStopped":"¡Los detuviste! Nadie salió","escCaught":"¡Te atraparon!","escTimeUp":"Se acabó el tiempo, no llegaste","escLost":"No lograste salir","escGotAway":"Se escaparon","resNoteEscape":"La onda expansiva, el modo fantasma, el agujero negro y la congelación te ayudan a quitarte de encima a quien te persigue.","escRew":"Premio por ganar"});
+Object.assign(I18N.pt,{"mode.escape":"Fuga","ruleEscapeTip":"Corra de um lado do mapa até a saída do outro em até 3 minutos. Sozinho, cobras caçadoras te perseguem e não param de chegar; você tem 3 vidas e muitos itens. Com amigos, uns fogem e outros caçam; quem consegue sair troca de papel na rodada seguinte.","intro.escape.1":"Siga a seta verde até a saída. Chegue em até 3 minutos para vencer","intro.escape.2":"As caçadoras não param de te perseguir. Você tem 3 vidas e muitos itens para revidar","intro.escape.3":"Com amigos, uns fogem e outros caçam. Quem caça não entra na saída; quem sai troca de papel","escHunter":"Caçadora {n}","escGo":"Corra até a saída","escLeft":"Faltam {d}","escHuntersIn":"As caçadoras saem em {n} s","escChase":"Pegue quem foge","escWaitGo":"Sai em {n} s","escRunnerLeft":"Faltam {d} para a saída","escSafeHud":"Você saiu","escOutHud":"Você foi pego","escSafe":"Você escapou!","escSafeSub":"Sobraram {n} s","escSomeoneSafe":"{n} saiu!","escSomeoneOut":"{n} foi pego","escStartT":"Corra!","escStartSub":"As caçadoras saem em {n} s","escYouRun":"Você foge","escYouRunSub":"Siga a seta verde até a saída","escYouChase":"Você caça","escYouChaseSub":"Siga a seta vermelha e pegue quem foge","escWin":"Você escapou!","escStopped":"Você os parou! Ninguém saiu","escCaught":"Pego!","escTimeUp":"O tempo acabou, você não chegou","escLost":"Você não conseguiu sair","escGotAway":"Eles escaparam","resNoteEscape":"Onda de choque, fantasma, buraco negro e congelamento ajudam a despistar quem te persegue.","escRew":"Bônus de vitória"});
+Object.assign(I18N.ja,{"mode.escape":"逃げろ大作戦","ruleEscapeTip":"3分以内にマップの反対側にある出口まで逃げきろう。ひとりだと追っ手のヘビがどんどん増えて追ってくる。ライフは3つ、アイテムもたくさん。友だちとなら逃げる人と追う人に分かれ、逃げきった人は次のラウンドで役割交代。","intro.escape.1":"緑の矢印について出口へ。3分以内に着けば勝ち","intro.escape.2":"追っ手のヘビがずっと追ってくる。ライフは3つ、アイテムで反撃もできる","intro.escape.3":"友だちとなら逃げる人と追う人に分かれる。追う人は出口に入れない。逃げきったら役割交代","escHunter":"追っ手{n}","escGo":"出口まで逃げろ","escLeft":"あと{d}","escHuntersIn":"追っ手まであと{n}秒","escChase":"逃げる人をつかまえろ","escWaitGo":"あと{n}秒でスタート","escRunnerLeft":"出口まであと{d}","escSafeHud":"脱出成功","escOutHud":"つかまった","escSafe":"脱出成功！","escSafeSub":"残り{n}秒","escSomeoneSafe":"{n}が脱出！","escSomeoneOut":"{n}がつかまった","escStartT":"逃げろ！","escStartSub":"追っ手まであと{n}秒","escYouRun":"あなたは逃げる番","escYouRunSub":"緑の矢印について出口へ","escYouChase":"あなたは追う番","escYouChaseSub":"赤い矢印について逃げる人をつかまえろ","escWin":"脱出成功！","escStopped":"止めた！誰も逃げられなかった","escCaught":"つかまった！","escTimeUp":"時間切れ、逃げきれなかった","escLost":"逃げきれなかった","escGotAway":"逃げられた","resNoteEscape":"衝撃波、ゴースト、ブラックホール、フリーズで追っ手をふりきろう。","escRew":"勝利ボーナス"});
+Object.assign(I18N.ko,{"mode.escape":"탈출 대작전","ruleEscapeTip":"3분 안에 맵 반대편의 출구까지 도망치세요. 혼자 하면 추격 뱀이 계속 늘어나며 쫓아와요. 목숨은 3개, 아이템도 많아요. 친구와 하면 도망치는 쪽과 쫓는 쪽으로 나뉘고, 탈출한 사람은 다음 라운드에 역할을 바꿔요.","intro.escape.1":"초록 화살표를 따라 출구로 가세요. 3분 안에 도착하면 승리","intro.escape.2":"추격 뱀이 계속 쫓아와요. 목숨 3개와 많은 아이템으로 반격할 수 있어요","intro.escape.3":"친구와 하면 도망치는 쪽과 쫓는 쪽으로 나뉘어요. 쫓는 쪽은 출구에 못 들어가고, 탈출하면 역할을 바꿔요","escHunter":"추격자{n}","escGo":"출구로 도망쳐요","escLeft":"{d} 남음","escHuntersIn":"{n}초 후 추격 시작","escChase":"도망치는 뱀을 막아요","escWaitGo":"{n}초 후 출발","escRunnerLeft":"출구까지 {d}","escSafeHud":"탈출했어요","escOutHud":"잡혔어요","escSafe":"탈출 성공!","escSafeSub":"{n}초 남기고","escSomeoneSafe":"{n} 탈출!","escSomeoneOut":"{n} 잡힘","escStartT":"도망쳐요!","escStartSub":"{n}초 후 추격 시작","escYouRun":"이번엔 도망치는 쪽","escYouRunSub":"초록 화살표를 따라 출구로","escYouChase":"이번엔 쫓는 쪽","escYouChaseSub":"빨간 화살표를 따라가 도망치는 뱀을 막아요","escWin":"탈출 성공!","escStopped":"막았어요! 아무도 못 나갔어요","escCaught":"잡혔어요!","escTimeUp":"시간 끝, 탈출 실패","escLost":"탈출하지 못했어요","escGotAway":"놓쳤어요","resNoteEscape":"충격파, 유령, 블랙홀, 얼음탄으로 추격을 따돌릴 수 있어요.","escRew":"승리 보너스"});
 const LANGS=['en','zh','es','pt','ja','ko'],LANG_NAMES={en:'English',zh:'中文',es:'Español',pt:'Português',ja:'日本語',ko:'한국어'},LANG_SHORT={en:'EN',zh:'中文',es:'ES',pt:'PT',ja:'日本語',ko:'한국어'};
 const LOCALES={en:'en-US',zh:'zh-CN',es:'es-ES',pt:'pt-BR',ja:'ja-JP',ko:'ko-KR'};
 /* numbers and dates the way the phone writes them when it speaks the game's language (es-MX, pt-PT, en-GB), else the usual one */
@@ -4597,8 +4629,9 @@ const AREA_K=(R*R)/(2600*2600);
    63 s) and keeps the end point within ZONE_DRIFT of the middle, so the far side can still reach the last circle */
 const ZONE_MIN=1800,ZONE_K=1.15,ZONE_DRIFT=4590;
 /* bumped whenever two builds can no longer play together; rooms from other versions are not joinable
-   (11: v22 moved rooms to the game's own signalling server and added skins; 13: v23 bigger arena, new power-ups) */
-const NET_VER=13;
+   (11: v22 moved rooms to the game's own signalling server and added skins; 13: v23 bigger arena, new power-ups;
+   14: v24 control zones in a chain, gold veins near players; 15: v25 escape mode) */
+const NET_VER=15;
 const B64='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
 const B64I=new Int16Array(128).fill(-1);for(let i=0;i<64;i++)B64I[B64.charCodeAt(i)]=i;
 /* fixed-width base64 numbers for the compact network strings */
@@ -4607,17 +4640,25 @@ function d64(s,i,w){let v=0;for(let k=0;k<w;k++){const c=s.charCodeAt(i+k),d=c<1
 /* BOT_MASS_CAP: a computer snake above this size slowly sheds the excess (BOT_MASS_DECAY per second). BOT_MASS_BUDGET: once all computer
    snakes together weigh more than a normal match ever reaches, the bigger ones shed a little more, so a long endless session stays as light to run as its first minutes */
 const BASE_SPEED=205, BOOST_SPEED=400, TURBO_SPEED=500, BOOST_COST=6, MIN_BOOST=14, OWN_CRUMB_MS=600, OWN_CRUMB_SHARE=0.5, FOOD_MASS=2, GROWTH_RATE=0.75, BOT_MASS_CAP=2000, BOT_MASS_DECAY=0.03, BOT_MASS_BUDGET=50000;
-const CONTROL_PERIOD=35000,CONTROL_RADIUS=280,CONTROL_SCORE=8;
+/* control: a zone holds for CONTROL_PERIOD. The next one lies a short run from the last (CONTROL_HOP: 10 to 18 s at cruising
+   speed) and shows as a dashed ring for the last CONTROL_PREVIEW of the current one; the first zone is near the middle */
+const CONTROL_PERIOD=45000,CONTROL_RADIUS=300,CONTROL_SCORE=8,CONTROL_PREVIEW=15000,CONTROL_HOP=[2000,3600],CONTROL_FIRST=2200;
 /* ================= game modes =================
    classic: everyone for themselves. control: hold the gold circle. gold: grab gold coins, a death drops all of them.
    team: red against blue, teammates pass through each other. frenzy: power-ups everywhere. duel: a small ring,
    no respawn within a round, first to two rounds */
-const RULES=['classic','control','gold','team','frenzy','duel'];
+const RULES=['classic','control','gold','team','frenzy','duel','escape'];
 const ruleOf=r=>RULES.includes(r)?r:'classic';
 /* modes that always run on a clock (choosing no time limit plays 3 minutes) */
-const CLOCKED=new Set(['control','gold','team','duel']);
+const CLOCKED=new Set(['control','gold','team','duel','escape']);
+/* escape (逃逃大作战): the start and the exit are ESC_R from the middle on opposite sides (13,000 to 16,000 apart, about 75 s at
+   cruising speed in a straight line). Bots b0 to b59 roam as usual; b60 to b67 are hunter slots. Runners have ESC_LIVES lives and never
+   respawn; chasers and hunters wait ESC_HEAD (alone) or ESC_HEAD_MP (with friends) at the start, run ESC_FAST times as fast and
+   cannot come within ESC_GUARD of the exit. ESC_SWAP_ON_FAIL: swap roles after every round, not only after an escape */
+const ESC_ROUND=180000,ESC_R=8000,ESC_EXIT_R=280,ESC_GUARD=370,ESC_AMB=60,ESC_HUNT0=4,ESC_HUNT_MAX=8,ESC_HUNT_EVERY=20000,ESC_HUNT_BACK=10000,
+  ESC_HEAD=3000,ESC_HEAD_MP=5000,ESC_LIVES=3,ESC_FAST=1.08,ESC_BONUS=300,ESC_KILL_PTS=150,ESC_SWAP_ON_FAIL=false;
 /* gold coins are drops of a colour of their own; veins of coins keep appearing around the arena */
-const GOLD_C=63,GOLD_V=5,GOLD_VEIN_N=14,GOLD_VEIN_EVERY=15000;
+const GOLD_C=63,GOLD_V=5,GOLD_VEIN_N=14,GOLD_VEIN_EVERY=15000,GOLD_FRESH=8000;
 /* players are red together with the first RED_BOTS bots; the other bots are blue */
 const RED_BOTS=45,TEAM_COL=['#ff6b6b','#5aa9ff'],TEAM_RGB=[[1,0.3,0.32],[0.25,0.55,1]];
 const DUEL_R=1700,DUEL_ROUND=90000,DUEL_WINS=2;
@@ -5230,11 +5271,12 @@ class Snake{
     if(chill)sp*=FROST_SLOW;
     if(this.gs>1.02)sp*=1+(this.gs-1)*0.12;
     if(this.kind==='c')sp*=1.18;
+    if(this.hold&&now<this.hold)sp=0;else if(this.spk)sp*=this.spk;
     this.x+=Math.cos(this.angle)*sp*dt;this.y+=Math.sin(this.angle)*sp*dt;
     /* thrown back by a shockwave: the push dies away within a fraction of a second */
     if(this.kx||this.ky){this.x+=this.kx*dt;this.y+=this.ky*dt;const k=Math.exp(-dt/0.16);this.kx*=k;this.ky*=k;if(Math.abs(this.kx)+Math.abs(this.ky)<6)this.kx=this.ky=0;}
     /* rivals' black holes pull (fading in and out at the ends) */
-    for(const h of G.holes||[]){if(now>=h.t1||now<h.t0||h.owner===this.owner||(G.rule==='team'&&teamOfKey(h.owner)===teamOf(this)))continue;const dx=h.x-this.x,dy=h.y-this.y,dd=Math.sqrt(dx*dx+dy*dy);
+    for(const h of G.holes||[]){if(now>=h.t1||now<h.t0||h.owner===this.owner||sameSide(h.owner,keyOf(this)))continue;const dx=h.x-this.x,dy=h.y-this.y,dd=Math.sqrt(dx*dx+dy*dy);
       if(dd<HOLE_R&&dd>1){const fade=Math.min(1,(now-h.t0)/400,(h.t1-now)/400),pull=Math.min(dd,HOLE_PULL*Math.pow(1-dd/HOLE_R,1.1)*fade*dt);this.x+=dx/dd*pull;this.y+=dy/dd*pull;}}
     for(const o of obsGrav()){const dx=o.x-this.x,dy=o.y-this.y,dd=Math.sqrt(dx*dx+dy*dy),F2=o.r*o.meta.grav;
       if(dd<F2&&dd>1){const pull=155*Math.pow(1-dd/F2,1.2);this.x+=dx/dd*pull*dt;this.y+=dy/dd*pull*dt;}}
@@ -5458,7 +5500,7 @@ const tierOf=b=>BOT_TIERS[b.tier|0];
 function tierMix(n,easy,gentle){const out=[];if(easy){for(let i=0;i<n;i++)out.push(0);return out;}
   const h=Math.round(n*(gentle?0.06:0.2)),m=Math.round(n*(gentle?0.4:0.45));for(let i=0;i<n;i++)out.push(i<h?2:(i<h+m?1:0));
   for(let i=n-1;i>0;i--){const j=(Math.random()*(i+1))|0,tmp=out[i];out[i]=out[j];out[j]=tmp;}return out;}
-function makeBot(i,life,now,mass){const p=G.rule==='duel'?duelSpot('b'+i):safeSpot();const m=mass!=null?mass:12+Math.pow(Math.random(),2)*(G.easy?70:220);
+function makeBot(i,life,now,mass){if(G.rule==='escape'&&i>=ESC_AMB&&G.esc&&G.round.id)return makeHunter(i,life,now);const p=G.rule==='duel'?duelSpot('b'+i):safeSpot();const m=mass!=null?mass:12+Math.pow(Math.random(),2)*(G.easy?70:220);
   const b=new Snake({key:'b'+i,name:pickName(),skin:(Math.random()*BASE_SKINS)|0,kind:'b',x:p.x,y:p.y,angle:Math.atan2(G.zy-p.y,G.zx-p.x)+(Math.random()-.5)*2,mass:m,life});
   b.tier=G.botTier[i]|0;b.thinkT=Math.random()*0.3;
   b.nav={goal:null,checkAt:now+4000,checkX:b.x,checkY:b.y,roamAt:now+4000+Math.random()*5000,forceUntil:0,side:i%2?1:-1};
@@ -5469,19 +5511,24 @@ function makeBot(i,life,now,mass){const p=G.rule==='duel'?duelSpot('b'+i):safeSp
 const EASY_ITEMS=['shield','turbo','magnet','heart','grow','arrow'];
 function spawnItem(now){let t=G.easy?IT[EASY_ITEMS[(Math.random()*EASY_ITEMS.length)|0]]:pickItemType(Math.random(),false);
   /* item frenzy: more than half of all pick-ups are weapons */
-  if(G.rule==='frenzy'&&Math.random()<0.45)t=WEAPON_IX[(Math.random()*WEAPON_IX.length)|0];
+  if((G.rule==='frenzy'||G.rule==='escape')&&Math.random()<0.45)t=WEAPON_IX[(Math.random()*WEAPON_IX.length)|0];
   if(t===IT.heart&&eliminationPhase(now))t=IT.shield;let x=0,y=0;
   for(let k=0;k<20;k++){const a=Math.random()*TAU,rr=Math.sqrt(Math.random())*(G.zr-120);x=G.zx+Math.cos(a)*rr;y=G.zy+Math.sin(a)*rr;if(!inSolid(x,y,40))break;}
+  if(G.rule==='escape'&&G.esc&&Math.random()<0.6){const rs=escRunners();if(rs.length){const s=rs[(Math.random()*rs.length)|0],P=escPoints(),fw=Math.atan2(P.ey-s.y,P.ex-s.x);
+    for(let k=0;k<12;k++){const a=fw+(Math.random()-.5)*2,d=500+Math.random()*1400,px=s.x+Math.cos(a)*d,py=s.y+Math.sin(a)*d;if(Math.hypot(px,py)<R-150&&!inSolid(px,py,40)){x=px;y=py;break;}}}}
   G.itemSeq=(G.itemSeq+1)%4096;G.items.delete(G.itemSeq);G.items.set(G.itemSeq,{id:G.itemSeq,x,y,t,born:now});}
 
 /* gold rush and team battle have no closing ring: everyone respawns until the clock runs out */
-const ringRule=()=>G.rule!=='gold'&&G.rule!=='team';
+const ringRule=()=>G.rule!=='gold'&&G.rule!=='team'&&G.rule!=='escape';
 function teamOfKey(k){return typeof k==='string'&&k[0]==='b'&&(parseInt(k.slice(1),10)|0)>=RED_BOTS?1:0;}
 function teamOf(s){return teamOfKey(s.kind==='c'?s.owner:s.key);}
-/* teammates never collide or hit each other */
-const sameTeam=(a,b)=>G.rule==='team'&&teamOf(a)===teamOf(b);
-function maxItems(){return G.rule==='frenzy'?200:G.rule==='duel'?10:MAX_ITEMS;}
-function itemEvery(){return G.rule==='frenzy'?420:G.rule==='duel'?2600:ITEM_EVERY;}
+/* teammates never collide or hit each other: red and blue in team battle, runners and chasers in escape */
+const keyOf=s=>s.kind==='c'?s.owner:s.key;
+function sideOfKey(k){return G.rule==='team'?teamOfKey(k):G.rule==='escape'?(escSideKey(k)||null):null;}
+const sameSide=(ka,kb)=>{const a=sideOfKey(ka);return a!=null&&a===sideOfKey(kb);};
+const sameTeam=(a,b)=>sameSide(keyOf(a),keyOf(b));
+function maxItems(){return G.rule==='frenzy'?200:G.rule==='duel'?10:G.rule==='escape'?170:MAX_ITEMS;}
+function itemEvery(){return G.rule==='frenzy'?420:G.rule==='duel'?2600:G.rule==='escape'?460:ITEM_EVERY;}
 /* ================= duel: rounds until someone has won two ================= */
 function duelReset(){G.duel={n:1,wins:new Map(),names:new Map(),last:'',over:false,shown:0};}
 function duelPack(){const d=G.duel;return [d.n,d.over?1:0,d.last||'',[...d.wins].slice(0,8).map(([k,w])=>[k,d.names.get(k)||'',w]),d.warm?1:0];}
@@ -5498,6 +5545,129 @@ function duelRoundWinner(){const c=[];if(G.me&&G.me.alive)c.push({key:myKey,name
 function duelStartMatch(){const now=performance.now(),id=G.round.id+1;duelReset();resetWorld(true,newSeed(),G.map,{rule:'duel',bots:0});beginRound(id,now);spawnMe(now);showPlayUI();toast(t('duelStart'),t('duelBestLong'));}
 function duelNext(){const now=performance.now();if(G.mode==='host'){hostNextRound();return;}
   if(G.mode!=='quick')return;G.duel.n++;G.duel.shown=0;resetWorld(true,newSeed(),G.map,{rule:'duel',bots:1});G.roomDur=DUEL_ROUND;beginRound(G.round.id+1,now);spawnMe(now);showPlayUI();toast(t('duelRound',{n:G.duel.n}));}
+/* ================= escape (逃逃大作战) =================
+   G.esc for the round: roles (player key: 'r' runner, 'c' chaser), done (key: 'safe' got out, 'out' caught), seen (runners that
+   were in play), go (when chasers and hunters may move), hunters (are hunter bots in play), plan and runs (kept between rounds:
+   the roles planned for the next round and how often each player has run). The host decides and sends it (escPack) */
+function escPoints(){const k=G.seed+':'+G.round.id+':'+G.map;if(G.escPts&&G.escPts.k===k)return G.escPts;
+  const rng=mulberry32(hash32(G.seed,(G.round.id|0)+4243,G.map+17)),a=rng()*TAU;
+  const spot=(ang,rad)=>{for(let i=0;i<60;i++){const aa=ang+(i?(rng()-.5)*0.6:0),rr=rad-(i?rng()*1200:0),x=Math.cos(aa)*rr,y=Math.sin(aa)*rr;
+      if(inSolid(x,y,ESC_GUARD+60))continue;
+      if(G.obstacles.some(o=>(o.meta.zone==='burn'||o.meta.grav)&&Math.hypot(x-o.x,y-o.y)<o.r*(o.meta.grav||1)+ESC_GUARD+60))continue;return {x,y};}
+    return {x:Math.cos(ang)*rad*0.75,y:Math.sin(ang)*rad*0.75};};
+  const st=spot(a,ESC_R),ex=spot(a+Math.PI+(rng()-.5)*0.9,ESC_R);
+  return G.escPts={k,sx:st.x,sy:st.y,ex:ex.x,ey:ex.y,d0:Math.hypot(ex.x-st.x,ex.y-st.y)};}
+/* the side of a snake by its key: hunter bots chase, roaming bots are nobody's; a player with no role yet runs when alone and
+   chases in a room (someone who joins in the middle of a round) */
+function escSideKey(k){if(!k)return '';if(k[0]==='b')return (parseInt(k.slice(1),10)|0)>=ESC_AMB?'c':'';
+  const r=G.esc&&G.esc.roles.get(k);return r||(G.mode==='host'||G.mode==='guest'?'c':'r');}
+const escRunner=s=>!!s&&s.kind!=='c'&&escSideKey(s.key)==='r';
+function escRunners(){return all.filter(o=>o.alive&&escRunner(o));}
+function escPrey(b){let best=null,bd=Infinity;for(const o of escRunners()){if(o.fl&(F.ghost|F.hide))continue;const d=Math.hypot(o.x-b.x,o.y-b.y);if(d<bd){bd=d;best=o;}}return best;}
+/* a clear spot near (x, y): inside the arena, off walls, lava and gravity wells, and away from the exit */
+function escFree(x,y,r){const P=escPoints();for(let k=0;k<(r?24:1);k++){const a=Math.random()*TAU,d=k?Math.random()*r:0,px=x+Math.cos(a)*d,py=y+Math.sin(a)*d;
+    if(Math.hypot(px,py)>R*0.92||inSolid(px,py,140)||Math.hypot(px-P.ex,py-P.ey)<ESC_GUARD+250)continue;
+    if(G.obstacles.some(o=>(o.meta.zone==='burn'||o.meta.grav)&&Math.hypot(px-o.x,py-o.y)<o.r*(o.meta.grav||1)+120))continue;return {x:px,y:py};}return null;}
+/* a short run from a runner, ahead of it (toward the exit, give or take 70 degrees) or behind it: where hunters and chasers
+   come back in */
+function escNear(behind){const rs=escRunners();if(!rs.length)return null;const s=rs[(Math.random()*rs.length)|0],P=escPoints(),fw=Math.atan2(P.ey-s.y,P.ex-s.x)+(behind?Math.PI:0);
+  for(let k=0;k<30;k++){const a=fw+(Math.random()-.5)*(k<20?2.4:4.4),d=(behind?1500:1800)+Math.random()*600,p=escFree(s.x+Math.cos(a)*d,s.y+Math.sin(a)*d,0);if(p)return p;}return null;}
+/* a hunter: a strong bot in a devil skin that only wants the runners */
+function makeHunter(i,life,now){const j=i-ESC_AMB,P=escPoints(),E=G.esc,first=life<=1&&j<ESC_HUNT0&&now-E.t0<5000;let p=null;
+  /* the first four: two to either side of the start, who chase from behind, and two waiting halfway along */
+  if(first){const f=j<2?0.04:0.5,side=(j%2?-1:1)*(j<2?1300:1200),dx=P.ex-P.sx,dy=P.ey-P.sy,L=Math.hypot(dx,dy)||1;p=escFree(P.sx+dx*f-dy/L*side,P.sy+dy*f+dx/L*side,500);}
+  if(!p)p=escNear(j%2===0)||escNear(j%2!==0)||safeSpot();
+  const prey=escPrey(p),b=new Snake({key:'b'+i,name:t('escHunter',{n:j+1}),skin:SK_ID.devil|0,kind:'b',x:p.x,y:p.y,
+    angle:prey?Math.atan2(prey.y-p.y,prey.x-p.x):Math.atan2(P.sy-p.y,P.sx-p.x),mass:56+j*8,life});
+  b.tier=2;b.hunter=true;b.spk=ESC_FAST;b.hold=first?E.go:0;b.thinkT=Math.random()*0.1;
+  b.nav={goal:null,checkAt:now+4000,checkX:b.x,checkY:b.y,roamAt:now+1e9,forceUntil:0,side:j%2?1:-1};
+  b.weapon={t:WEAPON_IX[(Math.random()*WEAPON_IX.length)|0],n:1};return b;}
+/* hunter slots for this round: the first four in place and waiting, the rest coming in every 30 s; none when people chase */
+function escHunterSlots(now){const E=G.esc;
+  for(let j=0;j<ESC_HUNT_MAX;j++){const i=ESC_AMB+j;if(i>=G.bots.length)break;
+    if(E.hunters&&j<ESC_HUNT0){G.bots[i]=makeHunter(i,1,now);if(G.mode==='quick')G.bots[i].hold=Infinity;}
+    else{const b=G.bots[i];b.alive=false;b.hunter=E.hunters;b.respawnAt=E.hunters?now+(j-ESC_HUNT0+1)*ESC_HUNT_EVERY:Infinity;b.preRing=true;}}
+  gather();}
+/* a new round: the host (or the phone alone) picks the roles; a guest waits for them in the host's packets */
+function escBegin(now){const prev=G.esc;
+  G.esc={roles:new Map(),done:new Map(),seen:new Set(),gone:new Map(),go:now+(G.mode==='quick'?ESC_HEAD:ESC_HEAD_MP),hunters:true,t0:now,
+    plan:prev?prev.plan:null,runs:prev?prev.runs:new Map(),goSet:false,ran:false,caught:new Map()};G.escPts=null;
+  if(!G.auth||!G.round.id)return;const E=G.esc,keys=[myKey];
+  /* the players in the room: those the host heard from before the new round cleared its lists, and anyone heard since */
+  if(G.mode==='host')for(const k of (G.escKeys||[]).concat([...guests.values()].map(g=>g&&g.key)))if(k&&!keys.includes(k))keys.push(k);
+  G.escKeys=null;
+  let runners;
+  if(keys.length===1)runners=[myKey];
+  else{const want=Math.max(1,Math.floor(keys.length/2)),plan=E.plan||new Map();runners=keys.filter(k=>plan.get(k)==='r');
+    const rest=keys.filter(k=>!runners.includes(k)).sort((a,b)=>(E.runs.get(a)||0)-(E.runs.get(b)||0)||(Math.random()-.5));
+    while(runners.length<want&&rest.length)runners.push(rest.shift());runners=runners.slice(0,want);}
+  for(const k of keys)E.roles.set(k,runners.includes(k)?'r':'c');
+  for(const k of runners)E.runs.set(k,(E.runs.get(k)||0)+1);
+  E.hunters=runners.length===keys.length;escHunterSlots(now);}
+/* the next round's roles (host): a runner who got out swaps with the chaser who has run the least */
+function escPlan(){const E=G.esc;if(!E)return;const plan=new Map(E.roles);
+  const chasers=[...E.roles].filter(([k,r])=>r==='c').map(([k])=>k).sort((a,b)=>(E.runs.get(a)||0)-(E.runs.get(b)||0));
+  for(const [k,r] of E.roles){if(r!=='r'||(E.done.get(k)!=='safe'&&!ESC_SWAP_ON_FAIL))continue;const c=chasers.shift();if(!c)continue;plan.set(k,'c');plan.set(c,'r');}
+  E.plan=plan;}
+/* for a snake this phone moves: a runner that reaches the exit is out and safe (its best progress is its score); a chaser
+   or a hunter is kept outside the exit and slides along its edge. True when the snake left the arena */
+function escStep(s,now){const P=escPoints(),dx=s.x-P.ex,dy=s.y-P.ey,d=Math.hypot(dx,dy);
+  if(escRunner(s)){if(d<ESC_EXIT_R){escOut(s,now);return true;}const prog=Math.max(0,Math.round((P.d0-d)/10));if(scoring()&&prog>(G.sc.get(s.key)||0))G.sc.set(s.key,prog);return false;}
+  if(s.kind==='c'||escSideKey(s.key)!=='c'||d>=ESC_GUARD||d<0.01)return false;
+  const out=Math.atan2(dy,dx),tang=out+(angDiff(out,s.angle)>0?Math.PI/2:-Math.PI/2);s.x=P.ex+dx/d*ESC_GUARD;s.y=P.ey+dy/d*ESC_GUARD;s.angle=tang;
+  if(s.kind==='b')s.target=tang;const n=s.px.length;if(n){s.px[n-1]=s.x;s.py[n-1]=s.y;}s.buildBody();return false;}
+function escOut(s,now){const P=escPoints(),E=G.esc;s.alive=false;s.safe=true;E.done.set(s.key,'safe');
+  vfx('ring',{x:P.ex,y:P.ey,col:[0.24,0.86,0.6],r0:40,r1:ESC_EXIT_R*1.7,dur:900});burst(P.ex,P.ey,30,40,[0.3,0.95,0.65],420,900,16,1.2);
+  const left=G.round.end?Math.max(0,Math.round((G.round.end-now)/1000)):0;if(scoring())G.sc.set(s.key,(G.sc.get(s.key)||0)+ESC_BONUS+left*2);
+  if(s===G.me){toast(t('escSafe'),t('escSafeSub',{n:left}));sfx('levelup');if(!G.auth)pushFx(['Q',Math.round(s.x),Math.round(s.y)],now);}}
+/* the host hears that a guest got out: believed when the guest was last seen near the exit */
+function escClaim(k,x,y,st,now){const E=G.esc,P=escPoints();if(!E||G.round.over||escSideKey(k)!=='r'||E.done.has(k))return;
+  const lm=st&&st.lastMe;if(Math.hypot(x-P.ex,y-P.ey)>ESC_EXIT_R+150||(lm&&Math.hypot(lm.x-P.ex,lm.y-P.ey)>900))return;
+  E.done.set(k,'safe');const v=findSnake(k);toast(t('escSomeoneSafe',{n:v&&v.name?v.name:t('friend')}));}
+/* host or alone: the round ends once no runner is left in play (out, caught, or never showed up within 20 s) */
+function escCheckEnd(now){const E=G.esc;if(!E||G.round.over)return;let runners=0,active=0;
+  for(const [k,r] of E.roles){if(r!=='r')continue;runners++;if(E.done.has(k))continue;const v=k===myKey?G.me:findSnake(k);
+    if(v&&v.alive){E.seen.add(k);E.gone.delete(k);active++;continue;}
+    if(!E.seen.has(k)&&(G.mode==='quick'||now-E.t0<20000||(k===myKey&&introOpen))){active++;continue;}
+    /* gone from play: wait a moment, in case the news that it got out is on its way */
+    if(!E.gone.has(k))E.gone.set(k,now);if(now-E.gone.get(k)<1500&&k!==myKey){active++;continue;}
+    E.done.set(k,'out');if(k!==myKey){const vv=findSnake(k);toast(t('escSomeoneOut',{n:vv&&vv.name?vv.name:t('friend')}));}}
+  if(runners&&!active)roundOver(now);}
+function escPack(now){const E=G.esc;return [G.round.id,[...E.roles].slice(0,16),[...E.done].slice(0,16),E.hunters?1:0,Math.max(0,Math.round(E.go-now))];}
+function escSync(es){const E=G.esc;if(!Array.isArray(es)||(es[0]|0)!==G.round.id||!E)return;const now=performance.now();
+  const roles=new Map();for(const r of (Array.isArray(es[1])?es[1]:[]).slice(0,16))if(Array.isArray(r)&&safeKey(r[0])&&(r[1]==='r'||r[1]==='c'))roles.set(safeKey(r[0]),r[1]);
+  const done=new Map();for(const r of (Array.isArray(es[2])?es[2]:[]).slice(0,16))if(Array.isArray(r)&&safeKey(r[0])&&(r[1]==='safe'||r[1]==='out'))done.set(safeKey(r[0]),r[1]);
+  for(const [k,v] of done)if(!E.done.has(k)&&k!==myKey){const vv=findSnake(k);toast(t(v==='safe'?'escSomeoneSafe':'escSomeoneOut',{n:vv&&vv.name?vv.name:t('friend')}));}
+  E.roles=roles;for(const [k,v] of done)E.done.set(k,v);E.hunters=!!es[3];
+  if(!E.goSet){E.goSet=true;E.go=now+clamp(+es[4]||0,0,ESC_HEAD_MP);if(G.me&&G.me.alive&&escSideKey(myKey)==='c')G.me.hold=E.go;}}
+/* where this phone's player starts: runners side by side at the start facing the exit; chasers, at the start of a round, to
+   either side a third of the way along (they wait a few seconds); later on, a short run ahead of a runner */
+function escSpawn(now){const P=escPoints(),E=G.esc,run=escSideKey(myKey)==='r',dx=P.ex-P.sx,dy=P.ey-P.sy,L=Math.hypot(dx,dy)||1,ux=dx/L,uy=dy/L;
+  let hh=0;for(const ch of myKey)hh=(hh*31+ch.charCodeAt(0))|0;const lane=((hh>>>0)%5)-2;
+  if(run){const p=escFree(P.sx-uy*lane*320,P.sy+ux*lane*320,300)||{x:P.sx,y:P.sy};return {x:p.x,y:p.y,a:Math.atan2(P.ey-p.y,P.ex-p.x),run};}
+  let p=null;if(now<E.go+3000){const side=(lane>=0?1:-1)*(1300+Math.abs(lane)*250);p=escFree(P.sx+dx*0.35-uy*side,P.sy+dy*0.35+ux*side,500);}
+  if(!p)p=escNear(false)||safeSpot();const prey=escPrey(p);
+  return {x:p.x,y:p.y,a:prey?Math.atan2(prey.y-p.y,prey.x-p.x):Math.atan2(P.sy-p.y,P.sx-p.x),run};}
+/* a runner starts with three lives (two hearts) and a weapon; alone, the 3 minutes and the hunters' head start begin when the
+   runner first appears (not while the how-to card is open). A chaser starts with a weapon, a little faster, waiting for the go */
+function escMeReady(me,es,now){const E=G.esc;me.weapon={t:WEAPON_IX[(Math.random()*WEAPON_IX.length)|0],n:2};
+  if(es.run){me.hearts=ESC_LIVES-1;E.spawned=true;E.seen.add(myKey);
+    if(G.mode==='quick'&&!E.ran){E.ran=true;G.round.end=now+ESC_ROUND;E.t0=now;E.go=now+ESC_HEAD;
+      for(const b of G.bots)if(b.hunter){if(b.alive)b.hold=E.go;else if(Number.isFinite(b.respawnAt))b.respawnAt=now+((parseInt(b.key.slice(1),10)|0)-ESC_AMB-ESC_HUNT0+1)*ESC_HUNT_EVERY;}
+      toast(t('escStartT'),t('escStartSub',{n:Math.round(ESC_HEAD/1000)}));sfx('warn');}
+    else if(G.mode!=='quick'&&!E.toldRole){E.toldRole=true;toast(t('escYouRun'),t('escYouRunSub'));}}
+  else{me.spk=ESC_FAST;me.hold=E.go>now?E.go:0;if(!E.toldRole){E.toldRole=true;toast(t('escYouChase'),t('escYouChaseSub'));}}}
+/* the two lines at the bottom: what to do, and how far */
+function escHud(now,me){const E=G.esc;if(!E)return '';const P=escPoints(),run=escSideKey(myKey)==='r',m=d=>t('meters',{d:Math.max(0,Math.round(d/10))});
+  if(run){if(E.done.get(myKey)==='safe')return t('escSafeHud');if(!me||!me.alive)return E.ran||G.mode!=='quick'?t('escOutHud'):'';
+    return t('escGo')+'\n'+(E.hunters&&now<E.go?t('escHuntersIn',{n:Math.ceil((E.go-now)/1000)}):t('escLeft',{d:m(Math.hypot(me.x-P.ex,me.y-P.ey)-ESC_EXIT_R)}));}
+  if(me&&me.alive&&now<E.go)return t('escChase')+'\n'+t('escWaitGo',{n:Math.ceil((E.go-now)/1000)});
+  const prey=me&&me.alive?escPrey(me):null;return prey?t('escChase')+'\n'+t('escRunnerLeft',{d:m(Math.hypot(prey.x-P.ex,prey.y-P.ey)-ESC_EXIT_R)}):t('escChase');}
+function escOutcome(){const E=G.esc;if(!E)return '';const mine=E.done.get(myKey),run=escSideKey(myKey)==='r',got=[...E.done.values()].includes('safe');
+  if(G.mode==='quick')return mine==='safe'?'win':(G.me&&!G.me.alive&&!G.me.safe)?'caught':'time';
+  return run?(mine==='safe'?'win':mine==='out'?'caught':'time'):(got?'lose':'win');}
+function escTitle(){const o=escOutcome(),run=escSideKey(myKey)==='r';
+  return t(o==='win'?(run?'escWin':'escStopped'):o==='caught'?'escCaught':o==='time'?'escTimeUp':(run?'escLost':'escGotAway'));}
 /* the closing ring of a timed match: it starts moving in a while before the end (35% of the match, 50 s to 150 s)
    and reaches ZONE_MIN 15 s before the end, so the last seconds are a showdown in the middle.
    In a duel the ring is small from the first second and nobody comes back within the round */
@@ -5507,6 +5677,7 @@ function eliminationPhase(now=performance.now()){if(!G.round.end||!G.roomDur||G.
 /* me: asking for the player, for whom a death before the ring started is never an elimination,
    even if the death panel (or the respawn button) only comes up after the start */
 function canRespawn(now=performance.now(),me){if(G.rule==='duel'&&G.round.end&&!G.tutWorld)return !G.round.over&&!!me&&!G.duelOut;
+  if(G.rule==='escape'&&G.round.end&&!G.tutWorld&&me)return !G.round.over&&(escSideKey(myKey)!=='r'||!G.esc||!G.esc.spawned);
   if(!G.round.over&&!eliminationPhase(now))return true;if(!me||G.round.over||!G.me||G.me.alive)return false;
   const z=zoneSpan();return !!(z&&G.me.diedAt&&G.me.diedAt<z.start);}
 /* the closing ring closes on a random spot, the same on every phone (seeded by the world, the round and the map), picked
@@ -5524,21 +5695,58 @@ function zoneAt(now,out){out.r=R;out.x=0;out.y=0;if(!G.round.end||!G.roomDur||G.
   const e=f*f*(3-2*f),c=zoneEnd();out.r=R-(R-ZONE_MIN)*e;out.x=c.x*e;out.y=c.y*e;return out;}
 const ZT={r:R,x:0,y:0};
 function zoneR(now){return zoneAt(now,ZT).r;}
+/* The zones of a round, one per phase, worked out in order and kept: the first near the middle, each next one a short run
+   (CONTROL_HOP) from the last so the crowd moves on together, always inside the ring as it will be when its phase ends and
+   clear of walls, lava and gravity wells. Only the seed, the map and the round clock go in, so every phone gets the same chain */
+function controlPhase(n){if(!(n>=0)||!G.round.end||!G.roomDur)return null;const start=G.round.end-G.roomDur,key=G.round.id+':'+G.seed+':'+G.map+':'+G.roomDur;
+  if(!G.control||G.control.key!==key)G.control={key,list:[]};const L=G.control.list;
+  while(L.length<=n){const k=L.length,s0=start+k*CONTROL_PERIOD;if(s0>=G.round.end){L.push(null);continue;}
+    const end=Math.min(G.round.end,s0+CONTROL_PERIOD),ze=zoneAt(end,{r:0,x:0,y:0}),lim=ze.r-CONTROL_RADIUS-160,rng=mulberry32(hash32(G.seed,k,G.map));
+    /* looking one zone ahead: while the ring closes, stay within a hop of where the next zone can still be */
+    const z2=end<G.round.end?zoneAt(Math.min(G.round.end,end+CONTROL_PERIOD),{r:0,x:0,y:0}):null,reach=z2?z2.r-CONTROL_RADIUS-160+CONTROL_HOP[1]*0.9:0;
+    let prev=null;for(let j=k-1;j>=0&&!prev;j--)prev=L[j];
+    let zone=null,best=Infinity;
+    for(let i=0;i<120&&lim>0;i++){const a=rng()*TAU,u=rng();let x,y;
+      if(prev&&i<80){const d=CONTROL_HOP[0]+u*(CONTROL_HOP[1]-CONTROL_HOP[0]);x=prev.x+Math.cos(a)*d;y=prev.y+Math.sin(a)*d;}
+      else{const d=Math.sqrt(u)*(prev||i>=40?lim:Math.min(lim,CONTROL_FIRST));x=ze.x+Math.cos(a)*d;y=ze.y+Math.sin(a)*d;}
+      if(Math.hypot(x-ze.x,y-ze.y)>lim||inSolid(x,y,CONTROL_RADIUS+50))continue;
+      if(G.obstacles.some(o=>(o.meta.zone==='burn'||o.meta.grav)&&Math.hypot(x-o.x,y-o.y)<o.r*(o.meta.grav||1)+CONTROL_RADIUS+50))continue;
+      /* a hop of the right length wins at once; failing that, the spot closest to that length (or, for the first, any spot) */
+      const dp=prev?Math.hypot(x-prev.x,y-prev.y):0,sc=(prev?(dp<CONTROL_HOP[0]?CONTROL_HOP[0]-dp:dp>CONTROL_HOP[1]?dp-CONTROL_HOP[1]:0):(i<40?0:1))+(z2?Math.max(0,Math.hypot(x-z2.x,y-z2.y)-reach):0);
+      if(sc<best){best=sc;zone={x,y,r:CONTROL_RADIUS,phase:k,start:s0,end};if(sc===0)break;}}
+    L.push(zone);}
+  return L[n];}
 function controlZone(now){if(G.rule!=='control'||G.tutWorld||!G.round.end||!G.roomDur||G.round.over||now>=G.round.end)return null;
-  const start=G.round.end-G.roomDur,elapsed=Math.max(0,now-start),phase=Math.floor(elapsed/CONTROL_PERIOD),key=G.round.id+':'+G.seed+':'+G.map+':'+G.roomDur+':'+phase;
-  if(G.control&&G.control.key===key)return G.control.zone;
-  const end=Math.min(G.round.end,start+(phase+1)*CONTROL_PERIOD),ze=zoneAt(end,{r:0,x:0,y:0}),lim=ze.r-CONTROL_RADIUS-160,rng=mulberry32(hash32(G.seed,phase,G.map));let zone=null;
-  for(let i=0;i<80&&lim>0;i++){const a=rng()*TAU,d=Math.sqrt(rng())*lim,x=ze.x+Math.cos(a)*d,y=ze.y+Math.sin(a)*d;
-    if(inSolid(x,y,CONTROL_RADIUS+50))continue;
-    if(G.obstacles.some(o=>(o.meta.zone==='burn'||o.meta.grav)&&Math.hypot(x-o.x,y-o.y)<o.r*(o.meta.grav||1)+CONTROL_RADIUS+50))continue;
-    zone={x,y,r:CONTROL_RADIUS,phase,end};break;}
-  G.control={key,zone};return zone;}
+  return controlPhase(Math.floor(Math.max(0,now-(G.round.end-G.roomDur))/CONTROL_PERIOD));}
+/* the zone after the current one, shown for the last CONTROL_PREVIEW of a phase (there is none after the last phase) */
+function controlNext(now){const z=controlZone(now);if(!z||z.end-now>CONTROL_PREVIEW||z.end>=G.round.end)return null;return controlPhase(z.phase+1);}
+/* a new snake in control starts a short run from the zone it should make for (the next one when the current moves very soon) */
+function controlSpot(now){const z=controlZone(now);if(!z)return null;const nx=controlNext(now),tg=nx&&z.end-now<8000?nx:z;let best=null,bestD=-1;
+  for(let k=0;k<40;k++){const a=Math.random()*TAU,d=1400+Math.random()*1200,x=tg.x+Math.cos(a)*d,y=tg.y+Math.sin(a)*d;
+    if(Math.hypot(x-G.zx,y-G.zy)>G.zr*0.92-160||inSolid(x,y,140))continue;
+    if(G.obstacles.some(o=>(o.meta.zone==='burn'||o.meta.grav)&&Math.hypot(x-o.x,y-o.y)<o.r*(o.meta.grav||1)+120))continue;
+    let md=Infinity;for(const s of all){if(!s||!s.alive)continue;const b=s.body;for(let i=0;i<b.length;i+=6){const dx=b[i]-x,dy=b[i+1]-y,dd=dx*dx+dy*dy;if(dd<md)md=dd;}}
+    if(md>bestD){bestD=md;best={x,y,tx:tg.x,ty:tg.y};}if(md>260*260)break;}
+  return best;}
+/* where the player should head, or null: the control zone (or the next one, once the current would move on before this snake
+   got there, and while holding it during the preview), or the nearest gold vein that still has a few coins */
+function objTarget(me,now){
+  if(G.rule==='control'){const z=controlZone(now);if(!z)return null;const nx=controlNext(now),d=Math.hypot(me.x-z.x,me.y-z.y);
+    if(d<=z.r)return nx?{x:nx.x,y:nx.y,r:nx.r,kind:'next'}:null;
+    if(nx&&(d-z.r)/BASE_SPEED*1000>z.end-now)return {x:nx.x,y:nx.y,r:nx.r,kind:'next'};
+    return {x:z.x,y:z.y,r:z.r,kind:'zone'};}
+  if(G.rule==='escape'&&G.esc){if(escSideKey(myKey)==='r'){const P=escPoints();return {x:P.ex,y:P.ey,r:ESC_EXIT_R,kind:'exit'};}
+    const prey=escPrey(me);return prey?{x:prey.x,y:prey.y,r:40,kind:'prey'}:null;}
+  if(G.rule==='gold'){veinScan(now);let best=null,bd=Infinity;for(const v of G.veins||[]){if(v.n<3)continue;const d=Math.hypot(me.x-v.x,me.y-v.y);if(d<bd){bd=d;best=v;}}
+    return best?{x:best.x,y:best.y,r:VEIN_R*0.6,kind:'gold',n:best.n}:null;}
+  return null;}
 function stepControl(dt,now){const zone=controlZone(now);G.controlState=null;if(!zone)return;
   let holder=null,count=0;for(const s of all)if(s.alive&&s.kind!=='c'&&Math.hypot(s.x-zone.x,s.y-zone.y)<=zone.r){count++;holder=s;}
   G.controlState={zone,count,holder:count===1?holder.key:null};
-  if(count===1){const owned=ownedByKey(holder.key);if(owned&&owned.alive)gainScore(owned,CONTROL_SCORE*dt);}}
+  if(count===1){const owned=ownedByKey(holder.key);if(owned&&owned.alive){gainScore(owned,CONTROL_SCORE*dt);
+    if(owned===G.me&&now>=(G.ctlFloatT||0)){G.ctlFloatT=now+1000;floatAt(owned.x,owned.y,'+'+CONTROL_SCORE,'#ffd23f');}}}}
 function resetWorld(auth,seed,map,opts){const now=performance.now();G.zr=R;G.zx=0;G.zy=0;G.zEnd=null;G.king=null;G.watchKey=null;
-  G.rule=ruleOf(opts&&opts.rule);G.control=null;G.controlState=null;if(G.rule==='duel')G.zr=DUEL_R;G.goldT=now+6000;G.trickleT=now+2500;G.teamSc=[0,0];
+  G.rule=ruleOf(opts&&opts.rule);G.control=null;G.controlState=null;if(G.rule==='duel')G.zr=DUEL_R;G.goldT=now+6000;G.trickleT=now+2500;G.veins=[];G.vein=null;G.veinN=0;G.veinScanT=0;G.ctlFloatT=0;G.teamSc=[0,0];
   G.easy=!!(opts&&opts.easy);G.tutWorld=!!(opts&&opts.tut);G.tut=null;
   G.auth=auth;G.seed=seed>>>0;G.map=map|0;G.obstacles=genObstacles(G.map,G.seed);foodGen.fill(0);setAllFood(now);
   G.drops.clear();G.dropSeq=0;G.items.clear();G.itemSeq=0;G.itemT=0;G.eruptT=now+5000;G.bots=[];G.clones=[];G.events=[];G.evSeq=0;G.lastEv=0;G.evInit=false;
@@ -5548,7 +5756,7 @@ function resetWorld(auth,seed,map,opts){const now=performance.now();G.zr=R;G.zx=
   G.botTier=tierMix(BOT_COUNT,G.easy,!!(opts&&opts.gentle));
   /* starting sizes: mostly small and medium snakes with a few big ones */
   /* a duel has no computer snakes, except one strong opponent when you play it alone */
-  const nBots=G.rule==='duel'?(opts&&opts.bots!=null?opts.bots:1):BOT_COUNT;if(G.rule==='duel')G.botTier[0]=2;
+  const nBots=G.rule==='duel'?(opts&&opts.bots!=null?opts.bots:1):G.rule==='escape'?ESC_AMB+ESC_HUNT_MAX:BOT_COUNT;if(G.rule==='duel')G.botTier[0]=2;
   if(auth&&!G.tutWorld){all.length=0;
     for(let i=0;i<nBots;i++){const f=i/Math.max(1,BOT_COUNT-1),m=G.rule==='duel'?60:G.easy?14+64*Math.pow(f,1.5):22+430*Math.pow(f,2.1);
       const b=makeBot(i,1,now,Math.round(m));G.bots.push(b);all.push(b);}
@@ -5613,7 +5821,7 @@ function eat(s,now){if(s.kind==='c')return;const hx=s.x,hy=s.y,mag=act(s,'magnet
 const STEAL=0.4,KILL_PTS=10,KING_BONUS=60;
 const scoring=()=>!!G.round.end&&!G.round.over;
 /* in gold rush only gold counts */
-function gainScore(s,v){if(scoring()&&s.kind!=='c'&&G.rule!=='gold')G.sc.set(s.key,(G.sc.get(s.key)||0)+v);}
+function gainScore(s,v){if(scoring()&&s.kind!=='c'&&G.rule!=='gold'&&G.rule!=='escape')G.sc.set(s.key,(G.sc.get(s.key)||0)+v);}
 function gainGold(s,v){if(scoring()&&s.kind!=='c')G.sc.set(s.key,(G.sc.get(s.key)||0)+v);}
 /* a snake that dies in gold rush drops every coin it carried; a guest asks the host to drop them */
 function dropGold(s,gold,now){const P=subsample(s.body,30);if(G.auth)spawnGold(P,gold,now);else G.outDl.push({seq:++G.dlSeq,t:now,m:0,p:encPts(P),o:0,g:Math.round(gold)});}
@@ -5693,7 +5901,7 @@ function holePlausible(st,ow,x,y,now,peer){if(G.holes.filter(h=>h.peer===peer&&n
 /* inside a rival's frost aura (its owner's head within FROST_R) */
 function chilled(s){for(const o of all){if(!(o.fl&F.frost)||o===s||!o.alive||o.kind==='c'||o.owner===s.owner||sameTeam(s,o))continue;const dx=o.x-s.x,dy=o.y-s.y,rr=FROST_R+s.r;if(dx*dx+dy*dy<rr*rr)return true;}return false;}
 /* the core of a rival's black hole tears length off, shed around its rim; true if that killed s */
-function holeCore(s,now,dt){for(const h of G.holes){if(now>=h.t1||now<h.t0||h.owner===s.owner||(G.rule==='team'&&teamOfKey(h.owner)===teamOf(s)))continue;
+function holeCore(s,now,dt){for(const h of G.holes){if(now>=h.t1||now<h.t0||h.owner===s.owner||sameSide(h.owner,keyOf(s)))continue;
     const dx=s.x-h.x,dy=s.y-h.y;if(dx*dx+dy*dy>=HOLE_CORE*HOLE_CORE)continue;
     if(s.kind==='c'){killOwned(s,h.owner,h.name,now);return true;}
     if(guarded(s,now))return false;
@@ -5724,7 +5932,7 @@ function updateProjs(dt,now){const P=G.projs;
     if(p.own){let hit=null,hd=0,hx=0,hy=0,idx=0;
       for(let dd=p.pd;dd<=d&&!hit;dd+=10){const x=p.x0+p.ca*dd,y=p.y0+p.sa*dd;
         if(x*x+y*y>R*R||inSolid(x,y,0)){p.dead=true;impactFx(x,y,p.kind);break;}
-        for(const o of all){if(!o.alive||o.owner===p.owner||(G.rule==='team'&&teamOfKey(p.owner)===teamOf(o)))continue;const m=o.r+p.pr;if(x<o.minx-m||x>o.maxx+m||y<o.miny-m||y>o.maxy+m)continue;
+        for(const o of all){if(!o.alive||o.owner===p.owner||sameSide(p.owner,keyOf(o)))continue;const m=o.r+p.pr;if(x<o.minx-m||x>o.maxx+m||y<o.miny-m||y>o.maxy+m)continue;
           const b=o.body,r2=m*m;for(let k=0;k<b.length;k+=2){const ex=b[k]-x,ey=b[k+1]-y;if(ex*ex+ey*ey<r2){hit=o;idx=k>>1;hd=dd;hx=x;hy=y;break;}}if(hit)break;}}
       p.pd=d;
       if(hit){p.dead=true;const n=hit.body.length>>1;hitTarget(hit,p.kind,idx/Math.max(1,n-1),p,p.sid,hx,hy,now);}
@@ -5734,7 +5942,7 @@ function updateProjs(dt,now){const P=G.projs;
 function eachMine(fn){for(const m of G.mines)fn(m);for(const st of streams.values())for(const m of st.mines)fn(m);}
 function updateMines(now){const M=G.mines;
   for(let i=M.length-1;i>=0;i--){const m=M[i];if(now>m.exp){M.splice(i,1);continue;}if(now<m.arm)continue;
-    for(const o of all){if(!o.alive||o.owner===m.owner||(G.rule==='team'&&teamOfKey(m.owner)===teamOf(o)))continue;const rr=o.r*0.8+18,dx=o.x-m.x,dy=o.y-m.y;
+    for(const o of all){if(!o.alive||o.owner===m.owner||sameSide(m.owner,keyOf(o)))continue;const rr=o.r*0.8+18,dx=o.x-m.x,dy=o.y-m.y;
       if(dx*dx+dy*dy<rr*rr){M.splice(i,1);vfx('boom',{x:m.x,y:m.y,dur:700});burst(m.x,m.y,12,30,[1,0.55,0.15],380,700,14,1.1);
         pushFx(['X',Math.round(m.x),Math.round(m.y)],now);sfxAt('boom',m.x,m.y);hitTarget(o,'m',0,m,0,m.x,m.y,now);break;}}}}
 
@@ -5781,22 +5989,23 @@ function killOwned(s,killerOwner,killerName,now){if(G.round.over||!s.alive)retur
   if(s.kind!=='c'){deathSpecial(s,now);noteDeath(s.key,s.x,s.y,s.r,col,now);}
   lineDrops(subsample(s.body,60),s.kind==='c'?s.mass*0.25:s.mass,s.skin,now);
   if(s.kind==='c'){const i=G.clones.indexOf(s);if(i>=0)G.clones.splice(i,1);return;}
-  s.diedAt=now;if(s.kind==='b'){s.preRing=canRespawn(now);s.respawnAt=s.preRing?now+1500+Math.random()*2500:Infinity;}
+  s.diedAt=now;if(s.kind==='b'){s.preRing=canRespawn(now);s.respawnAt=s.preRing?now+1500+Math.random()*2500:Infinity;if(s.hunter)s.respawnAt=now+ESC_HUNT_BACK;}
   let lost=0;if(scoring()){const sc=G.sc.get(s.key)||0;
-    if(G.rule==='gold'){lost=Math.round(sc);G.sc.set(s.key,0);if(lost>0)dropGold(s,lost,now);}else{lost=Math.round(sc*STEAL);G.sc.set(s.key,sc-lost);}}
+    if(G.rule==='gold'){lost=Math.round(sc);G.sc.set(s.key,0);if(lost>0)dropGold(s,lost,now);}else if(G.rule!=='escape'){lost=Math.round(sc*STEAL);G.sc.set(s.key,sc-lost);}}
   if(s===G.me){G.lastLost=lost;if(G.rule==='duel')G.duelOut=true;}
   if(G.auth)pushEvent(killerName,s.name,killerOwner,s.key,lost);
   else if(s===G.me)G.dd={i:++G.deathSeq,k:String(killerOwner||''),kn:String(killerName||''),p:lost};
   if(s===G.me)uiMeDied(killerName,now);}
 /* ev: [seq, killer name, victim name, killer key, victim key, points for the killer, 1 if the victim wore the crown] */
-function pushEvent(kn,vn,kk,vk,pts){const king=!!vk&&vk===G.king&&!!kk&&kk!==vk;if(G.rule==='gold')pts=0;else if(king&&scoring())pts=(pts|0)+KING_BONUS;
+function pushEvent(kn,vn,kk,vk,pts){const king=!!vk&&vk===G.king&&!!kk&&kk!==vk;if(G.rule==='gold')pts=0;else if(king&&scoring())pts=(pts|0)+KING_BONUS;if(G.rule==='escape'){pts=escSideKey(vk)==='r'?ESC_KILL_PTS:0;
+  if(pts&&G.esc&&G.mode==='host'&&scoring()&&kk&&kk!==vk&&kk!==myKey)G.esc.caught.set(kk,(G.esc.caught.get(kk)|0)+pts);}
   const ev=[++G.evSeq,cleanName(kn),cleanName(vn),String(kk||'').slice(0,24),String(vk||'').slice(0,24),Math.max(0,pts|0),king?1:0];
   G.events.push(ev);if(G.events.length>8)G.events.shift();processEvent(ev);}
 function processEvent(ev){if(!Array.isArray(ev)||typeof ev[0]!=='number'||ev[0]<=G.lastEv)return;G.lastEv=ev[0];
   const vn=cleanName(ev[2])||t('noname'),kn=cleanName(ev[1]),kk=String(ev[3]||''),vk=String(ev[4]||''),now=performance.now();
   if(kk&&vk&&kk!==vk)killFx(kk,vk,now);
   /* whoever simulates the killer banks the stolen points */
-  const gain=G.rule==='gold'?0:Math.min(1e6,Math.max(0,ev[5]|0))+KILL_PTS;let got=0;
+  const gain=G.rule==='gold'?0:G.rule==='escape'?clamp(ev[5]|0,0,ESC_KILL_PTS):Math.min(1e6,Math.max(0,ev[5]|0))+KILL_PTS;let got=0;
   if(scoring()&&kk&&kk!==vk&&(kk===myKey||(G.auth&&kk[0]==='b'))){G.sc.set(kk,(G.sc.get(kk)||0)+gain);if(kk===myKey)got=gain;}
   if(G.mode==='host'&&kk&&kk!==vk&&kk!==myKey&&kk[0]==='p'){const g=guestByKey(kk);if(g){g.kills++;if(scoring())g.ub+=gain;}}
   const mine=kk===myKey&&vk!==myKey&&!G.round.over,kingKill=ev[6]===1&&!!kk&&kk!==vk;
@@ -5828,7 +6037,8 @@ function stepOwned(dt,now){
     else if(s.kind==='c'){if(now>s.expireAt){killOwned(s,'','',now);continue;}if((s.thinkT-=dt)<=0){s.thinkT=0.08;cloneThink(s,now);}}
     s.chill=chilled(s);
     const beforeMass=s.mass;s.step(dt,now);s.buildBody();if(s===G.me&&s.boosting)missionAdd('boost',dt);
-    if(s.boosting&&!s.free&&!act(s,'turbo',now)){const spent=Math.max(0,beforeMass-s.mass);if(scoring()&&s.kind!=='c'&&G.rule!=='gold')G.sc.set(s.key,Math.max(0,(G.sc.get(s.key)||0)-spent));
+    if(G.rule==='escape'&&escStep(s,now))continue;
+    if(s.boosting&&!s.free&&!act(s,'turbo',now)){const spent=Math.max(0,beforeMass-s.mass);if(scoring()&&s.kind!=='c'&&G.rule!=='gold'&&G.rule!=='escape')G.sc.set(s.key,Math.max(0,(G.sc.get(s.key)||0)-spent));
       while(s.dropT>=2){s.dropT-=2;const b=s.body;lineDrops([b[b.length-2],b[b.length-1]],2,s.skin,now,s.key);}}
     if(s.kind==='b'){if(s.mass>BOT_MASS_CAP)s.mass-=(s.mass-BOT_MASS_CAP)*BOT_MASS_DECAY*dt;if(G.botTax&&s.mass>300)s.mass-=(s.mass-300)*G.botTax*dt;}
     if(s.boosting&&Math.random()<dt*20){const b=s.body;burst(b[b.length-2],b[b.length-1],s.r*0.6,1,skinMain(SKINS[s.skin]),40,500,s.r*0.9,0.3);}
@@ -5856,12 +6066,29 @@ function hostUpkeep(now){
     if(pools.length){const o=pools[(Math.random()*pools.length)|0];erupt(o,now);pushFx(['E',o.i],now);}}}
 /* gold rush: a vein of coins every 15 s (every 9 s in the last minute), plus a trickle of single coins */
 function goldUpkeep(now){if(now>G.trickleT){G.trickleT=now+2200;for(let k=0;k<2;k++){const p=goldSpot(G.zr*0.85);addDrop(p.x,p.y,GOLD_V,GOLD_C,now);}}
-  if(now<G.goldT)return;G.goldT=now+(G.round.end-now<60000?9000:GOLD_VEIN_EVERY);const p=goldSpot(G.zr*0.7);
-  for(let k=0;k<GOLD_VEIN_N;k++){const a=Math.random()*TAU,d=30+Math.sqrt(Math.random())*170;addDrop(p.x+Math.cos(a)*d,p.y+Math.sin(a)*d,GOLD_V,GOLD_C,now);}
+  if(now<G.goldT)return;G.goldT=now+(G.round.end-now<60000?9000:GOLD_VEIN_EVERY);const p=goldVeinSpot();
+  for(let k=0;k<GOLD_VEIN_N;k++){const a=Math.random()*TAU,d=30+Math.sqrt(Math.random())*170;addDrop(p.x+Math.cos(a)*d,p.y+Math.sin(a)*d,GOLD_V,GOLD_C,now,false,'vein');}
   pushFx(['V',Math.round(p.x),Math.round(p.y)],now);goldVein(p.x,p.y,now);}
-function goldSpot(lim){for(let k=0;k<30;k++){const a=Math.random()*TAU,d=Math.sqrt(Math.random())*lim,x=Math.cos(a)*d,y=Math.sin(a)*d;if(!inSolid(x,y,60))return {x,y};}return {x:0,y:0};}
-/* every phone: a toast, a ring on the ground and a pulsing mark on the minimap */
-function goldVein(x,y,now){G.vein={x,y,t:now};vfx('ring',{x,y,col:[1,0.82,0.2],r0:30,r1:260,dur:900});if(G.mode!=='demo'&&G.me)toast(t('goldVein'));}
+function goldSpot(lim){for(let k=0;k<30;k++){const a=Math.random()*TAU,d=Math.sqrt(Math.random())*lim,x=G.zx+Math.cos(a)*d,y=G.zy+Math.sin(a)*d;if(!inSolid(x,y,60))return {x,y};}return {x:G.zx,y:G.zy};}
+/* a vein comes up a short run (1000 to 2000, 5 to 10 s) from one of the players, each in turn, so everyone has one to go for */
+function goldVeinSpot(){const hs=[];if(G.me&&G.me.alive)hs.push(G.me);for(const v of remote)if(v.kind==='p'&&v.alive)hs.push(v);
+  if(hs.length){const h=hs[(G.veinN=(G.veinN|0)+1)%hs.length];
+    for(let k=0;k<30;k++){const a=Math.random()*TAU,d=1000+Math.random()*1000,x=h.x+Math.cos(a)*d,y=h.y+Math.sin(a)*d;
+      if(Math.hypot(x-G.zx,y-G.zy)>G.zr*0.82||inSolid(x,y,80))continue;
+      if(G.obstacles.some(o=>(o.meta.zone==='burn'||o.meta.grav)&&Math.hypot(x-o.x,y-o.y)<o.r*(o.meta.grav||1)+120))continue;
+      return {x,y};}}
+  return goldSpot(G.zr*0.7);}
+/* every phone: a toast, a ring on the ground, and the vein joins the list the arrow and the minimap follow */
+const VEIN_R=300;
+function goldVein(x,y,now){G.vein={x,y,t:now};const vs=G.veins||(G.veins=[]);vs.push({x,y,t:now,n:GOLD_VEIN_N});if(vs.length>8)vs.shift();
+  vfx('ring',{x,y,col:[1,0.82,0.2],r0:30,r1:260,dur:900});if(G.mode!=='demo'&&G.me&&G.me.alive)toast(t('goldVein'));}
+/* coins left in each vein, counted a few times a second; a vein whose coins are gone (or that is older than its coins) leaves
+   the list. A vein seen through the network may arrive before its coins do, so a young one keeps its count for a moment */
+function veinScan(now){const vs=G.veins;if(!vs||!vs.length||now<(G.veinScanT||0))return;G.veinScanT=now+400;
+  for(const v of vs)v.c=0;
+  for(const d of G.drops.values()){if(d.c!==GOLD_C)continue;for(const v of vs){const dx=d.x-v.x,dy=d.y-v.y;if(dx*dx+dy*dy<VEIN_R*VEIN_R){v.c++;break;}}}
+  for(const v of vs)if(now-v.t>1500||v.c>0)v.n=v.c;
+  G.veins=vs.filter(v=>(v.n>0||now-v.t<3000)&&now-v.t<95000);}
 function erupt(o,now){if(G.auth)for(let k=0;k<9;k++){const a=Math.random()*TAU,d=o.r+50+Math.random()*160;addDrop(o.x+Math.cos(a)*d,o.y+Math.sin(a)*d,4+Math.random()*5,[1,2,8][(Math.random()*3)|0],now);}
   vfx('erupt',{x:o.x,y:o.y,r:o.r,dur:1100});burst(o.x,o.y,20,40,[1,0.5,0.1],420,1100,16,2.4);}
 
@@ -5961,8 +6188,13 @@ function botThink(b,now){const T=tierOf(b),hx=b.x,hy=b.y,r=b.r,dc=Math.hypot(hx-
     const a=Math.atan2(hy-zone.y,hx-zone.x)+(Math.hypot(hx-zone.x,hy-zone.y)<zone.r*1.3?nav.side*0.65:0),d=zone.r*(0.6+0.05*((ix>>2)%5));
     if(!nav.goal||nav.goal.kind!=='control'){nav.goal={kind:'control',phase:zone.phase,cx:zone.x,cy:zone.y,cr:zone.r,travel:0,px:hx,py:hy};nav.checkAt=now+4000;nav.checkX=hx;nav.checkY=hy;}
     nav.goal.x=zone.x+Math.cos(a)*d;nav.goal.y=zone.y+Math.sin(a)*d;nav.goal.until=zone.end;}
+  if(b.hunter&&(!nav.goal||nav.goal.kind!=='return')){const prey=escPrey(b);
+    if(prey){const ca=Math.cos(prey.angle),sa=Math.sin(prey.angle),pd=Math.hypot(prey.x-hx,prey.y-hy);
+      if(nav.preyKey!==prey.key){nav.preyKey=prey.key;nav.huntSide=(hx-prey.x)*-sa+(hy-prey.y)*ca>=0?1:-1;}
+      const lead=clamp(160+pd*0.3,200,520),side=nav.huntSide*(r+prey.r+90);
+      nav.goal={kind:'hunt',ref:prey,x:prey.x+ca*lead-sa*side,y:prey.y+sa*lead+ca*side,until:now+3000};nav.forceUntil=0;}}
   const hard=b.tier===2;
-  if((!nav.goal||(nav.goal.kind!=='return'&&nav.goal.kind!=='control'))&&now>=nav.forceUntil&&T.hunt>0&&b.mass>30&&(hard||b.aggr<T.hunt)){
+  if(!b.hunter&&(!nav.goal||(nav.goal.kind!=='return'&&nav.goal.kind!=='control'))&&now>=nav.forceUntil&&T.hunt>0&&b.mass>30&&(hard||b.aggr<T.hunt)){
     let prey=nav.goal&&nav.goal.kind==='hunt'?nav.goal.ref:null,pd=prey?Math.hypot(prey.x-hx,prey.y-hy):T.huntR;
     if(!prey)for(const o of all){if(o===b||!o.alive||o.owner===b.owner||o.kind==='c'||sameTeam(b,o)||(o.fl&(F.ghost|F.hide|F.blink|F.shield)))continue;
       const d=Math.hypot(o.x-hx,o.y-hy);if(d<pd&&b.mass>o.mass*(hard?0.7:0.9)){prey=o;pd=d;}}
@@ -5977,7 +6209,7 @@ function botThink(b,now){const T=tierOf(b),hx=b.x,hy=b.y,r=b.r,dc=Math.hypot(hx-
       if(s>bs){bs=s;best={kind,ref:o,slot,x:o.x,y:o.y,until:now+4000};}};
     if(!G.easy&&G.items.size){const IL=itemList();for(let q=0;q<IL.length;q++){const it=IL[q];choose(it,'item',(ITEMS[it.t].kind==='weapon'&&b.weapon?3:7)*T.items,T.itemR);}}
     const nf=foodNear(hx,hy,550,botFood);for(let q=0;q<nf;q++){const i=botFood[q];choose(food[i],'food',food[i].v,550,i);}
-    const nd=dropsNear(hx,hy,650,botDrops);for(let q=0;q<nd;q++){const d=botDrops[q];botDrops[q]=null;if(d.by!==b.key)choose(d,'drop',d.c===GOLD_C?d.v*9:d.v*1.4,650);}
+    const nd=dropsNear(hx,hy,650,botDrops);for(let q=0;q<nd;q++){const d=botDrops[q];botDrops[q]=null;if(d.by!==b.key&&!(d.by==='vein'&&now-d.born<GOLD_FRESH))choose(d,'drop',d.c===GOLD_C?d.v*9:d.v*1.4,650);}
     nav.goal=best||botRoamGoal(b,now);}
   /* Even a rich food patch cannot keep a bot in the same little circle forever. */
   if(now>=nav.roamAt&&nav.goal.kind!=='return'&&nav.goal.kind!=='hunt'&&nav.goal.kind!=='roam'&&nav.goal.kind!=='control'){
@@ -6180,6 +6412,7 @@ function handlePeer(p,now){const pr=p.presence;if(!pr||typeof pr!=='object')retu
   if(G.mode==='guest'&&host){G.rule=ruleOf(pr.rl);if(pr.du)duelSync(pr.du);
     if(Array.isArray(pr.ts)&&pr.ts.length===2)G.teamSc=[clamp(pr.ts[0]|0,0,1e8),clamp(pr.ts[1]|0,0,1e8)];}
   if(G.mode==='guest'&&host&&Array.isArray(pr.rd))syncRound(pr.rd,now);
+  if(G.mode==='guest'&&host&&pr.es&&G.rule==='escape')escSync(pr.es);
   if((pr.ri|0)!==G.round.id)return;
 
   if(pr.me){const n=decNet(pr.me,false);if(n){n.k='p'+id;n.o=n.k;
@@ -6211,7 +6444,7 @@ function processHits(st,arr,now,peer){if(st.hitSeen<0){st.hitSeen=maxSeq(arr);re
   for(const h of sortedNew(arr,st.hitSeen)){st.hitSeen=h[0];
     const key=safeKey(h[1]),life=h[2]|0,kind=String(h[3]||'').slice(0,1),f=clamp((h[4]|0)/1000,0,1),ao=safeKey(h[5]),an=cleanName(h[6]),sid=h[7]|0,x=+h[8]||0,y=+h[9]||0;
     if(sid)for(const pj of G.projs)if(!pj.own&&pj.peer===peer&&pj.sid===sid)pj.endD=clamp(Math.hypot(x-pj.x0,y-pj.y0),0,pj.maxD);
-    const tgt=ownedByKey(key);if(tgt&&G.rule==='team'&&teamOfKey(ao)===teamOf(tgt))continue;
+    const tgt=ownedByKey(key);if(tgt&&sameSide(ao,keyOf(tgt)))continue;
     if(tgt&&tgt.life===life&&hitPlausible(st,tgt,kind,sid,ao,x,y,now))applyHit(tgt,kind,f,ao,an,now,x,y);
     else if(!sid)impactFx(x,y,kind);}}
 /* the weapon was really used where the report says (a shot, bolt or blast that phone announced), the giant really was big
@@ -6244,8 +6477,9 @@ function processFx(st,arr,now,peer){if(G.round.over)return;
       case 'H':{const x=+e[2]||0,y=+e[3]||0;vfx('ring',{x,y,col:[1,0.3,0.42],r0:20,r1:200,dur:600});burst(x,y,20,26,[1,0.35,0.45],260,700,12,1);break;}
       case 'E':{const o=G.obstacles[e[2]|0];if(o&&o.type==='lava')erupt(o,now);break;}
       case 'U':{const o=G.obstacles[e[2]|0];if(o)vfx('bump',{i:o.i,dur:500});break;}
-      case 'V':if(G.rule==='gold'&&peer===hostPeer)goldVein(+e[2]||0,+e[3]||0,now);break;}}}
-function ingestHostS(pr){if(pr.rl)G.rule=ruleOf(pr.rl);if(pr.du)duelSync(pr.du);if(Array.isArray(pr.rd))syncRound(pr.rd,performance.now());if(!Array.isArray(pr.ev))return;const evs=pr.ev.filter(e=>Array.isArray(e)&&typeof e[0]==='number').slice(-8);
+      case 'V':if(G.rule==='gold'&&peer===hostPeer)goldVein(+e[2]||0,+e[3]||0,now);break;
+      case 'Q':if(G.rule==='escape'&&G.mode==='host'&&st.info&&st.info.key)escClaim(st.info.key,+e[2]||0,+e[3]||0,st,now);break;}}}
+function ingestHostS(pr){if(pr.rl)G.rule=ruleOf(pr.rl);if(pr.du)duelSync(pr.du);if(Array.isArray(pr.rd))syncRound(pr.rd,performance.now());if(pr.es&&G.rule==='escape')escSync(pr.es);if(!Array.isArray(pr.ev))return;const evs=pr.ev.filter(e=>Array.isArray(e)&&typeof e[0]==='number').slice(-8);
   if(!G.evInit){G.evInit=true;for(const e of evs)if(e[0]>G.lastEv)G.lastEv=e[0];return;}for(const e of evs)processEvent(e);}
 /* a guest's "I ate this": only within reach of where that guest's head was lately; returns the score it is worth */
 function applyToken(tk,now,who){if(typeof tk!=='string'||tk.length>12)return 0;
@@ -6335,7 +6569,7 @@ function sendS(now){const me=G.me,host=G.mode==='host';
     /* presence updates are merged, so the host always sends fb (even empty) or an old list would linger */
     if(host)o.fb=fb;
     o.st=[G.round.id,Math.round(G.sc.get(myKey)||0),G.rs.kills,G.rs.deaths,Math.floor(G.rs.best)];o.ck=KFX_ID[prof.kfx]|0;o.em=G.myEmo&&now-G.myEmo.t<3000?[G.myEmo.seq,G.myEmo.i]:null;
-    if(host){o.sd=G.seed;o.mp=G.map;o.rl=G.rule;if(G.rule==='team')o.ts=G.teamSc.map(v=>Math.round(v));if(G.rule==='duel'&&G.duel)o.du=duelPack();o.ev=G.events.slice(-6);o.rd=[G.round.id,G.round.end?Math.max(0,Math.round(G.round.end-now)):-1,G.round.over?1:0,G.roomDur||0];
+    if(host){o.sd=G.seed;o.mp=G.map;o.rl=G.rule;if(G.rule==='team')o.ts=G.teamSc.map(v=>Math.round(v));if(G.rule==='duel'&&G.duel)o.du=duelPack();if(G.rule==='escape'&&G.esc)o.es=escPack(now);o.ev=G.events.slice(-6);o.rd=[G.round.id,G.round.end?Math.max(0,Math.round(G.round.end-now)):-1,G.round.over?1:0,G.roomDur||0];
       if(G.round.over&&G.round.rows)o.rd.push([G.round.total,G.round.rows.filter(r=>r.rank<=5||r.key[0]==='p').map(r=>[r.key,r.name,netSkin(r.skin),r.score,r.kills,r.alive?1:0,r.rank])]);
     }else{o.e=myEats.map(e=>e.k);o.dl=dlList();o.dd=G.dd;}
     bytes=utf8len(JSON.stringify(o));if(bytes<=PRES_LIMIT)break;
@@ -7430,14 +7664,32 @@ function warmStep(){if(warmDone||!R3.ready)return;
       if(!(MESH_POOL.get(i)||[]).length){const m=new SnakeMesh(i);m.bake();m.root.visible=false;releaseMesh(m);}}
     renderer.compile(scene,camera);}catch(e){warmDone=true;return;}
   if(!warmQ.length)warmDone=true;}
-let controlMesh=null;
-function drawControl(now){const zone=controlZone(now);if(!zone){if(controlMesh)controlMesh.visible=false;return;}
-  if(!controlMesh){controlMesh=new THREE.Group();const base=new THREE.Mesh(new THREE.CircleGeometry(1,48),new THREE.MeshBasicMaterial({color:0xffd45b,transparent:true,opacity:0.11,depthWrite:false,side:THREE.DoubleSide}));
-    const ring=new THREE.Mesh(new THREE.RingGeometry(0.96,1,64),new THREE.MeshBasicMaterial({color:0xffd45b,transparent:true,opacity:0.85,depthWrite:false,side:THREE.DoubleSide}));
-    base.rotation.x=ring.rotation.x=-Math.PI/2;base.renderOrder=ring.renderOrder=2;controlMesh.add(base,ring);scene.add(controlMesh);}
-  controlMesh.visible=true;controlMesh.position.set(zone.x,3,zone.y);controlMesh.scale.setScalar(zone.r);
+let controlMesh=null,controlNextMesh=null,escMesh=null;
+/* the exit: a green ring with a turning dashed ring inside and a column of light you can see from a little way off */
+function drawEscape(now){const on=G.rule==='escape'&&!!G.round.end&&!G.tutWorld&&G.mode!=='demo'&&!!G.esc;if(!on){if(escMesh)escMesh.visible=false;return;}
+  const P=escPoints();
+  if(!escMesh){escMesh=new THREE.Group();const mat=(c,o)=>new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:o,depthWrite:false,side:THREE.DoubleSide});
+    const base=new THREE.Mesh(new THREE.CircleGeometry(1,48),mat(0x3ddc97,0.2)),ring=new THREE.Mesh(new THREE.RingGeometry(0.9,1,64),mat(0x1fbf7a,0.95));
+    base.rotation.x=ring.rotation.x=-Math.PI/2;base.renderOrder=ring.renderOrder=2;
+    const beam=new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.62,1,32,1,true),mat(0x22c58b,0.22));beam.scale.y=520;beam.position.y=260;beam.renderOrder=3;
+    escMesh.add(base,ring,dashRing(20,0.62,0.72,0x1fbf7a,0.85),beam);scene.add(escMesh);}
+  escMesh.visible=true;escMesh.position.set(P.ex,3,P.ey);escMesh.scale.set(ESC_EXIT_R,1,ESC_EXIT_R);escMesh.children[2].rotation.y=now*0.0007;
+  escMesh.children[1].material.opacity=0.75+0.2*Math.sin(now*0.005);escMesh.children[3].material.opacity=0.16+0.08*Math.sin(now*0.003);}
+/* a ring of short dashes on the ground (one material; the group turns as a whole) */
+function dashRing(n,r0,r1,col,op){const grp=new THREE.Group(),mat=new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:op,depthWrite:false,side:THREE.DoubleSide});
+  for(let k=0;k<n;k++){const m=new THREE.Mesh(new THREE.RingGeometry(r0,r1,4,1,k*TAU/n,TAU/n*0.55),mat);m.rotation.x=-Math.PI/2;m.renderOrder=2;grp.add(m);}return grp;}
+function drawControl(now){const zone=controlZone(now),nx=zone?controlNext(now):null;
+  if(!zone){if(controlMesh)controlMesh.visible=false;if(controlNextMesh)controlNextMesh.visible=false;return;}
+  if(!controlMesh){controlMesh=new THREE.Group();const base=new THREE.Mesh(new THREE.CircleGeometry(1,48),new THREE.MeshBasicMaterial({color:0xffd45b,transparent:true,opacity:0.16,depthWrite:false,side:THREE.DoubleSide}));
+    const ring=new THREE.Mesh(new THREE.RingGeometry(0.93,1,64),new THREE.MeshBasicMaterial({color:0xffd45b,transparent:true,opacity:0.9,depthWrite:false,side:THREE.DoubleSide}));
+    base.rotation.x=ring.rotation.x=-Math.PI/2;base.renderOrder=ring.renderOrder=2;controlMesh.add(base,ring,dashRing(24,0.78,0.84,0xffd45b,0.75));scene.add(controlMesh);}
+  controlMesh.visible=true;controlMesh.position.set(zone.x,3,zone.y);controlMesh.scale.setScalar(zone.r);controlMesh.children[2].rotation.y=now*0.0005;
   const state=G.controlState,col=state&&state.count>1?0xff766d:state&&state.holder?0x7ee6bb:0xffd45b;
-  for(const child of controlMesh.children)child.material.color.setHex(col);controlMesh.children[1].material.opacity=0.7+0.2*Math.sin(now*0.004);}
+  controlMesh.traverse(o=>{if(o.material)o.material.color.setHex(col);});controlMesh.children[1].material.opacity=0.75+0.2*Math.sin(now*0.004);
+  if(nx){if(!controlNextMesh){controlNextMesh=dashRing(32,0.94,1,0xff9f1a,0.9);scene.add(controlNextMesh);}
+    controlNextMesh.visible=true;controlNextMesh.position.set(nx.x,3,nx.y);controlNextMesh.scale.setScalar(nx.r);controlNextMesh.rotation.y=-now*0.0004;
+    controlNextMesh.children[0].material.opacity=0.55+0.4*Math.abs(Math.sin(now*0.005));}
+  else if(controlNextMesh)controlNextMesh.visible=false;}
 /* outlined names are drawn once into small bitmaps and reused: stroking dozens of names every frame was slow on phones */
 const LBL=new Map();let lblDpr=0;
 function labelBitmap(text,font,fill,stroke,lw){const dpr=Math.min(2,window.devicePixelRatio||1);if(dpr!==lblDpr){LBL.clear();lblDpr=dpr;}
@@ -7449,6 +7701,32 @@ function labelBitmap(text,font,fill,stroke,lw){const dpr=Math.min(2,window.devic
   if(LBL.size>360){let n=0;for(const [kk,v] of LBL)if(frameNo-v.used>120&&n++<120)LBL.delete(kk);if(LBL.size>360)LBL.clear();}
   return c;}
 function drawLabel(g,text,font,fill,stroke,lw,x,y){if(!text)return;const c=labelBitmap(text,font,fill,stroke,lw),d=lblDpr||1;g.drawImage(c.m,Math.round((x-c.w/2)*d)/d,Math.round((y-c.h/2)*d)/d,c.w,c.h);}
+/* the way to the objective: an arrow circling your head (gold, orange for the next control zone) with the distance beside it,
+   and a pin standing over the spot once it is on screen. The direction comes from a short step toward the target, so a target
+   far behind the camera never flips the arrow */
+let hudRects=[],hudRectsT=0;
+function topPanels(now){if(now>hudRectsT){hudRectsT=now+500;hudRects=[];for(const sel of ['.stats','#board','#mini']){const e=document.querySelector(sel);if(!e||e.offsetParent===null)continue;const r=e.getBoundingClientRect();if(r.width&&r.height)hudRects.push(r);}}return hudRects;}
+function drawObjective(g,now,me){if(!me||G.round.over||G.tutWorld)return;const tg=objTarget(me,now);if(!tg)return;
+  const dx=tg.x-me.x,dy=tg.y-me.y,d=Math.hypot(dx,dy);if(d<tg.r*0.8)return;
+  const next=tg.kind==='next',col=next?'#ff9f1a':tg.kind==='exit'?'#3ddc97':tg.kind==='prey'?'#ff5d5d':'#ffd23f',
+    icon=tg.kind==='gold'?'\u{1F4B0}':tg.kind==='exit'?'\u{1F6AA}':tg.kind==='prey'?'\u{1F3C3}':'\u{1F3AF}',dist=t('meters',{d:Math.round(Math.max(0,d-(tg.kind==='exit'?tg.r:0))/10)});
+  g.save();g.lineJoin='round';
+  const pin=proj(tg.x,30,tg.y);
+  if(pin.ok&&pin.sx>26&&pin.sx<VW-26&&pin.sy>120&&pin.sy<VH-160){if(tg.kind==='prey'){g.restore();return;}
+    const y=pin.sy-40+Math.sin(now*0.005)*5;g.lineWidth=3;g.strokeStyle='rgba(5,8,16,.75)';g.fillStyle=col;
+    g.beginPath();g.moveTo(pin.sx,y+28);g.lineTo(pin.sx-9,y+10);g.lineTo(pin.sx+9,y+10);g.closePath();g.stroke();g.fill();
+    g.beginPath();g.arc(pin.sx,y,16,0,TAU);g.stroke();g.fill();g.font='17px '+BODY_FONT;g.fillText(icon,pin.sx,y+1);
+    if(next){g.font='800 12px '+BODY_FONT;g.lineWidth=3.5;g.strokeText(t('objNext'),pin.sx,y-26);g.fillStyle='#fff';g.fillText(t('objNext'),pin.sx,y-26);}
+    g.restore();return;}
+  const c=proj(me.x,10,me.y),ux=dx/d,uy=dy/d,p1=proj(me.x+ux*200,10,me.y+uy*200);let sx=p1.sx-c.sx,sy=p1.sy-c.sy;const sl=Math.hypot(sx,sy)||1;sx/=sl;sy/=sl;
+  const rad=clamp(Math.min(VW,VH)*0.2,70,118),pulse=1+0.08*Math.sin(now*0.008),ax=c.sx+sx*rad,ay=c.sy+sy*rad;
+  g.translate(ax,ay);g.rotate(Math.atan2(sy,sx));g.scale(pulse,pulse);g.lineWidth=3.5;g.strokeStyle='rgba(5,8,16,.75)';g.fillStyle=col;
+  g.beginPath();g.moveTo(19,0);g.lineTo(-10,-15);g.lineTo(-4,0);g.lineTo(-10,15);g.closePath();g.stroke();g.fill();g.restore();
+  const lab=(next?t('objNext'):icon)+' '+dist;g.save();g.font='800 12.5px '+BODY_FONT;
+  const w=g.measureText(lab).width+18,place=(ox,oy)=>({x:clamp(ax+ox,w/2+8,VW-w/2-8),y:clamp(ay+oy,40,VH-160)}),hits=q=>topPanels(now).some(r=>q.x+w/2>r.left-4&&q.x-w/2<r.right+4&&q.y+12>r.top-4&&q.y-12<r.bottom+4);
+  let q=place(sx*44,sy*36);if(hits(q)){const alt=place(-sx*40,-sy*32);if(!hits(alt))q=alt;}const bx=q.x,by=q.y;
+  g.fillStyle='rgba(12,16,30,.74)';g.beginPath();if(g.roundRect)g.roundRect(bx-w/2,by-12,w,24,12);else g.rect(bx-w/2,by-12,w,24);g.fill();
+  g.fillStyle=col;g.fillText(lab,bx,by+1);g.restore();}
 function drawOverlay(now){const g=octx,dpr=Math.min(2,window.devicePixelRatio||1);
   if(ovl.width!==Math.round(VW*dpr)||ovl.height!==Math.round(VH*dpr)){ovl.width=Math.round(VW*dpr);ovl.height=Math.round(VH*dpr);}
   g.setTransform(dpr,0,0,dpr,0,0);g.clearRect(0,0,VW,VH);g.textAlign='center';g.textBaseline='middle';g.lineJoin='round';
@@ -7478,7 +7756,7 @@ function drawOverlay(now){const g=octx,dpr=Math.min(2,window.devicePixelRatio||1
   G.floats=G.floats.filter(f=>now-f.t0<1100);
   for(const f of G.floats){const q=(now-f.t0)/1100,p=proj(f.x,50+q*70,f.y);if(!p.ok)continue;g.globalAlpha=q<0.75?1:(1-q)*4;
     g.font='900 '+(18+(q<0.15?(0.15-q)*40:0))+'px '+DISPLAY_FONT;g.lineWidth=4;g.strokeStyle='rgba(10,10,20,.75)';g.strokeText(f.text,p.sx,p.sy);g.fillStyle=f.col;g.fillText(f.text,p.sx,p.sy);}
-  g.globalAlpha=1;
+  g.globalAlpha=1;drawObjective(g,now,me);
   if(me)for(const s of all){if(s.kind!=='p'||s===G.me||!s.alive||(s.fl&F.ghost))continue;const p=proj(s.x,10,s.y);
     if(p.ok&&p.sx>0&&p.sx<VW&&p.sy>0&&p.sy<VH)continue;const c=proj(me.x,10,me.y),ang=Math.atan2(p.sy-c.sy,p.sx-c.sx),mx=VW/2-40,my=Math.sin(ang)>0?VH/2-160:VH/2-110;
     const tt=Math.min(Math.abs(mx/(Math.cos(ang)||1e-6)),Math.abs(my/(Math.sin(ang)||1e-6))),ax=VW/2+Math.cos(ang)*tt,ay=VH/2+Math.sin(ang)*tt;
@@ -7487,7 +7765,7 @@ function drawOverlay(now){const g=octx,dpr=Math.min(2,window.devicePixelRatio||1
     g.font='700 11px '+BODY_FONT;g.lineWidth=3;g.strokeStyle='rgba(5,8,16,.7)';const lab=s.name+' '+t('meters',{d:Math.round(Math.hypot(s.x-me.x,s.y-me.y)/10)});g.strokeText(lab,ax-Math.cos(ang)*30,ay-Math.sin(ang)*22);g.fillStyle='#fff';g.fillText(lab,ax-Math.cos(ang)*30,ay-Math.sin(ang)*22);}}
 R3.frame=function(now,dt,realDt){VW=window.innerWidth;VH=window.innerHeight;updateCamera(dt,now);
   const sc=(VH*R3.pixelRatio)/(2*TAN_HALF);foodMat.uniforms.uTime.value=now/1000;foodMat.uniforms.uScale.value=sc;partMat.uniforms.uScale.value=sc;
-  shadowsBegin();drawControl(now);
+  shadowsBegin();drawControl(now);drawEscape(now);
   for(const s of all){if(!s.alive||(s.remote&&s.body.length<4))continue;const m=s.r*2+60;if(s.maxx<V.x0-m||s.minx>V.x1+m||s.maxy<V.y0-m||s.miny>V.y1+m)continue;
     meshFor(s).update(s,now,dt,1,s===G.me);if(!(s.fl&(F.ghost|F.hide))||s===G.me)shadowSnake(s);}
   for(const [k,sm] of snakeMeshes)if(sm.seen!==now){sm.root.visible=false;if(now-sm.seen>3000){releaseMesh(sm);snakeMeshes.delete(k);}}
@@ -8036,13 +8314,13 @@ function markDur(){[...dursEl.children].forEach(b=>b.setAttribute('aria-checked'
 markDur();
 /* quick match length, picked right under the Play button */
 const qdursEl=$('#qdurs');
-function markQdur(){[...qdursEl.children].forEach(b=>b.setAttribute('aria-checked',String(+b.dataset.d===prof.qdur)));qdursEl.hidden=prof.rule==='duel';
-  const r=prof.rule,m=Math.round((prof.qdur||180000)/60000);
+function markQdur(){[...qdursEl.children].forEach(b=>b.setAttribute('aria-checked',String(+b.dataset.d===prof.qdur)));qdursEl.hidden=prof.rule==='duel'||prof.rule==='escape';
+  const r=prof.rule,m=r==='escape'?Math.round(ESC_ROUND/60000):Math.round((prof.qdur||180000)/60000);
   $('#playSub').textContent=r==='duel'?t('mode.duel')+' · '+t('duelBest'):r!=='classic'&&(CLOCKED.has(r)||prof.qdur)?t('mode.'+r)+' · '+t('durMin',{m}):r==='frenzy'?t('mode.frenzy')+' · '+t('playSubInf'):prof.qdur?t('playSub',{m}):t('playSubInf');}
 [...qdursEl.children].forEach(b=>b.addEventListener('click',()=>{prof.qdur=+b.dataset.d;saveProf();markQdur();}));
 markQdur();
-const RULE_TIP={classic:'ruleClassicTip',control:'ruleControlTip',gold:'ruleGoldTip',team:'ruleTeamTip',frenzy:'ruleFrenzyTip',duel:'ruleDuelTip'};
-function markRule(){for(const b of $('#rules').children)b.setAttribute('aria-checked',String(b.dataset.rule===prof.rule));$('#ruleTip').textContent=t(RULE_TIP[prof.rule]||'ruleClassicTip');markQdur();}
+const RULE_TIP={classic:'ruleClassicTip',control:'ruleControlTip',gold:'ruleGoldTip',team:'ruleTeamTip',frenzy:'ruleFrenzyTip',duel:'ruleDuelTip',escape:'ruleEscapeTip'};
+function markRule(){for(const b of $('#rules').children)b.setAttribute('aria-checked',String(b.dataset.rule===prof.rule));{const nb=$('#rules .mode-new');if(nb)nb.hidden=!!(prof.intro&&prof.intro.escape);}$('#ruleTip').textContent=t(RULE_TIP[prof.rule]||'ruleClassicTip');markQdur();}
 for(const b of $('#rules').children)b.addEventListener('click',()=>{prof.rule=ruleOf(b.dataset.rule);saveProf();markRule();});
 langHooks.push(markRule);markRule();
 /* long mode names shrink a little instead of being cut (Portuguese "Mina de Ouro" on a 390 px phone) */
@@ -8088,7 +8366,7 @@ function buildGuide(){const el=$('#guide');el.textContent='';
   sec(t('gMaps'));MAPS.forEach((m,i)=>{const d=document.createElement('div');d.className='gm';const c=document.createElement('canvas');c.width=128;c.height=84;drawMapPreview(c,i);
     const tx=document.createElement('div'),b=document.createElement('b'),s=document.createElement('span');b.textContent=m.name;s.textContent=m.tip;s.style.cssText='display:block;color:var(--muted);font-size:13px;line-height:1.45';tx.append(b,s);d.append(c,tx);el.append(d);});
   sec(t('gHow'));const ul=document.createElement('ul');ul.className='howto';
-  for(const k of ['how1','how2','how3','how7','how9','how8','how4','how5','how6','ruleControlTip']){const li=document.createElement('li');li.innerHTML=t(k);ul.append(li);}el.append(ul);}
+  for(const k of ['how1','how2','how3','how7','how9','how8','how4','how5','how6','ruleControlTip','ruleEscapeTip']){const li=document.createElement('li');li.innerHTML=t(k);ul.append(li);}el.append(ul);}
 buildGuide();
 $('#btnGuide').addEventListener('click',()=>{guideSheet.hidden=false;});
 $('#btnTutAgain').addEventListener('click',()=>{guideSheet.hidden=true;startTutorial();});
@@ -8141,7 +8419,7 @@ async function hostRoom(pub){pub=pub===true;if((!STANDALONE&&!ROOM)||busy)return
   if(prof.rule==='duel'){duelReset();G.duel.warm=true;}
   resetWorld(true,newSeed(),pickMap(),{rule:prof.rule,bots:1});G.mode='host';G.code=code;
   /* a public room plays 3-minute rounds, like a quick match */
-  G.roomDur=G.rule==='duel'?DUEL_ROUND:pub?180000:CLOCKED.has(G.rule)?(prof.dur||180000):prof.dur;beginRound(1,performance.now());
+  G.roomDur=G.rule==='duel'?DUEL_ROUND:G.rule==='escape'?ESC_ROUND:pub?180000:CLOCKED.has(G.rule)?(prof.dur||180000):prof.dur;beginRound(1,performance.now());
   try{await enterRooms(code);}catch(e){busy=false;goLobby(t('createFail',{e:errText(e)}));return;}
   busy=false;if(G.mode!=='host')return;startGame('host');lobbyPresence();QM.pub=pub;if(pub)qmReport();}
 /* qm: a quick-match try. It reports failure (false) instead of going back to the lobby, so the next room can be tried */
@@ -8163,8 +8441,8 @@ function startQuick(){if(!prof.qdur&&!CLOCKED.has(prof.rule)){startSolo();return
   /* the map the player picked; on Random the gentle first match uses the plain arena */
   const map=prof.map>=0?prof.map:(easy?0:(Math.random()*MAPS.length)|0);
   if(prof.rule==='duel')duelReset();
-  resetWorld(true,newSeed(),map,{easy:easy&&prof.rule!=='duel',gentle,rule:prof.rule,bots:1});
-  G.mode='quick';G.code=null;G.roomDur=prof.rule==='duel'?DUEL_ROUND:(prof.qdur||180000);beginRound(1,performance.now());startGame('quick');lobbyPresence();}
+  resetWorld(true,newSeed(),map,{easy:easy&&prof.rule!=='duel'&&prof.rule!=='escape',gentle,rule:prof.rule,bots:1});
+  G.mode='quick';G.code=null;G.roomDur=prof.rule==='duel'?DUEL_ROUND:prof.rule==='escape'?ESC_ROUND:(prof.qdur||180000);beginRound(1,performance.now());startGame('quick');lobbyPresence();}
 /* brand-new players get the tutorial first; anyone who already played a match goes straight in (the guide can replay it) */
 function playMain(){if(!prof.tut&&!prof.st.games&&!prof.vet)startTutorial();else startQuick();}
 function showConnecting(msg){closeSheets();$('#connMsg').textContent=msg;lobby.hidden=true;over.hidden=true;connecting.hidden=false;}
@@ -8172,8 +8450,19 @@ let hintShown=false;
 function startGame(mode){G.mode=mode;lobby.hidden=true;connecting.hidden=true;over.hidden=true;closeSheets();hud.hidden=false;boostBtn.hidden=false;fireBtn.hidden=false;emoBtn.hidden=mode==='tut';
   hud.classList.toggle('tutmode',mode==='tut');tutBox.hidden=mode!=='tut';
   if(G.round.over){boostBtn.hidden=true;fireBtn.hidden=true;emoBtn.hidden=true;showResults();return;}
-  spawnMe(performance.now());requestWake();updateHud();if(mode!=='tut')feedLine(t('mapLine',{n:MAPS[G.map].name,tip:MAPS[G.map].tip}),false);
+  if(!introGate())spawnMe(performance.now());requestWake();updateHud();if(mode!=='tut')feedLine(t('mapLine',{n:MAPS[G.map].name,tip:MAPS[G.map].tip}),false);
   track('start',{m:mode,d:G.roomDur||0,map:G.map,e:G.easy?1:0});perfStart();}
+/* the first match of control or gold rush opens with a card on how it works; the snake appears when the player taps
+   "Got it" (the match runs on behind the card). Once seen, a mode never shows it again (prof.intro) */
+const MODE_INTRO={control:['\u{1F3AF}','intro.control.1','intro.control.2','intro.control.3'],gold:['\u{1FA99}','intro.gold.1','intro.gold.2',''],escape:['\u{1F3C3}','intro.escape.1','intro.escape.2','intro.escape.3']};
+let introOpen=false;
+function introGate(){if(!MODE_INTRO[G.rule]||G.mode==='tut'||G.mode==='demo'||!G.round.end||G.round.over||(prof.intro&&prof.intro[G.rule]))return false;
+  const m=MODE_INTRO[G.rule];$('#miIcon').textContent=m[0];$('#miName').textContent=t('mode.'+G.rule);$('#miL1').textContent=t(m[1]);$('#miL2').textContent=t(m[2]);
+  const l3=$('#miL3');l3.textContent=m[3]?t(m[3]):'';l3.hidden=!m[3];
+  $('#modeIntro').hidden=false;introOpen=true;boostBtn.hidden=true;fireBtn.hidden=true;emoBtn.hidden=true;emoBar.hidden=true;return true;}
+function hideModeIntro(){$('#modeIntro').hidden=true;introOpen=false;}
+$('#miGo').addEventListener('click',()=>{if(!introOpen)return;hideModeIntro();(prof.intro||(prof.intro={}))[G.rule]=1;saveProf();markRule();
+  if(G.mode!=='demo'&&!G.round.over&&(!G.me||!G.me.alive)&&spawnMe(performance.now()))showPlayUI();});
 /* respawn somewhere 70 to 130 metres from a friend so the two of you actually meet */
 function spotNearFriend(){const fr=remote.filter(v=>v.kind==='p'&&v.alive);if(!fr.length)return null;const f=fr[(Math.random()*fr.length)|0];
   for(let k=0;k<40;k++){const a=Math.random()*TAU,d=700+Math.random()*600,x=f.x+Math.cos(a)*d,y=f.y+Math.sin(a)*d;
@@ -8184,9 +8473,12 @@ function spotNearFriend(){const fr=remote.filter(v=>v.kind==='p'&&v.alive);if(!f
   return null;}
 /* the kill count (G.kills) belongs to the match, so a respawn keeps it; rewards count per life in G.life */
 function spawnMe(now,mass0){if(!canRespawn(now,true)){boostBtn.hidden=true;fireBtn.hidden=true;emoBtn.hidden=true;toast(t('eliminated'));return false;}gather();
-  const p=G.rule==='duel'?duelSpot(myKey):((G.mode==='host'||G.mode==='guest')&&spotNearFriend())||safeSpot(),life=(G.me?G.me.life:0)+1;
-  G.me=new Snake({key:myKey,name:prof.name,skin:prof.skin,accessory:prof.accessory,trail:TRAIL_ID[prof.trail]|0,kind:'p',owner:myKey,x:p.x,y:p.y,angle:Math.atan2(G.zy-p.y,G.zx-p.x)+(Math.random()-.5),mass:mass0||10,life});
+  const es=G.rule==='escape'&&G.mode!=='tut'&&G.esc?escSpawn(now):null,cs=G.rule==='control'&&G.mode!=='tut'?controlSpot(now):null,
+    p=G.rule==='duel'?duelSpot(myKey):es||cs||((G.mode==='host'||G.mode==='guest')&&spotNearFriend())||safeSpot(),life=(G.me?G.me.life:0)+1;
+  const face=es?es.a:cs?Math.atan2(cs.ty-p.y,cs.tx-p.x)+(Math.random()-.5)*0.4:Math.atan2(G.zy-p.y,G.zx-p.x)+(Math.random()-.5);
+  G.me=new Snake({key:myKey,name:prof.name,skin:prof.skin,accessory:prof.accessory,trail:TRAIL_ID[prof.trail]|0,kind:'p',owner:myKey,x:p.x,y:p.y,angle:face,mass:mass0||10,life});
   if(G.rule==='frenzy'&&G.mode!=='tut')G.me.weapon={t:IT.zap+((Math.random()*6)|0),n:2};
+  if(es)escMeReady(G.me,es,now);
   G.me.invulnT=now+3000;G.watchKey=null;$('#spectatorBar').hidden=true;resetInput();inp.ang=G.me.angle;G.bestRank=Infinity;cam.x=p.x;cam.y=p.y;cam.lx=0;cam.ly=0;fireState='';G.deathCause='';G.lastLost=0;
   /* a little pop where you appear (the view box moves with the camera now, so the effect is not culled) */
   V.x0=p.x-2000;V.x1=p.x+2000;V.y0=p.y-2000;V.y1=p.y+2000;
@@ -8194,7 +8486,7 @@ function spawnMe(now,mass0){if(!canRespawn(now,true)){boostBtn.hidden=true;fireB
   G.life={t0:now,peak:mass0||10,base:mass0||0,kills:0,pk:0,done:false};return true;}
 /* leaving mid-life still banks the xp earned so far */
 function bankLife(){if(G.me&&G.me.alive&&G.mode!=='demo'&&G.mode!=='tut'&&G.life&&!G.life.done)finishLife(false,0,performance.now());}
-function goLobby(msg){if(G.mode!=='demo')track('leave',{m:G.mode,e:msg?1:0});QM.pub=false;clearTimeout(QM.timer);bankLife();leaveRooms();flowTok++;if(STANDALONE){P2P.close();ROOM=null;}clearTimeout(overTimer);G.me=null;resultsEl.hidden=true;G.roomDur=0;beginRound(0,performance.now());resetWorld(true,newSeed(),demoMap());G.mode='demo';G.code=null;busy=false;
+function goLobby(msg){if(G.mode!=='demo')track('leave',{m:G.mode,e:msg?1:0});hideModeIntro();QM.pub=false;clearTimeout(QM.timer);bankLife();leaveRooms();flowTok++;if(STANDALONE){P2P.close();ROOM=null;}clearTimeout(overTimer);G.me=null;resultsEl.hidden=true;G.roomDur=0;beginRound(0,performance.now());resetWorld(true,newSeed(),demoMap());G.mode='demo';G.code=null;busy=false;
   hud.hidden=true;$('#spectatorBar').hidden=true;boostBtn.hidden=true;fireBtn.hidden=true;emoBtn.hidden=true;emoBar.hidden=true;over.hidden=true;connecting.hidden=true;lobby.hidden=false;joyHide();inp.boost=false;boostBtn.classList.remove('on');
   tutBox.hidden=true;hud.classList.remove('tutmode');boostBtn.classList.remove('tutpulse');fireBtn.classList.remove('tutpulse');
   showLobbyMsg(msg||'');if(msg)friendsSheet.hidden=false;lobbyPresence();releaseWake();paintAcct();paintMissions();paintGrowth();if(!msg)setTimeout(lobbyNudge,700);}
@@ -8211,12 +8503,12 @@ function showOver(){if(!G.me||G.me.alive||G.round.over||G.mode==='demo')return;c
   const tipEl=$('#oTip'),ck=L.cause||'';tipEl.hidden=!TIP_KEYS.has(ck);if(!tipEl.hidden)tipEl.textContent='💡 '+t('tip.'+ck.replace('#',''));
   $('#oLen').textContent=L.len||0;$('#oKills').textContent=L.kills||0;$('#oRank').textContent=Number.isFinite(L.rank)&&L.rank>0?t('rankN',{n:L.rank}):'-';
   renderRewards($('#oRew'),G.lastAward);
-  if(!canRespawn(undefined,true)){tipEl.hidden=false;tipEl.textContent=t('eliminated');}
+  if(!canRespawn(undefined,true)){tipEl.hidden=false;tipEl.textContent=t(G.rule==='escape'?'escOutHud':'eliminated');}
   $('#btnAgain').textContent=t(canRespawn(undefined,true)?'respawn':'spectate');over.hidden=false;overExtras();boostBtn.hidden=true;fireBtn.hidden=true;emoBtn.hidden=true;emoBar.hidden=true;}
 
 /* ================= timed rounds ================= */
 const resultsEl=$('#results'),resList=$('#resList'),btnNext=$('#btnNext');let lastTickSec=-1,resT=0;
-function beginRound(id,now){G.round={id,end:id&&G.roomDur?now+G.roomDur:0,over:false,award:null,awarded:false,rows:null,t0:now,peak:0};G.duelOut=false;G.rs={id,best:0,kills:0,deaths:0,pk:0};G.sc=new Map();G.streak=0;G.watchKey=null;G.control=null;G.controlState=null;lastTickSec=-1;G.zoneMsg=0;resultsEl.hidden=true;$('#spectatorBar').hidden=true;$('#controlHud').hidden=true;}
+function beginRound(id,now){G.round={id,end:id&&G.roomDur?now+G.roomDur:0,over:false,award:null,awarded:false,rows:null,t0:now,peak:0};G.duelOut=false;G.rs={id,best:0,kills:0,deaths:0,pk:0};G.sc=new Map();G.streak=0;G.watchKey=null;G.control=null;G.controlState=null;lastTickSec=-1;G.zoneMsg=0;resultsEl.hidden=true;$('#spectatorBar').hidden=true;$('#controlHud').hidden=true;if(G.rule==='escape')escBegin(now);}
 function showPlayUI(){resultsEl.hidden=true;over.hidden=true;boostBtn.hidden=false;fireBtn.hidden=false;emoBtn.hidden=false;}
 function syncRound(rd,now){const id=rd[0]|0,left=+rd[1],isOver=!!rd[2];if(!id||id<G.round.id)return;
   /* the room's round length, so this phone can work out the closing ring itself */
@@ -8232,11 +8524,13 @@ function syncRound(rd,now){const id=rd[0]|0,left=+rd[1],isOver=!!rd[2];if(!id||i
 function resumeGuestRound(now){if(G.mode!=='guest'||!G.round.spawnAt||now<G.round.spawnAt||!G.worldReady||G.worldRound!==G.round.id||!canRespawn(now,true))return;
   G.round.spawnAt=0;if(spawnMe(now)){showPlayUI();toast(t('newRound'));}}
 function roundRows(){const rows=[{key:myKey,name:prof.name,skin:prof.skin,score:myScore(),kills:G.rs.kills,alive:!!(G.me&&G.me.alive),me:true}];
-  if(G.auth)for(const b of G.bots)rows.push({key:b.key,name:b.name,skin:b.skin,score:Math.round(G.sc.get(b.key)||0),kills:-1,alive:b.alive,me:false});
+  if(G.auth)for(const b of G.bots){if(G.rule==='escape'&&(escSideKey(b.key)!=='c'||!(b.alive||G.sc.get(b.key)>0||b.diedAt>=G.round.t0)))continue;
+    rows.push({key:b.key,name:b.name,skin:b.skin,score:Math.round(G.sc.get(b.key)||0),kills:-1,alive:b.alive,me:false});}
   for(const st of streams.values()){const inf=st.info;if(!inf||!inf.st||inf.st[0]!==G.round.id)continue;
     /* the host ranks a guest by what it says, but never above what the host saw it earn */
     let score=inf.st[1]|0,kills=inf.st[2]|0;const g=G.mode==='host'?guestByKey(inf.key):null;
-    if(g){score=Math.min(score,Math.ceil(g.ub*1.1+40));kills=Math.min(kills,g.kills);}
+    if(g){if(G.rule!=='escape')score=Math.min(score,Math.ceil(g.ub*1.1+40));else if(G.esc)score=Math.max(score,G.esc.caught.get(inf.key)|0);
+      kills=Math.min(kills,g.kills);}
     rows.push({key:inf.key,name:inf.nm,skin:inf.skin,score,kills,alive:!!inf.alive,me:false});}
   /* survivors rank first only where a closing ring decides who is left */
   const alive=ringRule()&&G.rule!=='duel';
@@ -8260,7 +8554,8 @@ function roundOver(now){if(G.round.over)return;if(G.me&&G.me.alive){G.rs.best=Ma
     if(w&&!d.warm){d.wins.set(w.key,(d.wins.get(w.key)||0)+1);d.names.set(w.key,w.name);if(d.wins.get(w.key)>=DUEL_WINS)d.over=true;}
     if(d.over){G.round.rows=duelRows();G.round.total=G.round.rows.length;}}
   if(!G.round.rows&&!(G.rule==='duel'&&G.duel&&!G.duel.over)){G.round.rows=roundRows();G.round.total=G.round.rows.length;}G.round.over=true;sfx('end');
-  clearTimeout(overTimer);over.hidden=true;$('#spectatorBar').hidden=true;$('#controlHud').hidden=true;boostBtn.hidden=true;fireBtn.hidden=true;emoBtn.hidden=true;emoBar.hidden=true;resetInput();toast(t('roundOverTitle'));
+  if(G.rule==='escape'&&G.auth&&G.mode==='host')escPlan();
+  clearTimeout(overTimer);over.hidden=true;$('#spectatorBar').hidden=true;$('#controlHud').hidden=true;hideModeIntro();boostBtn.hidden=true;fireBtn.hidden=true;emoBtn.hidden=true;emoBar.hidden=true;resetInput();toast(G.rule==='escape'?escTitle():t('roundOverTitle'));
   const id=G.round.id;
   if(G.rule==='duel'&&G.duel&&!G.duel.over){setTimeout(()=>{if(G.round.id===id&&G.round.over)duelBanner();},300);
     if(G.auth)setTimeout(()=>{if(G.round.id===id&&G.round.over&&G.duel&&!G.duel.over)duelNext();},3600);return;}
@@ -8285,14 +8580,16 @@ function showResults(){if(!G.round.over||G.mode==='demo')return;const quick=G.mo
     G.round.awarded=true;if(G.mode==='quick')Ads.matchDone();const tw=teamWinner();let bonus=quick?([60,35,20][rank-1]||0):(total>=2?(rank===1?50:rank===2?20:0):0);
     /* team battle pays the whole winning side (players are always red) */
     if(G.rule==='team')bonus=tw===0?(quick?60:50):tw<0?20:0;
+    if(G.rule==='escape')bonus=escOutcome()==='win'?(quick?80:50):10;
     if(rank===1&&total>=2)prof.st.wins=(prof.st.wins|0)+1;if(quick)prof.st.qm=(prof.st.qm|0)+1;
     if(rank&&rank<=3&&total>=4)Review.maybe('top3');
-    G.round.award=finishLife(false,bonus,performance.now());if(G.round.award&&bonus)G.round.award.place=rank;}
+    G.round.award=finishLife(false,bonus,performance.now());
+    if(G.round.award&&bonus){if(G.rule!=='escape')G.round.award.place=rank;else if(escOutcome()==='win')G.round.award.tag='escRew';}}
   renderRewards($('#resRew'),G.round.award);
   const tw=teamWinner(),ts=G.teamSc||[0,0];
-  $('#resWho').textContent=G.rule==='team'?(tw<0?t('teamDraw'):t('teamWins',{t:t(tw?'teamBlue':'teamRed'),a:Math.round(ts[0]),b:Math.round(ts[1])})):
+  $('#resWho').textContent=G.rule==='escape'?escTitle():G.rule==='team'?(tw<0?t('teamDraw'):t('teamWins',{t:t(tw?'teamBlue':'teamRed'),a:Math.round(ts[0]),b:Math.round(ts[1])})):
     total<2||!rows.length?t('roundOverTitle'):(rank===1?t('youWin'):quick?t('youPlaced',{r:rank,n:total}):t('xWins',{n:rows[0].name}));
-  const note={gold:'resNoteGold',team:'resNoteTeam',duel:'resNoteDuel'}[G.rule];
+  const note={gold:'resNoteGold',team:'resNoteTeam',duel:'resNoteDuel',escape:'resNoteEscape'}[G.rule];
   $('#resNote').textContent=quick?t(note||'resNoteQuick'):G.mode==='host'?t('resNoteHost'):t('resNoteGuest');
   /* a public room moves on to the next round by itself, so strangers are never left waiting on the results */
   if(G.mode==='host'&&/^q/.test(G.code||'')&&!G.round.autoNext){const id=G.round.id;G.round.autoNext=setTimeout(()=>{if(G.mode==='host'&&G.round.over&&G.round.id===id)hostNextRound();},15000);}
@@ -8300,7 +8597,7 @@ function showResults(){if(!G.round.over||G.mode==='demo')return;const quick=G.mo
   resultsEl.querySelector('.actions').style.gridTemplateColumns=canNext?'':'1fr';resultsEl.hidden=false;}
 /* 0 red, 1 blue, -1 level */
 function teamWinner(){const ts=G.teamSc||[0,0],a=Math.round(ts[0]),b=Math.round(ts[1]);return a===b?-1:a>b?0:1;}
-function hostNextRound(){if(G.mode!=='host')return;const now=performance.now(),id=G.round.id+1,duel=G.rule==='duel';
+function hostNextRound(){if(G.mode!=='host')return;const now=performance.now(),id=G.round.id+1,duel=G.rule==='duel';G.escKeys=[...guests.values()].map(g=>g.key);
   if(duel){if(!G.duel||G.duel.over){const warm=!guests.size;duelReset();G.duel.warm=warm;}else if(!G.duel.warm){G.duel.n++;G.duel.shown=0;}else G.duel.shown=0;}
   resetWorld(true,newSeed(),G.map,duel?{rule:'duel',bots:guests.size?0:1}:{rule:G.rule});beginRound(id,now);spawnMe(now);showPlayUI();toast(duel?t('duelRound',{n:G.duel.n}):t('newRound'));}
 btnNext.addEventListener('click',()=>{if(G.mode==='quick'){resultsEl.hidden=true;Ads.between().then(()=>{if(G.mode==='quick')startQuick();});}else hostNextRound();});
@@ -8391,11 +8688,11 @@ function updateFire(){const me=G.me,w=me&&me.alive?me.weapon:null,key=w?w.t+':'+
 const BUFF_SHOW=[['shield','shield'],['turbo','turbo'],['magnet','magnet'],['grow','grow'],['ghost','ghost'],['giant','giant'],['frost','frost'],['frozen','freeze'],['stun','zap'],['poison','venom']];
 /* in timed matches the HUD and leaderboard follow the round score; in practice they follow length */
 function scoreOf(s){if(!s.remote)return Math.round(G.sc.get(s.key)||0);let v=s.score|0;
-  if(G.mode==='host'&&s.kind==='p'){const g=guestByKey(s.key);if(g)v=Math.min(v,Math.ceil(g.ub*1.1+40));}return v;}
+  if(G.mode==='host'&&s.kind==='p'&&G.rule!=='escape'){const g=guestByKey(s.key);if(g)v=Math.min(v,Math.ceil(g.ub*1.1+40));}return v;}
 /* ================= the crown: the leader wears it, and taking them out pays a bonus ================= */
 let kingToastT=0;
 const kingVal=s=>G.round.end?scoreOf(s):s.mass;
-function updateKing(now){if(G.mode==='demo'||G.mode==='tut'||G.round.over){if(G.mode==='demo'||G.mode==='tut')G.king=null;return;}
+function updateKing(now){if(G.mode==='demo'||G.mode==='tut'||G.round.over||G.rule==='escape'){if(G.mode==='demo'||G.mode==='tut'||G.rule==='escape')G.king=null;return;}
   let top=null,tv=0;for(const s of all){if(!s.alive||s.kind==='c')continue;const v=kingVal(s);if(v>tv){tv=v;top=s;}}
   /* the holder keeps it until someone actually passes them */
   const cur=G.king?findSnake(G.king):null;if(cur&&cur.alive&&top&&kingVal(cur)>=tv)return;
@@ -8416,12 +8713,14 @@ function modeLine(){if(G.mode==='demo')return '';
   return '';}
 function updateHud(){if(hud.hidden)return;const me=G.me,now=performance.now(),timed=!!G.round.end,watching=G.mode!=='demo'&&(!me||!me.alive),focus=watching?viewSubject(now):me;
   const modeHud=$('#modeHud'),mh=modeLine();modeHud.hidden=!mh||G.round.over||G.tutWorld;if(mh&&modeHud.dataset.v!==mh){modeHud.dataset.v=mh;modeHud.innerHTML=mh;}
-  const controlHud=$('#controlHud');controlHud.hidden=G.rule!=='control'||!G.round.end||G.round.over||G.tutWorld;
-  if(!controlHud.hidden){const zone=controlZone(now),state=G.controlState,holder=state&&state.holder?findSnake(state.holder):null;
-    controlHud.textContent=(state&&state.count>1?t('controlContested'):holder?(focus&&holder.key===focus.key?t('controlHeld'):t('controlTaken',{n:holder.name})):t('controlGo'))+(zone?' · '+t('controlNext',{n:Math.ceil(Math.max(0,zone.end-now)/1000)}):'');}
+  const controlHud=$('#controlHud');controlHud.hidden=(G.rule!=='control'&&G.rule!=='gold'&&G.rule!=='escape')||!G.round.end||G.round.over||G.tutWorld;
+  if(!controlHud.hidden&&G.rule==='escape'){const tx=escHud(now,me);controlHud.hidden=!tx;if(tx)controlHud.textContent=tx;}
+  else if(!controlHud.hidden&&G.rule==='gold'){const tg=me&&me.alive?objTarget(me,now):null;controlHud.hidden=!tg||Math.hypot(tg.x-me.x,tg.y-me.y)<700;if(!controlHud.hidden)controlHud.textContent=t('goldGo');}
+  else if(!controlHud.hidden){const zone=controlZone(now),nx=controlNext(now),state=G.controlState,holder=state&&state.holder?findSnake(state.holder):null;
+    controlHud.textContent=(state&&state.count>1?t('controlContested'):holder?(focus&&holder.key===focus.key?t('controlHeld'):t('controlTaken',{n:holder.name})):(me&&me.alive&&(objTarget(me,now)||{}).kind==='next'?t('controlGoNext'):t('controlGo')))+(zone?'\n'+t(nx?'controlSoon':'controlNext',{n:Math.ceil(Math.max(0,zone.end-now)/1000)}):'');}
   const val=s=>timed?scoreOf(s):Math.floor(s.mass);
-  const ranked=all.filter(s=>s.alive&&s.kind!=='c').sort((a,b)=>val(b)-val(a)||b.mass-a.mass);
-  $('#spectatorBar').hidden=!watching||G.round.over||!over.hidden||!resultsEl.hidden;
+  const ranked=all.filter(s=>s.alive&&s.kind!=='c'&&(G.rule!=='escape'||!s.isBot||escSideKey(s.key)==='c')).sort((a,b)=>val(b)-val(a)||b.mass-a.mass);
+  $('#spectatorBar').hidden=!watching||G.round.over||!over.hidden||!resultsEl.hidden||introOpen;
   $('#spectatorName').textContent=focus?t('watching',{n:focus.name}):t('watchWaiting');
   const canSwitch=watching&&!G.round.over&&ranked.length>1;$('#btnWatchPrev').disabled=!canSwitch;$('#btnWatchNext').disabled=!canSwitch;
   $('#hLenLbl').textContent=timed?t(G.rule==='gold'?'goldLbl':'score'):t('lenLbl');hLen.textContent=focus?val(focus):'-';
@@ -8460,7 +8759,6 @@ function updateHud(){if(hud.hidden)return;const me=G.me,now=performance.now(),ti
   emoBtn.classList.toggle('cool',now<emoReadyAt);}
 function drawMini(){if(hud.hidden)return;const s=mini.width,g=mctx,c=s/2,k=(c-7)/R;g.clearRect(0,0,s,s);
   g.fillStyle='rgba(9,15,29,.72)';g.beginPath();g.arc(c,c,c-3,0,TAU);g.fill();g.lineWidth=4;g.strokeStyle=THEMES[MAPS[G.map].id].border;g.globalAlpha=0.8;g.stroke();g.globalAlpha=1;
-  if(G.rule==='control'){const zone=controlZone(performance.now());if(zone){g.fillStyle='rgba(255,210,75,.35)';g.strokeStyle='#ffd45b';g.lineWidth=2;g.beginPath();g.arc(c+zone.x*k,c+zone.y*k,Math.max(5,zone.r*k),0,TAU);g.fill();g.stroke();}}
   /* the closing ring: everything outside it is shaded red */
   if(G.zr<R-1){const zr=G.zr*k,zx=c+G.zx*k,zy=c+G.zy*k;g.beginPath();g.arc(c,c,c-3,0,TAU);g.moveTo(zx+zr,zy);g.arc(zx,zy,zr,0,TAU);g.fillStyle='rgba(255,40,60,.32)';g.fill('evenodd');
     g.lineWidth=3;g.strokeStyle='rgba(255,80,90,.95)';g.beginPath();g.arc(zx,zy,zr,0,TAU);g.stroke();}
@@ -8471,13 +8769,22 @@ function drawMini(){if(hud.hidden)return;const s=mini.width,g=mctx,c=s/2,k=(c-7)
     g.fillStyle=col;g.beginPath();g.arc(c+o.x*k,c+o.y*k,Math.max(2.5,o.r*k),0,TAU);g.fill();}
   for(const it of G.items.values()){if(!G.auth&&pendItem.has(it.id))continue;g.fillStyle=ITEMS[it.t].color;g.fillRect(c+it.x*k-2,c+it.y*k-2,4,4);}
   if(G.rule==='gold'){g.fillStyle='#ffd23f';for(const d of G.drops.values())if(d.c===GOLD_C)g.fillRect(c+d.x*k-1.5,c+d.y*k-1.5,3,3);
-    const v=G.vein,now=performance.now();if(v&&now-v.t<9000){const q=((now-v.t)%1200)/1200;g.strokeStyle='rgba(255,210,60,'+(1-q).toFixed(2)+')';g.lineWidth=2.5;g.beginPath();g.arc(c+v.x*k,c+v.y*k,4+q*14,0,TAU);g.stroke();}}
+    const now=performance.now();for(const v of G.veins||[]){if(v.n<3)continue;const q=((now-v.t)%1200)/1200;g.strokeStyle='rgba(255,210,60,'+(1-q).toFixed(2)+')';g.lineWidth=2.5;g.beginPath();g.arc(c+v.x*k,c+v.y*k,4+q*12,0,TAU);g.stroke();}}
   const team=G.rule==='team';
   for(const o of all){if(!o.alive||o===G.me||o.kind==='c')continue;const king=o.key===G.king;
-    if(o.isBot){if(o.mass<100&&!king&&!team)continue;g.fillStyle=king?'#ffd23f':team?TEAM_COL[teamOf(o)]:'rgba(230,236,255,.35)';g.beginPath();g.arc(c+o.x*k,c+o.y*k,king?6:team?2.6:3.5,0,TAU);g.fill();}
+    if(o.isBot){const hunt=G.rule==='escape'&&escSideKey(o.key)==='c';if(o.mass<100&&!king&&!team&&!hunt)continue;g.fillStyle=hunt?'#ff4d4d':king?'#ffd23f':team?TEAM_COL[teamOf(o)]:'rgba(230,236,255,.35)';g.beginPath();g.arc(c+o.x*k,c+o.y*k,hunt?4.5:king?6:team?2.6:3.5,0,TAU);g.fill();}
     else if(!(o.fl&F.ghost)){g.fillStyle=skinCss(SKINS[o.skin]);g.beginPath();g.arc(c+o.x*k,c+o.y*k,7,0,TAU);g.fill();}
     if(king){g.lineWidth=2.5;g.strokeStyle='#ffd23f';g.beginPath();g.arc(c+o.x*k,c+o.y*k,10,0,TAU);g.stroke();}}
   const far=hostFar();if(far){g.fillStyle='rgba(230,236,255,.35)';for(const f of far){if(!f.big)continue;g.beginPath();g.arc(c+f.x*k,c+f.y*k,3.5,0,TAU);g.fill();}}
+  if(G.rule==='control'){const now=performance.now(),zone=controlZone(now),nx=controlNext(now);
+    if(nx){g.save();g.setLineDash([3,3]);g.lineWidth=2.5;g.strokeStyle='#ff9f1a';g.beginPath();g.arc(c+nx.x*k,c+nx.y*k,Math.max(6,nx.r*k),0,TAU);g.stroke();g.restore();}
+    if(zone){const zx=c+zone.x*k,zy=c+zone.y*k,pr=Math.max(6,zone.r*k),q=(now%1400)/1400;g.fillStyle='rgba(255,210,75,.6)';g.strokeStyle='#ffd45b';g.lineWidth=2;
+      g.beginPath();g.arc(zx,zy,pr,0,TAU);g.fill();g.stroke();g.strokeStyle='rgba(255,212,91,'+(1-q).toFixed(2)+')';g.beginPath();g.arc(zx,zy,pr+2+q*9,0,TAU);g.stroke();}}
+  if(G.rule==='escape'&&G.round.end&&G.esc){const P=escPoints(),now=performance.now(),q=(now%1400)/1400,x=c+P.ex*k,y=c+P.ey*k,pr=Math.max(6,ESC_EXIT_R*k);
+    g.fillStyle='rgba(61,220,151,.75)';g.strokeStyle='#3ddc97';g.lineWidth=2;g.beginPath();g.arc(x,y,pr,0,TAU);g.fill();g.stroke();
+    g.strokeStyle='rgba(61,220,151,'+(1-q).toFixed(2)+')';g.beginPath();g.arc(x,y,pr+2+q*9,0,TAU);g.stroke();}
+  {const me=G.me;if(me&&me.alive&&G.mode!=='demo'){const tg=objTarget(me,performance.now());if(tg){g.save();g.setLineDash([2,3]);g.lineWidth=1.5;
+    g.strokeStyle=tg.kind==='next'?'rgba(255,159,26,.9)':tg.kind==='exit'?'rgba(61,220,151,.95)':tg.kind==='prey'?'rgba(255,93,93,.9)':'rgba(255,214,90,.9)';g.beginPath();g.moveTo(c+me.x*k,c+me.y*k);g.lineTo(c+tg.x*k,c+tg.y*k);g.stroke();g.restore();}}}
   const focus=viewSubject();if(focus){g.fillStyle='#fff';g.beginPath();g.arc(c+focus.x*k,c+focus.y*k,7,0,TAU);g.fill();g.lineWidth=3;g.strokeStyle=G.king===focus.key?'#ffd23f':skinCss(SKINS[focus.skin]);g.stroke();}}
 
 /* ================= emotes ================= */
@@ -8568,6 +8875,7 @@ function upkeep(now){
       if(STANDALONE&&/^q/.test(G.code||'')&&NET_SERVER){goLobby('');toast(t('qmHostLeft'));setTimeout(()=>{if(G.mode==='demo'&&!busy)quickMatch();},400);return;}
       goLobby(t(bye||!STANDALONE||P2P.isOpen()?'hostLeft':'connLost'));return;}}
   if(G.auth&&(G.mode==='host'||G.mode==='quick')&&G.round.end&&!G.round.over&&now>=G.round.end)roundOver(now);
+  if(G.rule==='escape'&&G.auth&&(G.mode==='host'||G.mode==='quick')&&G.round.end&&!G.round.over)escCheckEnd(now);
   checkElimination(now);
   /* the closing ring is announced 10 s ahead and again when it starts moving */
   if(G.round.end&&G.roomDur&&!G.round.over&&G.mode!=='demo'&&G.me&&ringRule()&&G.rule!=='duel'){const z=zoneSpan();
@@ -8839,7 +9147,7 @@ function renderRewards(el,aw){el.textContent='';if(!aw){el.hidden=true;return;}e
   const top=document.createElement('div');top.className='rew-l';const b1=document.createElement('b');b1.textContent='+'+aw.xp;
   const b2=document.createElement('b');b2.textContent='+'+aw.coins;const ci=document.createElement('i');ci.className='coin';
   const sep=document.createElement('span');sep.className='sep';sep.textContent='·';top.append(b1,' XP ',sep,ci,b2);
-  if(aw.place){const pl=document.createElement('small');pl.textContent=t('place',{r:aw.place});top.append(pl);}
+  if(aw.tag||aw.place){const pl=document.createElement('small');pl.textContent=aw.tag?t(aw.tag):t('place',{r:aw.place});top.append(pl);}
   const bar=document.createElement('div');bar.className='rew-bar';const lv=document.createElement('span');lv.className='lvb';lv.textContent=t('lv',{n:aw.lvTo});
   const xb=document.createElement('span');xb.className='xpbar';const fill=document.createElement('i');xb.append(fill);const sm=document.createElement('small');sm.textContent=t('xpOf',{a:aw.to.into,b:aw.to.need});
   bar.append(lv,xb,sm);el.append(top,bar);
@@ -8991,7 +9299,7 @@ paintCloud();
 /* ================= anonymous play statistics =================
    Only sent when the page has an account server, and players can turn it off in the account sheet.
    A random device id (not the account token), a session id, and small events like "match started" or "died to lava". */
-const GAME_VER='23';
+const GAME_VER='25';
 const PLATFORM=/iPhone|iPad|iPod/.test(navigator.userAgent)||(navigator.maxTouchPoints>1&&/Mac/.test(navigator.platform||''))?'ios':/Android/.test(navigator.userAgent)?'android':'desktop';
 const STATS=(()=>{let dev=store.get('ssld-dev','');if(typeof dev!=='string'||!/^[a-z0-9]{12,24}$/.test(dev)){dev=(Math.random().toString(36).slice(2,10)+Math.random().toString(36).slice(2,10)).replace(/[^a-z0-9]/g,'').slice(0,16).padEnd(12,'0');store.set('ssld-dev',dev);}
   return {dev,sid:(Math.random().toString(36).slice(2,12)+'000000').slice(0,10),q:[],on:CLOUD&&store.get('ssld-stats',true)!==false,perf:null};})();
