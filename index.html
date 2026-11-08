@@ -912,8 +912,8 @@ en:{
   'tip.spike':'Ice spikes are deadly. You turn slower on ice, so start turning early.',
   'tip.tree':'Trees are solid. Bushes are safe to hide in, trees are not.',
   'tip.planet':'Planets pull you in. Boost to break free of their gravity.',
-  'tip.wa':'Arrows chip away a small amount of length. Weave to dodge the next shot.',
-  'tip.wz':'Lightning locks on to the nearest snake. A shield blocks it.',
+  'tip.wa':"Arrows bend toward you and cut your body where they land. Weave so they hit your tail, not your head.",
+  'tip.wz':"Lightning strikes the nearest snake and jumps to others close by. Keep some space, or grab a shield.",
   'tip.wm':'Mines hide behind other snakes. Do not follow their tails too closely.',
   'tip.wg':'Giant snakes crush bodies. Stay out of their way until it wears off.',
   tutEat:'Drag anywhere to steer. Eat {n} energy orbs',tutBoost:'Hold Boost to sprint for 2 seconds',tutWeapon:'Grab the arrows ahead, then tap Weapon to fire',
@@ -1038,8 +1038,8 @@ zh:{
   'tip.spike':'冰刺一碰就死。冰面上转弯慢，要提前转。',
   'tip.tree':'大树是实心的。草丛可以钻，大树不行。',
   'tip.planet':'星球会把你往里拽，被吸住时按加速冲出来。',
-  'tip.wa':'箭只削减少量长度，左右变向能躲开后续射击。',
-  'tip.wz':'雷电会锁定最近的蛇，有护盾就能挡住。',
+  'tip.wa':"箭会往你身上偏，射中哪里就从哪里截断。左右变向，让箭打在尾巴上，别打在头上。",
+  'tip.wz':"雷电会劈中最近的蛇，还会跳到旁边的蛇身上。和别人保持距离，或者先拿护盾。",
   'tip.wm':'地雷埋在别的蛇身后，别跟着它们的尾巴走。',
   'tip.wg':'巨蛇能碾断身体，等它变回来之前先躲开。',
   tutEat:'在屏幕上拖动来转弯，吃掉 {n} 个能量球',tutBoost:'按住「加速」冲刺 2 秒',tutWeapon:'吃掉前面的弓箭，再点「武器」发射',
@@ -1294,18 +1294,18 @@ Object.assign(I18N.zh,{
 });
 /* item, map and skin names live here too, keyed by id */
 Object.assign(I18N.en,{
-  'item.shield':'Shield','item.shield.d':'Blocks collisions and attacks for 6 s. Does not protect against the closing ring',
-  'item.turbo':'Turbo','item.turbo.d':'A 6 s super sprint that costs no length',
-  'item.magnet':'Magnet','item.magnet.d':'Pulls in every energy orb nearby for 10 s',
+  'item.shield':'Shield','item.shield.d':"Blocks collisions and attacks for 12 s. Does not protect against the closing ring",
+  'item.turbo':'Turbo','item.turbo.d':"A 12 s super sprint that costs no length",
+  'item.magnet':'Magnet','item.magnet.d':"Pulls in every energy orb nearby for 20 s",
   'item.heart':'Heart','item.heart.d':'+1 life, hold up to 3. Revives you before the ring closes; disabled during elimination',
-  'item.grow':'Feast','item.grow.d':'Energy you eat counts triple for 12 s',
-  'item.ghost':'Ghost','item.ghost.d':"7 s of near-invisibility. Lightning can't lock on to you",
+  'item.grow':'Feast','item.grow.d':"Energy you eat counts triple for 24 s",
+  'item.ghost':'Ghost','item.ghost.d':"14 s of near-invisibility. Lightning can't lock on to you",
   'item.mystery':'Mystery Box','item.mystery.d':'Turns into a random power-up',
-  'item.zap':'Lightning','item.zap.d':'Locks onto the nearest snake: loses 15% length and slows for 0.65 s, but can still steer',
-  'item.arrow':'Arrows','item.arrow.d':'3 shots. Each removes up to 12 length (at most 15%), regardless of hit location. Cannot finish off a small snake',
+  'item.zap':'Lightning','item.zap.d':"Strikes the nearest snake and jumps to two more nearby: 25% of the length gone (15% for the jumps) and 1.6 s of paralysis, barely able to turn",
+  'item.arrow':'Arrows','item.arrow.d':"3 shots that bend toward a snake in front. Each cuts the body where it lands: 10% to 35% of the length, more near the head. A head shot also stuns",
   'item.split':'Split','item.split.d':'Two energy clones circle the nearest rival and close in. Touching a clone is fatal',
-  'item.giant':'Giant','item.giant.d':'Become a giant for 6 s. Your head crushes straight through other bodies',
-  'item.freeze':'Freeze Shot','item.freeze.d':'Locks direction and halves speed for 1.4 s. Deals no length damage',
+  'item.giant':'Giant','item.giant.d':"Become a giant for 12 s. Your head crushes straight through other bodies",
+  'item.freeze':'Freeze Shot','item.freeze.d':"Locks direction and halves speed for 2.8 s. Deals no length damage",
   'item.mine':'Mines','item.mine.d':'Drop mines behind you. Whoever touches one loses 1/3 of their length',
   'map.hive':'Neon Hive','map.hive.t':'The classic arena. No obstacles, pure skill',
   'map.ice':'Frozen Lake','map.ice.t':'Slippery ice makes turning slower. Ice spikes are deadly',
@@ -1328,18 +1328,18 @@ Object.assign(I18N.en,{
   'head.tiger':'Broad cheeks, round ears and fangs','head.racer':'Low chassis, cockpit and four tires','head.dino':'Long jaw, teeth and a spiked crest',
 });
 Object.assign(I18N.zh,{
-  'item.shield':'护盾','item.shield.d':'6 秒内抵挡碰撞和攻击，但不能抵挡缩圈',
-  'item.turbo':'疾风','item.turbo.d':'6 秒超速冲刺，不掉长度',
-  'item.magnet':'磁铁','item.magnet.d':'10 秒内把周围的能量球全吸过来',
+  'item.shield':'护盾','item.shield.d':"12 秒内抵挡碰撞和攻击，但不能抵挡缩圈",
+  'item.turbo':'疾风','item.turbo.d':"12 秒超速冲刺，不掉长度",
+  'item.magnet':'磁铁','item.magnet.d':"20 秒内把周围的能量球全吸过来",
   'item.heart':'爱心','item.heart.d':'生命 +1，最多存 3 颗。缩圈前死亡可原地复活，淘汰阶段失效',
-  'item.grow':'暴食','item.grow.d':'12 秒内吃到的能量变成 3 倍',
-  'item.ghost':'隐身','item.ghost.d':'7 秒对手几乎看不见你，雷电也锁不到你',
+  'item.grow':'暴食','item.grow.d':"24 秒内吃到的能量变成 3 倍",
+  'item.ghost':'隐身','item.ghost.d':"14 秒对手几乎看不见你，雷电也锁不到你",
   'item.mystery':'盲盒','item.mystery.d':'打开随机变成任意一个道具',
-  'item.zap':'雷电','item.zap.d':'锁定最近的蛇，削减 15% 长度并减速 0.65 秒，对手仍可转弯',
-  'item.arrow':'弓箭','item.arrow.d':'3 支箭，每箭最多削减 12 长度且不超过 15%，命中位置不影响伤害，不会直接击杀小蛇',
+  'item.zap':'雷电','item.zap.d':"劈中最近的蛇，再跳到附近另外两条蛇身上。第一条削掉 25% 长度，后面每条 15%，并麻痹 1.6 秒，几乎转不了弯",
+  'item.arrow':'弓箭','item.arrow.d':"3 支箭，会往前方的蛇偏过去。射中哪里就从哪里截断，削掉 10% 到 35% 长度，越靠近蛇头越多，射中蛇头还会眩晕",
   'item.split':'分裂','item.split.d':'分出两条能量分身绕着最近的对手转圈，越收越紧，对手撞上分身就死',
-  'item.giant':'巨大化','item.giant.d':'6 秒变成巨蛇，蛇头能直接碾断别人的身体',
-  'item.freeze':'冰冻弹','item.freeze.d':'锁住方向并减速一半，持续 1.4 秒，不削减长度',
+  'item.giant':'巨大化','item.giant.d':"12 秒变成巨蛇，蛇头能直接碾断别人的身体",
+  'item.freeze':'冰冻弹','item.freeze.d':"锁住方向并减速一半，持续 2.8 秒，不削减长度",
   'item.mine':'地雷','item.mine.d':'在身后埋雷，谁碰到就被炸掉 1/3 长度',
   'map.hive':'霓虹蜂巢','map.hive.t':'经典场地，没有障碍物，纯拼技术',
   'map.ice':'冰封湖面','map.ice.t':'冰面打滑转弯变慢，冰刺一碰就死',
@@ -1715,8 +1715,8 @@ es:{
   "tip.spike":"Las púas de hielo son mortales. En el hielo giras más lento, así que empieza a girar antes.",
   "tip.tree":"Los árboles son sólidos. Puedes esconderte en los arbustos, pero no en los árboles.",
   "tip.planet":"Los planetas te atraen. Acelera para escapar de su gravedad.",
-  "tip.wa":"Las flechas te quitan un poco de longitud. Zigzaguea para esquivar el siguiente disparo.",
-  "tip.wz":"El rayo se fija en la serpiente más cercana. Un escudo lo bloquea.",
+  "tip.wa":"Las flechas se desvían hacia ti y cortan el cuerpo donde impactan. Zigzaguea para que den en la cola y no en la cabeza.",
+  "tip.wz":"El rayo cae sobre la serpiente más cercana y salta a las que están cerca. Mantén distancia o consigue un escudo.",
   "tip.wm":"Las minas se esconden detrás de otras serpientes. No sigas sus colas muy de cerca.",
   "tip.wg":"Las serpientes gigantes aplastan cuerpos. Apártate de su camino hasta que se les pase el efecto.",
   "tutEat":"Arrastra en cualquier parte para girar. Come {n} orbes de energía",
@@ -1955,29 +1955,29 @@ es:{
   "skin.bubblegum":"Chicle",
   "trail.stardust":"Polvo de estrellas",
   "item.shield":"Escudo",
-  "item.shield.d":"Bloquea choques y ataques durante 6 s. No te protege del círculo que se cierra",
+  "item.shield.d":"Bloquea choques y ataques durante 12 s. No te protege del círculo que se cierra",
   "item.turbo":"Nitro",
-  "item.turbo.d":"Supervelocidad durante 6 s sin gastar longitud",
+  "item.turbo.d":"Supervelocidad durante 12 s sin gastar longitud",
   "item.magnet":"Imán",
-  "item.magnet.d":"Atrae todos los orbes de energía cercanos durante 10 s",
+  "item.magnet.d":"Atrae todos los orbes de energía cercanos durante 20 s",
   "item.heart":"Corazón",
   "item.heart.d":"+1 vida, hasta 3 a la vez. Te revive antes de que se cierre el círculo; no funciona durante la eliminación",
   "item.grow":"Festín",
-  "item.grow.d":"La energía que comes cuenta triple durante 12 s",
+  "item.grow.d":"La energía que comes cuenta triple durante 24 s",
   "item.ghost":"Fantasma",
-  "item.ghost.d":"Casi invisible durante 7 s. El rayo no puede fijarse en ti",
+  "item.ghost.d":"Casi invisible durante 14 s. El rayo no puede fijarse en ti",
   "item.mystery":"Caja sorpresa",
   "item.mystery.d":"Se convierte en un potenciador al azar",
   "item.zap":"Rayo",
-  "item.zap.d":"Se fija en la serpiente más cercana: pierde un 15 % de longitud y se frena 0,65 s, pero puede seguir girando",
+  "item.zap.d":"Cae sobre la serpiente más cercana y salta a otras dos cercanas: quita un 25 % de longitud (15 % en los saltos) y paraliza 1,6 s, casi sin poder girar",
   "item.arrow":"Flechas",
-  "item.arrow.d":"3 disparos. Cada uno quita hasta 12 de longitud (máx. 15 %), sin importar dónde impacte. No puede rematar a una serpiente pequeña",
+  "item.arrow.d":"3 disparos que se desvían hacia la serpiente que tienes delante. Cada uno corta el cuerpo donde impacta: del 10 % al 35 % de la longitud, más cerca de la cabeza. Un tiro a la cabeza también aturde",
   "item.split":"Clones",
   "item.split.d":"Dos clones de energía rodean al rival más cercano y se van cerrando. Tocar un clon es mortal",
   "item.giant":"Gigante",
-  "item.giant.d":"Conviértete en gigante durante 6 s. Tu cabeza aplasta otros cuerpos a su paso",
+  "item.giant.d":"Conviértete en gigante durante 12 s. Tu cabeza aplasta otros cuerpos a su paso",
   "item.freeze":"Disparo helado",
-  "item.freeze.d":"Bloquea la dirección y reduce la velocidad a la mitad durante 1,4 s. No quita longitud",
+  "item.freeze.d":"Bloquea la dirección y reduce la velocidad a la mitad durante 2,8 s. No quita longitud",
   "item.mine":"Minas",
   "item.mine.d":"Suelta minas detrás de ti. Quien toque una pierde 1/3 de su longitud",
   "map.hive":"Colmena de neón",
@@ -2492,8 +2492,8 @@ pt:{
   "tip.spike":"Espinhos de gelo são mortais. No gelo você vira mais devagar, então comece a curva antes.",
   "tip.tree":"Árvores são sólidas. Dá para se esconder nos arbustos, nas árvores não.",
   "tip.planet":"Planetas te puxam. Acelere para escapar da gravidade deles.",
-  "tip.wa":"Flechas tiram um pouco do seu tamanho. Faça zigue-zague para desviar do próximo tiro.",
-  "tip.wz":"O Raio mira a cobra mais próxima. Um escudo bloqueia.",
+  "tip.wa":"As flechas se curvam na sua direção e cortam o corpo onde acertam. Faça zigue-zague para que acertem a cauda, não a cabeça.",
+  "tip.wz":"O Raio atinge a cobra mais próxima e pula para as que estão perto. Mantenha distância ou pegue um escudo.",
   "tip.wm":"As minas ficam escondidas atrás das outras cobras. Não siga a cauda delas muito de perto.",
   "tip.wg":"Cobras gigantes esmagam corpos. Fique longe até o efeito passar.",
   "tutEat":"Arraste em qualquer lugar para virar. Coma {n} orbes de energia",
@@ -2732,29 +2732,29 @@ pt:{
   "skin.bubblegum":"Chiclete",
   "trail.stardust":"Poeira Estelar",
   "item.shield":"Escudo",
-  "item.shield.d":"Bloqueia batidas e ataques por 6 s. Não protege contra o círculo",
+  "item.shield.d":"Bloqueia batidas e ataques por 12 s. Não protege contra o círculo",
   "item.turbo":"Nitro",
-  "item.turbo.d":"Super arrancada de 6 s que não gasta tamanho",
+  "item.turbo.d":"Super arrancada de 12 s que não gasta tamanho",
   "item.magnet":"Ímã",
-  "item.magnet.d":"Puxa todos os orbes de energia por perto por 10 s",
+  "item.magnet.d":"Puxa todos os orbes de energia por perto por 20 s",
   "item.heart":"Coração",
   "item.heart.d":"+1 vida, guarda até 3. Revive você enquanto o círculo não fecha; desativado na eliminação",
   "item.grow":"Comilança",
-  "item.grow.d":"A energia que você come vale o triplo por 12 s",
+  "item.grow.d":"A energia que você come vale o triplo por 24 s",
   "item.ghost":"Fantasma",
-  "item.ghost.d":"7 s quase invisível. O Raio não consegue te mirar",
+  "item.ghost.d":"14 s quase invisível. O Raio não consegue te mirar",
   "item.mystery":"Caixa Surpresa",
   "item.mystery.d":"Vira um power-up aleatório",
   "item.zap":"Raio",
-  "item.zap.d":"Mira a cobra mais próxima: ela perde 15% do tamanho e fica lenta por 0,65 s, mas ainda pode virar",
+  "item.zap.d":"Atinge a cobra mais próxima e pula para mais duas por perto: tira 25% do tamanho (15% nos pulos) e paralisa por 1,6 s, quase sem conseguir virar",
   "item.arrow":"Flechas",
-  "item.arrow.d":"3 tiros. Cada um tira até 12 de tamanho (no máximo 15%), não importa onde acerte. Não acaba com uma cobra pequena",
+  "item.arrow.d":"3 tiros que se curvam na direção da cobra à sua frente. Cada um corta o corpo onde acerta: de 10% a 35% do tamanho, mais perto da cabeça. Um tiro na cabeça também atordoa",
   "item.split":"Clones",
   "item.split.d":"Dois clones de energia cercam o rival mais próximo e vão fechando o cerco. Encostar num clone é fatal",
   "item.giant":"Gigante",
-  "item.giant.d":"Vire um gigante por 6 s. Sua cabeça esmaga e atravessa outros corpos",
+  "item.giant.d":"Vire um gigante por 12 s. Sua cabeça esmaga e atravessa outros corpos",
   "item.freeze":"Tiro Gelado",
-  "item.freeze.d":"Trava a direção e corta a velocidade pela metade por 1,4 s. Não tira tamanho",
+  "item.freeze.d":"Trava a direção e corta a velocidade pela metade por 2,8 s. Não tira tamanho",
   "item.mine":"Minas",
   "item.mine.d":"Solte minas atrás de você. Quem encostar numa perde 1/3 do tamanho",
   "map.hive":"Colmeia Neon",
@@ -3269,8 +3269,8 @@ ja:{
   "tip.spike":"氷のトゲに触れるとアウト。氷の上は曲がりにくいので、早めに曲がり始めましょう。",
   "tip.tree":"木は通り抜けられません。草むらには安全に隠れられますが、木はダメです。",
   "tip.planet":"惑星はヘビを引き寄せます。ブーストで引力を振り切りましょう。",
-  "tip.wa":"矢は長さを少しずつ削ります。くねくね動いて次の矢をかわしましょう。",
-  "tip.wz":"カミナリは一番近いヘビをロックオンします。シールドで防げます。",
+  "tip.wa":"矢はこちらに曲がってきて、当たった場所で体を断ち切ります。くねくね動いて、頭ではなくしっぽに当てさせましょう。",
+  "tip.wz":"カミナリは一番近いヘビに落ちて、近くのヘビにも飛び移ります。距離をとるか、シールドを取りましょう。",
   "tip.wm":"地雷は他のヘビの後ろに隠れています。しっぽに近づきすぎないように。",
   "tip.wg":"巨大ヘビは体を粉砕します。効果が切れるまで近づかないようにしましょう。",
   "tutEat":"ドラッグで方向転換。エネルギー玉を{n}個食べよう",
@@ -3509,29 +3509,29 @@ ja:{
   "skin.bubblegum":"風船ガム",
   "trail.stardust":"星くず",
   "item.shield":"シールド",
-  "item.shield.d":"6秒間、衝突と攻撃を防ぐ。縮むリングは防げない",
+  "item.shield.d":"12秒間、衝突と攻撃を防ぐ。縮むリングは防げない",
   "item.turbo":"ターボ",
-  "item.turbo.d":"長さを消費しない6秒間の超ダッシュ",
+  "item.turbo.d":"長さを消費しない12秒間の超ダッシュ",
   "item.magnet":"マグネット",
-  "item.magnet.d":"10秒間、近くのエネルギー玉をすべて引き寄せる",
+  "item.magnet.d":"20秒間、近くのエネルギー玉をすべて引き寄せる",
   "item.heart":"ハート",
   "item.heart.d":"ライフ+1、最大3つまで持てる。リング縮小前ならその場で復活。脱落戦では無効",
   "item.grow":"大食い",
-  "item.grow.d":"12秒間、食べたエネルギーが3倍になる",
+  "item.grow.d":"24秒間、食べたエネルギーが3倍になる",
   "item.ghost":"ゴースト",
-  "item.ghost.d":"7秒間ほぼ透明になる。カミナリにもロックオンされない",
+  "item.ghost.d":"14秒間ほぼ透明になる。カミナリにもロックオンされない",
   "item.mystery":"ハテナボックス",
   "item.mystery.d":"ランダムなアイテムに変身する",
   "item.zap":"カミナリ",
-  "item.zap.d":"一番近いヘビをロックオン。相手は長さが15%減り、0.65秒間スローになる（方向転換はできる）",
+  "item.zap.d":"一番近いヘビに落ちて、近くのヘビ2匹にも飛び移る。長さを25%（飛び移った先は15%）削り、1.6秒間しびれてほとんど曲がれなくなる",
   "item.arrow":"弓矢",
-  "item.arrow.d":"3発。1発につき長さを最大12（最大15%まで）削る。当たった場所は関係なし。小さいヘビにとどめは刺せない",
+  "item.arrow.d":"3発。前にいるヘビに向かって少し曲がって飛ぶ。当たった場所で体を断ち切り、長さを10%から35%削る（頭に近いほど多い）。頭に当たると気絶もする",
   "item.split":"分身",
   "item.split.d":"エネルギーの分身2体が一番近いライバルの周りを回りながら迫る。分身に触れるとアウト",
   "item.giant":"巨大化",
-  "item.giant.d":"6秒間巨大化。頭で他のヘビの体をそのまま粉砕できる",
+  "item.giant.d":"12秒間巨大化。頭で他のヘビの体をそのまま粉砕できる",
   "item.freeze":"氷結弾",
-  "item.freeze.d":"1.4秒間、相手の向きを固定して速度を半分にする。長さへのダメージはなし",
+  "item.freeze.d":"2.8秒間、相手の向きを固定して速度を半分にする。長さへのダメージはなし",
   "item.mine":"地雷",
   "item.mine.d":"背後に地雷を置く。触れたヘビは長さの1/3を失う",
   "map.hive":"ネオンハニカム",
@@ -4046,8 +4046,8 @@ ko:{
   "tip.spike":"얼음 가시에 닿으면 죽어요. 얼음 위에서는 회전이 느리니 일찍 꺾으세요.",
   "tip.tree":"나무는 통과할 수 없어요. 덤불에는 숨을 수 있지만 나무는 안 돼요.",
   "tip.planet":"행성이 나를 끌어당겨요. 부스트로 중력을 뿌리치세요.",
-  "tip.wa":"화살은 길이를 조금 깎아요. 지그재그로 움직여서 다음 화살을 피하세요.",
-  "tip.wz":"번개는 가장 가까운 뱀을 노려요. 보호막으로 막을 수 있어요.",
+  "tip.wa":"화살은 내 쪽으로 휘어 와서 맞은 곳을 잘라요. 지그재그로 움직여서 머리 대신 꼬리에 맞게 하세요.",
+  "tip.wz":"번개는 가장 가까운 뱀에게 떨어지고 근처 뱀에게도 튀어요. 거리를 두거나 보호막을 챙기세요.",
   "tip.wm":"지뢰는 다른 뱀 뒤에 숨어 있어요. 꼬리를 너무 바짝 따라가지 마세요.",
   "tip.wg":"거대해진 뱀은 몸통을 뭉개요. 효과가 끝날 때까지 피하세요.",
   "tutEat":"아무 곳이나 드래그해서 방향을 바꿔요. 에너지 구슬 {n}개를 먹어 보세요",
@@ -4286,29 +4286,29 @@ ko:{
   "skin.bubblegum":"풍선껌",
   "trail.stardust":"별가루",
   "item.shield":"보호막",
-  "item.shield.d":"6초 동안 충돌과 공격을 막아요. 자기장은 막지 못해요",
+  "item.shield.d":"12초 동안 충돌과 공격을 막아요. 자기장은 막지 못해요",
   "item.turbo":"터보",
-  "item.turbo.d":"6초 동안 길이 소모 없이 초고속 질주",
+  "item.turbo.d":"12초 동안 길이 소모 없이 초고속 질주",
   "item.magnet":"자석",
-  "item.magnet.d":"10초 동안 주변 에너지 구슬을 모두 끌어당겨요",
+  "item.magnet.d":"20초 동안 주변 에너지 구슬을 모두 끌어당겨요",
   "item.heart":"하트",
   "item.heart.d":"목숨 +1, 최대 3개까지 보관. 자기장이 좁혀 오기 전에는 그 자리에서 부활시켜 주고, 탈락전에서는 효과가 없어요",
   "item.grow":"폭식",
-  "item.grow.d":"12초 동안 먹는 에너지가 3배로 계산돼요",
+  "item.grow.d":"24초 동안 먹는 에너지가 3배로 계산돼요",
   "item.ghost":"유령",
-  "item.ghost.d":"7초 동안 거의 보이지 않아요. 번개도 나를 조준할 수 없어요",
+  "item.ghost.d":"14초 동안 거의 보이지 않아요. 번개도 나를 조준할 수 없어요",
   "item.mystery":"깜짝 상자",
   "item.mystery.d":"랜덤 아이템으로 바뀌어요",
   "item.zap":"번개",
-  "item.zap.d":"가장 가까운 뱀을 자동 조준해요. 맞은 뱀은 길이가 15% 줄고 0.65초 동안 느려지지만, 방향은 바꿀 수 있어요",
+  "item.zap.d":"가장 가까운 뱀에게 떨어지고 근처의 뱀 두 마리에게 튀어요. 길이를 25%(튄 번개는 15%) 깎고 1.6초 동안 마비시켜 거의 방향을 못 바꾸게 해요",
   "item.arrow":"화살",
-  "item.arrow.d":"3발. 맞은 위치와 상관없이 한 발에 길이를 최대 12까지(전체의 15% 이내) 깎아요. 작은 뱀을 끝장낼 수는 없어요",
+  "item.arrow.d":"3발. 앞에 있는 뱀 쪽으로 휘어 날아가요. 맞은 곳에서 몸통을 잘라 길이를 10~35% 깎아요(머리에 가까울수록 많이). 머리에 맞히면 기절도 시켜요",
   "item.split":"분신술",
   "item.split.d":"에너지 분신 두 개가 가장 가까운 상대 주위를 돌며 조여 와요. 분신에 닿으면 죽어요",
   "item.giant":"거대화",
-  "item.giant.d":"6초 동안 거대해져요. 머리로 다른 뱀의 몸통을 그대로 뭉개며 지나가요",
+  "item.giant.d":"12초 동안 거대해져요. 머리로 다른 뱀의 몸통을 그대로 뭉개며 지나가요",
   "item.freeze":"얼음탄",
-  "item.freeze.d":"1.4초 동안 방향을 고정하고 속도를 절반으로 줄여요. 길이는 줄지 않아요",
+  "item.freeze.d":"2.8초 동안 방향을 고정하고 속도를 절반으로 줄여요. 길이는 줄지 않아요",
   "item.mine":"지뢰",
   "item.mine.d":"뒤에 지뢰를 깔아요. 닿은 뱀은 길이의 1/3을 잃어요",
   "map.hive":"네온 벌집",
@@ -4551,6 +4551,13 @@ Object.assign(I18N.es,{"skin.inferno":"Infierno","skin.frost":"Escarcha","skin.k
 Object.assign(I18N.pt,{"skin.inferno":"Inferno","skin.frost":"Geada","skin.kitty":"Gatinho","skin.puppy":"Cachorrinho","skin.cookie":"Cookie","skin.milk":"Leite","skin.angel":"Anjo","skin.devil":"Diabinho","skin.cyberpink":"Ciber Rosa","skin.cyberblue":"Ciber Azul","skin.cyclo":"Ciclope","skin.slime":"Geleca","skin.player1":"Jogador 1","skin.player2":"Jogador 2","duo.firefrost":"Fogo & Gelo","duo.catdog":"Gato & Cachorro","duo.snacks":"Cookies & Leite","duo.angeldevil":"Anjo & Diabinho","duo.cyber":"Ciber Gêmeos","duo.monsters":"Monstrinhos","duo.arcade":"Dupla Arcade","emo.ok":"Beleza","emo.sorry":"Foi mal","emo.clap":"Palmas","emo.think":"Hmm","emo.sweat":"Ufa","emo.scream":"Socorro","emo.angry":"Grrr","emo.sleep":"Zzz","emo.love":"Apaixonado","emo.party":"Festa","emo.devil":"Travesso","emo.crown":"Rei","emo.snake":"Sss","pack.party":"Festança","accessory.flower":"Florzinha","accessory.bow":"Laço","accessory.chef":"Chapéu de chef","accessory.tophat":"Cartola","accessory.devilhorns":"Chifrinhos","accessory.cowboy":"Chapéu de caubói","accessory.antlers":"Chifres de rena","accessory.propeller":"Boné de hélice","accessory.witch":"Chapéu de bruxa","accessory.headphones":"Fones neon","diy.eyes.sharp":"Afiados","diy.eyes.sleepy":"Sonolentos","diy.eyes.slit":"De cobra","diy.eyes.dot":"Pontinhos","diy.eyes.glow":"Brilhantes","diy.eyes.cyclops":"Ciclope","emoBarIn":"Pôr na barra","emoBarOut":"Tirar da barra","emoBarFull":"A barra cabe 8. Tire um antes.","emoBarNote":"Sua barra de emotes leva 8. Escolha os seus favoritos."});
 Object.assign(I18N.ja,{"skin.inferno":"インフェルノ","skin.frost":"フロスト","skin.kitty":"ねこちゃん","skin.puppy":"わんちゃん","skin.cookie":"クッキー","skin.milk":"ミルク","skin.angel":"天使","skin.devil":"小悪魔","skin.cyberpink":"サイバーピンク","skin.cyberblue":"サイバーブルー","skin.cyclo":"ひとつ目","skin.slime":"スライム","skin.player1":"1P","skin.player2":"2P","duo.firefrost":"炎と氷","duo.catdog":"ねことわんこ","duo.snacks":"クッキーとミルク","duo.angeldevil":"天使と小悪魔","duo.cyber":"サイバーツインズ","duo.monsters":"ちびモンスター","duo.arcade":"アーケードコンビ","emo.ok":"オッケー","emo.sorry":"ごめん","emo.clap":"拍手","emo.think":"うーん","emo.sweat":"あせっ","emo.scream":"ひえー","emo.angry":"ぷんぷん","emo.sleep":"ぐーぐー","emo.love":"メロメロ","emo.party":"パーティー","emo.devil":"いたずら","emo.crown":"王者","emo.snake":"シャー","pack.party":"パーティータイム","accessory.flower":"お花","accessory.bow":"リボン","accessory.chef":"コック帽","accessory.tophat":"シルクハット","accessory.devilhorns":"悪魔のツノ","accessory.cowboy":"カウボーイハット","accessory.antlers":"トナカイの角","accessory.propeller":"プロペラ帽","accessory.witch":"魔女の帽子","accessory.headphones":"ネオンヘッドホン","diy.eyes.sharp":"つり目","diy.eyes.sleepy":"ねむたげ","diy.eyes.slit":"ヘビの目","diy.eyes.dot":"点目","diy.eyes.glow":"ひかる目","diy.eyes.cyclops":"一つ目","emoBarIn":"エモート欄に入れる","emoBarOut":"エモート欄から外す","emoBarFull":"エモート欄は 8 個まで。先に 1 つ外してね。","emoBarNote":"エモート欄には 8 個入ります。好きなものを選ぼう。"});
 Object.assign(I18N.ko,{"skin.inferno":"인페르노","skin.frost":"서리","skin.kitty":"야옹이","skin.puppy":"멍멍이","skin.cookie":"쿠키","skin.milk":"우유","skin.angel":"천사","skin.devil":"악마","skin.cyberpink":"사이버 핑크","skin.cyberblue":"사이버 블루","skin.cyclo":"외눈박이","skin.slime":"슬라임","skin.player1":"1P","skin.player2":"2P","duo.firefrost":"불과 얼음","duo.catdog":"냥이와 댕댕이","duo.snacks":"쿠키와 우유","duo.angeldevil":"천사와 악마","duo.cyber":"사이버 트윈즈","duo.monsters":"꼬마 괴물","duo.arcade":"오락실 듀오","emo.ok":"오케이","emo.sorry":"미안","emo.clap":"박수","emo.think":"음...","emo.sweat":"휴","emo.scream":"으악","emo.angry":"부글부글","emo.sleep":"쿨쿨","emo.love":"반했어","emo.party":"파티","emo.devil":"장난꾸러기","emo.crown":"왕","emo.snake":"쉭쉭","pack.party":"파티 타임","accessory.flower":"꽃","accessory.bow":"리본","accessory.chef":"요리사 모자","accessory.tophat":"실크햇","accessory.devilhorns":"악마 뿔","accessory.cowboy":"카우보이모자","accessory.antlers":"사슴뿔","accessory.propeller":"프로펠러 모자","accessory.witch":"마녀 모자","accessory.headphones":"네온 헤드폰","diy.eyes.sharp":"날카로운 눈","diy.eyes.sleepy":"졸린 눈","diy.eyes.slit":"뱀 눈","diy.eyes.dot":"콩알 눈","diy.eyes.glow":"빛나는 눈","diy.eyes.cyclops":"외눈","emoBarIn":"이모트 바에 넣기","emoBarOut":"이모트 바에서 빼기","emoBarFull":"이모트 바에는 8개까지 들어가요. 먼저 하나를 빼 주세요.","emoBarNote":"이모트 바에는 8개가 들어가요. 마음에 드는 걸 골라 보세요."});
+/* v23: the four new power-ups, their hurt lines and the black hole tip */
+Object.assign(I18N.en,{"item.frost":"Frost Aura","item.frost.d":"For 14 s, rivals near you move at 60% speed and cannot boost","item.wave":"Shockwave","item.wave.d":"Throws back every snake around you and dazes them for 1.2 s. Also clears nearby shots, mines and clones","item.venom":"Venom","item.venom.d":"2 shots. Poisons the snake it hits for 8 s: it keeps losing length, left behind as energy","item.hole":"Black Hole","item.hole.d":"Throws a black hole ahead that pulls rivals in for 7 s. Its core tears off length fast","hurt.v":"Poisoned","hurtN.v":"Poisoned by {n}'s venom","hurt.w":"Knocked back by a shockwave","hurtN.w":"Blasted by {n}'s shockwave","hurt.h":"Caught in a black hole","hurtN.h":"Caught in {n}'s black hole","tip.wh":"Black holes pull you in. Turn away and boost out before the core shreds you."});
+Object.assign(I18N.zh,{"item.frost":"寒冰领域","item.frost.d":"14 秒内，靠近你的对手速度降到六成，而且不能加速","item.wave":"冲击波","item.wave.d":"把周围的蛇全部震开，并眩晕 1.2 秒，还能清掉附近的子弹、地雷和分身","item.venom":"毒液","item.venom.d":"2 发。被射中的蛇中毒 8 秒，长度不停流失，掉在身后变成能量","item.hole":"黑洞","item.hole.d":"往前扔出一个黑洞，7 秒内把对手往里吸，被吸进中心会飞快掉长度","hurt.v":"中毒了","hurtN.v":"中了{n}的毒液","hurt.w":"被冲击波震开了","hurtN.w":"被{n}的冲击波震开了","hurt.h":"被黑洞吸住了","hurtN.h":"被{n}的黑洞吸住了","tip.wh":"黑洞会把你往里吸，赶紧转向加速冲出来，别被吸进中心。"});
+Object.assign(I18N.es,{"item.frost":"Aura gélida","item.frost.d":"Durante 14 s, los rivales cerca de ti van al 60 % de velocidad y no pueden acelerar","item.wave":"Onda expansiva","item.wave.d":"Empuja lejos a todas las serpientes a tu alrededor y las aturde 1,2 s. También borra disparos, minas y clones cercanos","item.venom":"Veneno","item.venom.d":"2 disparos. Envenena 8 s a la serpiente que alcanza: pierde longitud sin parar y la deja atrás como energía","item.hole":"Agujero negro","item.hole.d":"Lanza delante un agujero negro que atrae a los rivales durante 7 s. Su núcleo arranca longitud muy rápido","hurt.v":"Te envenenaron","hurtN.v":"Te envenenó {n}","hurt.w":"Te empujó una onda expansiva","hurtN.w":"Onda expansiva de {n}","hurt.h":"Te atrapó un agujero negro","hurtN.h":"Agujero negro de {n}","tip.wh":"Los agujeros negros te atraen. Gira y acelera para salir antes de que el núcleo te destroce."});
+Object.assign(I18N.pt,{"item.frost":"Aura Gélida","item.frost.d":"Por 14 s, rivais perto de você ficam com 60% da velocidade e não conseguem acelerar","item.wave":"Onda de Choque","item.wave.d":"Empurra para longe todas as cobras ao seu redor e atordoa por 1,2 s. Também apaga tiros, minas e clones por perto","item.venom":"Veneno","item.venom.d":"2 tiros. Envenena por 8 s a cobra atingida: ela perde tamanho sem parar, deixando energia para trás","item.hole":"Buraco Negro","item.hole.d":"Joga à frente um buraco negro que puxa os rivais por 7 s. O centro arranca tamanho bem rápido","hurt.v":"Você foi envenenado","hurtN.v":"{n} te envenenou","hurt.w":"Uma onda de choque te empurrou","hurtN.w":"Onda de choque de {n}","hurt.h":"Um buraco negro te pegou","hurtN.h":"Buraco negro de {n}","tip.wh":"Buracos negros puxam você. Vire e acelere para sair antes que o centro te destrua."});
+Object.assign(I18N.ja,{"item.frost":"フロストオーラ","item.frost.d":"14秒間、近くのライバルは速度が60%になり、ダッシュできない","item.wave":"衝撃波","item.wave.d":"周りのヘビをすべて吹き飛ばし、1.2秒間気絶させる。近くの弾、地雷、分身も消える","item.venom":"毒液","item.venom.d":"2発。当たったヘビは8秒間毒になり、長さが減り続けて後ろにエネルギーとして落ちる","item.hole":"ブラックホール","item.hole.d":"前方にブラックホールを投げ、7秒間ライバルを引き寄せる。中心に入ると長さがどんどん削られる","hurt.v":"毒をくらった","hurtN.v":"{n}の毒液をくらった","hurt.w":"衝撃波で吹き飛ばされた","hurtN.w":"{n}の衝撃波で吹き飛ばされた","hurt.h":"ブラックホールに捕まった","hurtN.h":"{n}のブラックホールに捕まった","tip.wh":"ブラックホールは引き寄せてきます。中心に飲まれる前に、向きを変えてダッシュで抜け出しましょう。"});
+Object.assign(I18N.ko,{"item.frost":"서리 오라","item.frost.d":"14초 동안 내 근처의 상대는 속도가 60%로 줄고 부스트를 쓸 수 없어요","item.wave":"충격파","item.wave.d":"주변의 뱀을 모두 밀어내고 1.2초 동안 기절시켜요. 근처의 탄, 지뢰, 분신도 없애요","item.venom":"독액","item.venom.d":"2발. 맞은 뱀은 8초 동안 중독돼 길이가 계속 줄고, 줄어든 만큼 뒤에 에너지로 떨어져요","item.hole":"블랙홀","item.hole.d":"앞으로 블랙홀을 던져 7초 동안 상대를 끌어당겨요. 중심에 빨려 들면 길이가 빠르게 줄어요","hurt.v":"중독됐어요","hurtN.v":"{n}의 독액에 중독됐어요","hurt.w":"충격파에 밀려났어요","hurtN.w":"{n}의 충격파에 밀려났어요","hurt.h":"블랙홀에 붙잡혔어요","hurtN.h":"{n}의 블랙홀에 붙잡혔어요","tip.wh":"블랙홀은 나를 끌어당겨요. 중심에 빨려 들기 전에 방향을 틀고 부스트로 빠져나오세요."});
 const LANGS=['en','zh','es','pt','ja','ko'],LANG_NAMES={en:'English',zh:'中文',es:'Español',pt:'Português',ja:'日本語',ko:'한국어'},LANG_SHORT={en:'EN',zh:'中文',es:'ES',pt:'PT',ja:'日本語',ko:'한국어'};
 const LOCALES={en:'en-US',zh:'zh-CN',es:'es-ES',pt:'pt-BR',ja:'ja-JP',ko:'ko-KR'};
 /* numbers and dates the way the phone writes them when it speaks the game's language (es-MX, pt-PT, en-GB), else the usual one */
@@ -4581,14 +4588,17 @@ const WEB_URL='https://wlxie-tony.github.io/snake-brawl/',PRIVACY_URL=WEB_URL+'p
 const APPCFG=(()=>{try{const c=window.APP_CFG;return c&&typeof c==='object'?c:{};}catch(e){return {};}})();
 const TAU=Math.PI*2;
 /* arena radius; food, obstacles and lava eruptions scale with its area so the bigger map keeps the same density.
-   Power-ups are kept sparser on purpose (fewer weapons per snake means longer lives) */
-const R=7200, FOOD_SLOTS=8192, FOOD_GENS=4, MAX_DROPS=1800, BOT_COUNT=100, MAX_ITEMS=72, ITEM_EVERY=1600;
+   Power-ups are kept sparser on purpose (fewer weapons per snake means longer lives).
+   v23: one ring bigger (9000, was 7200): food slots and the power-up cap grew with the area, so both keep their density */
+const R=9000, FOOD_SLOTS=12800, FOOD_GENS=4, MAX_DROPS=1800, BOT_COUNT=100, MAX_ITEMS=112, ITEM_EVERY=1020;
 const AREA_K=(R*R)/(2600*2600);
 /* timed matches end in a closing ring: the arena edge moves in to this radius */
-const ZONE_MIN=1800;
+/* v23: the bigger arena starts its ring a little earlier (ZONE_K: about 72 s before the end of a 3-minute match, was
+   63 s) and keeps the end point within ZONE_DRIFT of the middle, so the far side can still reach the last circle */
+const ZONE_MIN=1800,ZONE_K=1.15,ZONE_DRIFT=4590;
 /* bumped whenever two builds can no longer play together; rooms from other versions are not joinable
-   (11: v22 moved rooms to the game's own signalling server and added skins) */
-const NET_VER=12;
+   (11: v22 moved rooms to the game's own signalling server and added skins; 13: v23 bigger arena, new power-ups) */
+const NET_VER=13;
 const B64='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
 const B64I=new Int16Array(128).fill(-1);for(let i=0;i<64;i++)B64I[B64.charCodeAt(i)]=i;
 /* fixed-width base64 numbers for the compact network strings */
@@ -4644,29 +4654,51 @@ function rgbCss(c,a){return 'rgba('+Math.round(c[0]*255)+','+Math.round(c[1]*255
 
 /* ================= power-ups ================= */
 const ITEMS=[
-  {id:'shield', kind:'tool',   color:'#4fb6ff', dur:6000,  w:10},
-  {id:'turbo',  kind:'tool',   color:'#ffd23f', dur:6000,  w:10},
-  {id:'magnet', kind:'tool',   color:'#ff5d8f', dur:10000, w:10},
+  /* v23: every duration doubled (shield and turbo were 6 s, magnet 10, feast 12, ghost 7, giant 6) */
+  {id:'shield', kind:'tool',   color:'#4fb6ff', dur:12000, w:10},
+  {id:'turbo',  kind:'tool',   color:'#ffd23f', dur:12000, w:10},
+  {id:'magnet', kind:'tool',   color:'#ff5d8f', dur:20000, w:10},
   {id:'heart',  kind:'tool',   color:'#ff4766',            w:6},
-  {id:'grow',   kind:'tool',   color:'#ff9a1f', dur:12000, w:9},
-  {id:'ghost',  kind:'tool',   color:'#b49cff', dur:7000,  w:7},
+  {id:'grow',   kind:'tool',   color:'#ff9a1f', dur:24000, w:9},
+  {id:'ghost',  kind:'tool',   color:'#b49cff', dur:14000, w:7},
   {id:'mystery',kind:'tool',   color:'#43e0a8',            w:8},
   /* weapons are about a third of what spawns, tools the rest */
   {id:'zap',    kind:'weapon', color:'#fff04d', n:1,       w:5},
   {id:'arrow',  kind:'weapon', color:'#ffb066', n:3,       w:7},
   {id:'split',  kind:'weapon', color:'#3ee6c4', n:1,       w:4},
-  {id:'giant',  kind:'weapon', color:'#ff6a3d', n:1, dur:6000, w:4},
+  {id:'giant',  kind:'weapon', color:'#ff6a3d', n:1, dur:12000, w:4},
   {id:'freeze', kind:'weapon', color:'#8ef3ff', n:2,       w:5},
   {id:'mine',   kind:'weapon', color:'#ff4040', n:3,       w:5},
+  /* v23: four more, appended so older item indexes stay where they were */
+  {id:'frost',  kind:'tool',   color:'#a8c8ff', dur:14000, w:7},
+  {id:'wave',   kind:'weapon', color:'#ff6fd8', n:1,       w:4},
+  {id:'venom',  kind:'weapon', color:'#8ee03c', n:2,       w:5},
+  {id:'hole',   kind:'weapon', color:'#6c4bff', n:1,       w:3},
 ];
 const IT={};ITEMS.forEach((d,i)=>{IT[d.id]=i;d.rgb=hexRgb(d.color);
   Object.defineProperty(d,'name',{get(){return t('item.'+d.id);}});Object.defineProperty(d,'desc',{get(){return t('item.'+d.id+'.d');}});});
-const ITEM_WSUM=ITEMS.reduce((a,d)=>a+d.w,0);
+const ITEM_WSUM=ITEMS.reduce((a,d)=>a+d.w,0),WEAPON_IX=ITEMS.map((d,i)=>d.kind==='weapon'?i:-1).filter(i=>i>=0);
 function pickItemType(u,noMystery){let tot=noMystery?ITEM_WSUM-ITEMS[IT.mystery].w:ITEM_WSUM,x=u*tot;
   for(let i=0;i<ITEMS.length;i++){if(noMystery&&i===IT.mystery)continue;x-=ITEMS[i].w;if(x<0)return i;}return 0;}
 /* network flag bits for visible states */
-const F={shield:1,turbo:2,magnet:4,ghost:8,grow:16,giant:32,frozen:64,stun:128,burn:256,hide:512,blink:1024,boost:2048};
-const WEAPON_BALANCE={arrowLoss:12,zapKeep:0.85,zapSlowMs:650,freezeMs:1400};
+const F={shield:1,turbo:2,magnet:4,ghost:8,grow:16,giant:32,frozen:64,stun:128,burn:256,hide:512,blink:1024,boost:2048,frost:4096,poison:8192,chill:16384};
+/* v23: arrows bend toward a snake in front and cut the body where they land (10% to 35% of the length, more the closer
+   to the head; a head shot also stuns). Lightning strikes the nearest snake and jumps to two more nearby: 25% of the
+   length (15% for each jump) and 1.6 s of paralysis, half speed with barely any steering. Freeze and the stun of a
+   mine last twice as long as before */
+const WEAPON_BALANCE={arrowKeep:[0.65,0.9],arrowHead:0.12,arrowStunMs:1200,arrowAssist:0.42,botAssist:0.16,zapKeep:0.75,zapChainKeep:0.85,zapMs:1600,zapRange:900,zapChain:2,zapHop:560,freezeMs:2800,mineStunMs:1200};
+/* shots in flight: speed, range and how close to a body counts as a hit */
+const PROJ={a:{spd:1450,maxD:1100,pr:10},f:{spd:920,maxD:950,pr:20},v:{spd:1100,maxD:1000,pr:16}};
+/* frost aura: rivals with their head within FROST_R of the owner's head move at FROST_SLOW speed and cannot boost */
+const FROST_R=330,FROST_SLOW=0.6;
+/* venom: POISON_MS of poison that sheds POISON_RATE of the length a second as orbs, never below POISON_FLOOR */
+const POISON_MS=8000,POISON_RATE=0.035,POISON_FLOOR=12;
+/* shockwave: every rival head within WAVE_R is thrown back and dazed for WAVE_MS; shots, mines and clones there go */
+const WAVE_R=440,WAVE_PUSH=950,WAVE_MS=1200;
+/* black hole: lands HOLE_THROW ahead and lasts HOLE_MS; pulls rivals within HOLE_R, and its core drains HOLE_DRAIN a second */
+const HOLE_THROW=380,HOLE_MS=7000,HOLE_R=560,HOLE_CORE=85,HOLE_PULL=270,HOLE_DRAIN=0.22;
+/* how long each harmful state lasts, for the timer ring in the HUD */
+const DEBUFF_MS={frozen:WEAPON_BALANCE.freezeMs,stun:WEAPON_BALANCE.zapMs,poison:POISON_MS};
 
 /* ================= maps ================= */
 /* obs: [type, count, minR, maxR] */
@@ -4925,6 +4957,14 @@ function glyph(g,id,s,col){g.save();g.scale(s/100,s/100);g.fillStyle=col;g.strok
         for(const sd of [-1,1]){const bx=50+ca*24*sd,by=50+sa*24*sd,ox=ca*sd,oy=sa*sd;g.beginPath();g.moveTo(bx+(-oy-ox)*11,by+(ox-oy)*11);g.lineTo(bx,by);g.lineTo(bx+(oy-ox)*11,by+(-ox-oy)*11);g.stroke();}}break;
     case 'mine':g.lineWidth=10;for(let k=0;k<8;k++){const a=k*Math.PI/4;g.beginPath();g.moveTo(50+Math.cos(a)*20,54+Math.sin(a)*20);g.lineTo(50+Math.cos(a)*38,54+Math.sin(a)*38);g.stroke();}
       g.beginPath();g.arc(50,54,24,0,TAU);g.fill();g.globalCompositeOperation='destination-out';g.beginPath();g.arc(42,46,6,0,TAU);g.fill();break;
+    case 'frost':g.lineWidth=7;g.beginPath();g.arc(50,50,40,0,TAU);g.stroke();g.lineWidth=7;
+      for(let k=0;k<3;k++){const a=k*Math.PI/3,ca=Math.cos(a),sa=Math.sin(a);g.beginPath();g.moveTo(50-ca*25,50-sa*25);g.lineTo(50+ca*25,50+sa*25);g.stroke();
+        for(const sd of [-1,1]){const bx=50+ca*15*sd,by=50+sa*15*sd,ox=ca*sd,oy=sa*sd;g.beginPath();g.moveTo(bx+(-oy-ox)*8,by+(ox-oy)*8);g.lineTo(bx,by);g.lineTo(bx+(oy-ox)*8,by+(-ox-oy)*8);g.stroke();}}break;
+    case 'wave':g.beginPath();g.arc(50,50,11,0,TAU);g.fill();g.lineWidth=8;g.beginPath();g.arc(50,50,25,0,TAU);g.stroke();g.lineWidth=6;g.globalAlpha=0.8;g.beginPath();g.arc(50,50,39,0,TAU);g.stroke();break;
+    case 'venom':g.beginPath();g.moveTo(50,8);g.bezierCurveTo(58,26,80,46,80,62);g.bezierCurveTo(80,80,66,92,50,92);g.bezierCurveTo(34,92,20,80,20,62);g.bezierCurveTo(20,46,42,26,50,8);g.fill();
+      g.globalCompositeOperation='destination-out';g.beginPath();g.ellipse(38,64,6,10,-0.4,0,TAU);g.fill();g.beginPath();g.arc(58,76,5,0,TAU);g.fill();break;
+    case 'hole':g.lineWidth=8;g.beginPath();for(let k=0;k<=60;k++){const a=k/60*TAU*2.2,rr=8+k*0.62;const x=50+Math.cos(a)*rr,y=50+Math.sin(a)*rr;if(k)g.lineTo(x,y);else g.moveTo(x,y);}g.stroke();
+      g.beginPath();g.arc(50,50,11,0,TAU);g.fill();break;
   }
   g.restore();}
 /* a round badge: coloured disc + white glyph, used in HUD, guide and item sprites */
@@ -4964,6 +5004,9 @@ const SOUNDS={
   giant:v=>{sTone('sawtooth',60,150,0.9,0.14*v);sTone('sine',45,90,1.0,0.3*v);sNoise(0.7,0.12*v,'lowpass',400,120,1);},
   split:v=>{sTone('triangle',420,840,0.13,0.13*v);sTone('triangle',520,1040,0.13,0.13*v,0.09);sNoise(0.15,0.07*v,'bandpass',1800,3600,1);},
   block:v=>{sTone('sine',1500,1500,0.16,0.11*v);sTone('sine',2250,2250,0.16,0.07*v);},
+  wave:v=>{sNoise(0.55,0.42*v,'lowpass',2400,120,0.7);sTone('sine',160,48,0.45,0.32*v);sTone('triangle',880,220,0.25,0.1*v);},
+  venom:v=>{sNoise(0.18,0.2*v,'bandpass',900,300,3);sTone('sine',320,180,0.16,0.12*v);sTone('sine',640,900,0.08,0.06*v,0.05);},
+  hole:v=>{sTone('sawtooth',90,40,1.2,0.12*v);sTone('sine',240,60,1.1,0.18*v);sNoise(1.0,0.1*v,'bandpass',600,150,2);},
   hit:v=>{sTone('triangle',640,320,0.09,0.13*v);},
   hurt:v=>{sTone('square',240,110,0.22,0.13*v);sNoise(0.18,0.15*v,'lowpass',900,200,0.8);},
   kill:v=>{[523,659,784,1046].forEach((f,i)=>sTone('triangle',f,f,0.14,0.15*v,i*0.08));},
@@ -5137,7 +5180,8 @@ function densify(P,sp,out,max){const n=P.length>>1;if(!n){out.length=0;return;}o
   const st=WALK;st.x=P[0];st.y=P[1];st.acc=0;st.sp=sp;st.out=out;st.max=max;st.n=2;
   for(let i=0;i<n-1;i++){const i0=Math.max(0,i-1),i2=i+1,i3=Math.min(n-1,i+2);
     const x0=P[i0*2],y0=P[i0*2+1],x1=P[i*2],y1=P[i*2+1],x2=P[i2*2],y2=P[i2*2+1],x3=P[i3*2],y3=P[i3*2+1];
-    for(let s=1;s<=4;s++){const t=s/4,t2=t*t,t3=t2*t;
+    const sl=Math.abs(x2-x1)+Math.abs(y2-y1),ks=sl>sp*3?4:sl>sp*1.5?2:1;
+    for(let s=1;s<=ks;s++){const t=s/ks,t2=t*t,t3=t2*t;
       walkToW(st,0.5*(2*x1+(-x0+x2)*t+(2*x0-5*x1+4*x2-x3)*t2+(-x0+3*x1-3*x2+x3)*t3),
                 0.5*(2*y1+(-y0+y2)*t+(2*y0-5*y1+4*y2-y3)*t2+(-y0+3*y1-3*y2+y3)*t3));}
     if(st.n>=max*2)break;}
@@ -5148,12 +5192,13 @@ function decPts(s){if(typeof s!=='string'||s.length>6000)return null;const p=s.s
   const out=new Array(p.length);let x=0,y=0;
   for(let i=0;i<p.length;i+=2){const a=+p[i],b=+p[i+1];if(!Number.isFinite(a)||!Number.isFinite(b))return null;x+=a;y+=b;
     if(Math.abs(x)>R+400||Math.abs(y)>R+400)return null;out[i]=x;out[i+1]=y;}return out;}
-/* Absolute 4-unit coordinates use four characters per point without clipping long outline steps. */
-const NP_OFF=8192,NP_Q=4;
+/* Absolute coordinates, so long outline steps are never clipped: the head in 1/8-unit steps (3 characters per axis;
+   other phones draw the body along the path the head took), every later point in 5-unit steps (2 characters per axis) */
+const NP_OFF=10240,NP_Q=5,NH_OFF=16384,NH_Q=8;
 function encNetPts(a){if(!a||a.length<2||a.length>602||(a.length&1))return '';let s='';
-  for(let i=0;i<a.length;i++){if(!Number.isFinite(a[i])||Math.abs(a[i])>R+400)return '';s+=e64(Math.round((a[i]+NP_OFF)/NP_Q),2);}return s;}
-function decNetPts(s){if(typeof s!=='string'||s.length<4||s.length>1204||s.length%4)return null;const out=[];
-  for(let i=0;i<s.length;i+=2){const v=d64(s,i,2)*NP_Q-NP_OFF;if(!Number.isFinite(v)||Math.abs(v)>R+400)return null;out.push(v);}return out;}
+  for(let i=0;i<a.length;i++){const v=a[i];if(!Number.isFinite(v)||Math.abs(v)>R+400)return '';s+=i<2?e64(Math.round((v+NH_OFF)*NH_Q),3):e64(Math.round((v+NP_OFF)/NP_Q),2);}return s;}
+function decNetPts(s){if(typeof s!=='string'||s.length<6||s.length>1206||(s.length-6)%4)return null;const out=[];
+  for(let i=0;i<s.length;){const h=i<6,v=h?d64(s,i,3)/NH_Q-NH_OFF:d64(s,i,2)*NP_Q-NP_OFF;i+=h?3:2;if(!Number.isFinite(v)||Math.abs(v)>R+400)return null;out.push(v);}return out;}
 function subsample(b,maxPts){const n=b.length>>1;if(n<=maxPts)return b.slice();const st=Math.ceil(n/maxPts),o=[];
   for(let i=0;i<n;i+=st)o.push(b[i*2],b[i*2+1]);if((n-1)%st)o.push(b[n*2-2],b[n*2-1]);return o;}
 
@@ -5166,25 +5211,32 @@ class Snake{
     this.x=o.x;this.y=o.y;this.angle=o.angle;this.target=o.angle;this.px=[];this.py=[];this.body=[];this.gs=1;this.r=radiusOf(this.mass);
     this.dropT=0;this.thinkT=Math.random()*0.2;this.trimT=0;this.aggr=Math.random();this.bf={};this.hearts=0;this.weapon=null;
     this.invulnT=0;this.burn=false;this.hide=false;this.crush={};this.fireT=0;this.expireAt=o.expireAt||0;this.preyKey=null;this.fl=0;this.lastEat=0;
+    this.kx=0;this.ky=0;this.chill=false;this.poisonAcc=0;this.holeAcc=0;
     const L=o.seed!=null?o.seed:lengthOf(this.mass)*this.lm+40,ca=Math.cos(this.angle),sa=Math.sin(this.angle);
     for(let d=L;d>=3;d-=6){this.px.push(this.x-ca*d);this.py.push(this.y-sa*d);}
     this.buildBody();}
   step(dt,now){const M=MAPS[G.map];
     const gt=act(this,'giant',now)?2.3:1;this.gs+=(gt-this.gs)*(1-Math.exp(-dt*(gt>this.gs?9:5)));if(Math.abs(this.gs-gt)<0.004)this.gs=gt;
     const r0=radiusOf(this.mass);this.r=r0*this.gs;
-    const frozen=act(this,'frozen',now),stun=act(this,'stun',now),turbo=act(this,'turbo',now);
-    this.boosting=!frozen&&!stun&&(turbo||(this.boost&&(this.free||this.mass>MIN_BOOST)));
+    const frozen=act(this,'frozen',now),stun=act(this,'stun',now),shock=act(this,'shock',now),turbo=act(this,'turbo',now),chill=this.chill;
+    this.boosting=!frozen&&!stun&&(turbo||(this.boost&&!chill&&(this.free||this.mass>MIN_BOOST)));
     /* a little extra steering while boosting so fast turns don't swing too wide */
     let turn=turnRate(r0)*dt*(M.turn||1)*(this.boosting?1.15:1);
-    if(frozen)turn=0;
+    if(frozen)turn=0;else if(shock)turn*=0.3;
     const d=angDiff(this.angle,this.target);this.angle+=d>turn?turn:(d<-turn?-turn:d);
     let sp=this.boosting?(turbo?TURBO_SPEED:BOOST_SPEED):BASE_SPEED;
     sp*=(1-Math.min(.14,(r0-9)*.005))*(M.speed||1);
-    if(frozen)sp*=0.5;else if(stun)sp*=0.6;
+    if(frozen)sp*=0.5;else if(stun)sp*=shock?0.5:0.6;
+    if(chill)sp*=FROST_SLOW;
     if(this.gs>1.02)sp*=1+(this.gs-1)*0.12;
     if(this.kind==='c')sp*=1.18;
     this.x+=Math.cos(this.angle)*sp*dt;this.y+=Math.sin(this.angle)*sp*dt;
-    for(const o of G.obstacles){if(!o.meta.grav)continue;const dx=o.x-this.x,dy=o.y-this.y,dd=Math.sqrt(dx*dx+dy*dy),F2=o.r*o.meta.grav;
+    /* thrown back by a shockwave: the push dies away within a fraction of a second */
+    if(this.kx||this.ky){this.x+=this.kx*dt;this.y+=this.ky*dt;const k=Math.exp(-dt/0.16);this.kx*=k;this.ky*=k;if(Math.abs(this.kx)+Math.abs(this.ky)<6)this.kx=this.ky=0;}
+    /* rivals' black holes pull (fading in and out at the ends) */
+    for(const h of G.holes||[]){if(now>=h.t1||now<h.t0||h.owner===this.owner||(G.rule==='team'&&teamOfKey(h.owner)===teamOf(this)))continue;const dx=h.x-this.x,dy=h.y-this.y,dd=Math.sqrt(dx*dx+dy*dy);
+      if(dd<HOLE_R&&dd>1){const fade=Math.min(1,(now-h.t0)/400,(h.t1-now)/400),pull=Math.min(dd,HOLE_PULL*Math.pow(1-dd/HOLE_R,1.1)*fade*dt);this.x+=dx/dd*pull;this.y+=dy/dd*pull;}}
+    for(const o of obsGrav()){const dx=o.x-this.x,dy=o.y-this.y,dd=Math.sqrt(dx*dx+dy*dy),F2=o.r*o.meta.grav;
       if(dd<F2&&dd>1){const pull=155*Math.pow(1-dd/F2,1.2);this.x+=dx/dd*pull*dt;this.y+=dy/dd*pull*dt;}}
     const n=this.px.length;if(!n){this.px.push(this.x);this.py.push(this.y);}
     else{const dx=this.x-this.px[n-1],dy=this.y-this.py[n-1];if(dx*dx+dy*dy>=9){this.px.push(this.x);this.py.push(this.y);}}
@@ -5202,15 +5254,44 @@ class Snake{
     for(let i=this.px.length-1;i>=0&&out.length<st.max*2;i--)walkTo(st,this.px[i],this.py[i]);return out;}
   flags(now){let f=0;if(act(this,'shield',now))f|=F.shield;if(act(this,'turbo',now))f|=F.turbo;if(act(this,'magnet',now))f|=F.magnet;
     if(act(this,'ghost',now))f|=F.ghost;if(act(this,'grow',now))f|=F.grow;if(this.gs>1.04)f|=F.giant;if(act(this,'frozen',now))f|=F.frozen;
-    if(act(this,'stun',now))f|=F.stun;if(this.burn)f|=F.burn;if(this.hide)f|=F.hide;if(this.invulnT>now&&this.kind!=='c')f|=F.blink;if(this.boosting)f|=F.boost;return this.fl=f;}
+    if(act(this,'stun',now))f|=F.stun;if(this.burn)f|=F.burn;if(this.hide)f|=F.hide;if(this.invulnT>now&&this.kind!=='c')f|=F.blink;if(this.boosting)f|=F.boost;
+    if(act(this,'frost',now))f|=F.frost;if(act(this,'poison',now))f|=F.poison;if(this.chill)f|=F.chill;return this.fl=f;}
 }
 
 /* ================= snake seen from another phone ================= */
 class RView{
   constructor(k){this.key=k;this.net=[];this.body=[];this.alive=false;this.mass=10;this.r=10;this.x=0;this.y=0;this.angle=0;this.gs=1;this.fl=0;this.lm=1;
     this.name='';this.skin=0;this.accessory='none';this.trail=0;this.boosting=false;this.kind=k[0]==='b'?'b':(k[0]==='c'?'c':'p');this.isBot=this.kind==='b';this.owner=k;this.life=1;
-    this.minx=this.miny=this.maxx=this.maxy=0;this.seen=0;this.remote=true;this.score=0;}
-  apply(na,nb,f){this.name=nb.n;this.skin=nb.s;this.accessory=nb.ac||'none';this.trail=nb.tr|0;this.alive=nb.a;this.fl=nb.f;this.boosting=!!(nb.f&F.boost);this.life=nb.l;this.owner=nb.o||this.key;this.score=nb.sc|0;this.tier=nb.d|0;
+    this.minx=this.miny=this.maxx=this.maxy=0;this.seen=0;this.remote=true;this.score=0;
+    this.tx=[];this.ty=[];this.tt=-Infinity;this.tl=-1;this.cp=[];}
+  /* the head positions of every snapshot up to the moment on screen (upto) become the path the body is drawn along */
+  feed(S,upto,k){let j=S.length;while(j>0&&S[j-1].t>this.tt)j--;
+    for(;j<S.length&&S[j].t<=upto;j++){const n=S[j].data.byKey.get(k);this.tt=S[j].t;
+      if(!n||!n.a||n.l!==this.tl){this.tx.length=0;this.ty.length=0;this.tl=n&&n.a?n.l:-1;if(!n||!n.a)continue;}
+      const x=n.P[0],y=n.P[1],m=this.tx.length;
+      if(m){const dx=x-this.tx[m-1],dy=y-this.ty[m-1],d2=dx*dx+dy*dy;if(d2<4)continue;
+        /* no snake moves that far between two snapshots: an outline that was replaced starts a new path */
+        if(d2>90000){this.tx.length=0;this.ty.length=0;}}
+      this.tx.push(x);this.ty.push(y);}}
+  /* the body along the seen head path (newest first), then the network outline for whatever is older */
+  alongPath(net,sp,max){const L=(max-1)*sp,C=this.cp,tx=this.tx,ty=this.ty;let n=0,len=0,x=net[0],y=net[1],i=tx.length-1;C[n++]=x;C[n++]=y;
+    for(;i>=0&&len<L;i--){const dx=tx[i]-x,dy=ty[i]-y,d=Math.sqrt(dx*dx+dy*dy);if(d<1)continue;len+=d;x=tx[i];y=ty[i];C[n++]=x;C[n++]=y;}
+    /* forget the path far behind the tail, keeping room for a snake that grows */
+    {let j=i,l2=len,px=x,py=y;const keep=L*1.3+300;for(;j>=0&&l2<keep;j--){l2+=Math.hypot(tx[j]-px,ty[j]-py);px=tx[j];py=ty[j];}if(j>48){tx.splice(0,j);ty.splice(0,j);}}
+    if(len<L&&net.length>=4){/* the network points sit evenly along the body, so the stretch of the outline as far down
+        the body as the oldest path point is known by index (the nearest point overall could be another loop of a coil);
+        the path is a little shorter than the body on tight turns, so the join is the nearest point of that stretch */
+      const nn=net.length>>1,spn=Math.max(1,lengthOf(this.mass)*this.lm*this.gs)/(nn-1),u=clamp(len/spn,0,nn-1),du=(len*0.04+40)/spn;
+      let bk=-1,bu=0,bd=Infinity;
+      for(let k=Math.max(0,Math.floor(u-du)),k1=Math.min(nn-2,Math.ceil(u+du));k<=k1;k++){const ax=net[k*2],ay=net[k*2+1],sx=net[k*2+2]-ax,sy=net[k*2+3]-ay,s2=sx*sx+sy*sy,
+        t=s2>1e-9?clamp(((x-ax)*sx+(y-ay)*sy)/s2,0,1):0,qx=ax+sx*t-x,qy=ay+sy*t-y,d=qx*qx+qy*qy;if(d<bd){bd=d;bk=k;bu=t;}}
+      /* a path that does not meet the outline (it always should) is not trusted for this frame */
+      if(bk<0||bd>(this.r*6+120)*(this.r*6+120)){densify(net,sp,this.body,max);return;}
+      /* a join point right next to the end of the path would only make a tiny sharp step: go straight on then */
+      if(bd>sp*sp*4){C[n++]=lerp(net[bk*2],net[bk*2+2],bu);C[n++]=lerp(net[bk*2+1],net[bk*2+3],bu);}
+      for(let k=bk+1;k<nn;k++){C[n++]=net[k*2];C[n++]=net[k*2+1];}}
+    C.length=n;densify(C,sp,this.body,max);}
+  apply(na,nb,f,path){this.name=nb.n;this.skin=nb.s;this.accessory=nb.ac||'none';this.trail=nb.tr|0;this.alive=nb.a;this.fl=nb.f;this.boosting=!!(nb.f&F.boost);this.life=nb.l;this.owner=nb.o||this.key;this.score=nb.sc|0;this.tier=nb.d|0;
     /* Network samples are evenly spaced along the body: align that progress when the LOD changes. */
     const same=na&&na!==nb&&na.l===nb.l&&na.a&&nb.a,B=nb.P,A=same?na.P:B,full=A.length>2&&B.length>2,n=same&&full?Math.max(A.length,B.length):B.length,net=this.net;net.length=n;
     if(same){for(let i=0;i<n;i+=2){const u=i/Math.max(2,n-2),ap=u*(A.length/2-1),bp=u*(B.length/2-1),ai=Math.floor(ap)*2,bi=Math.floor(bp)*2;
@@ -5220,8 +5301,9 @@ class RView{
     else{for(let i=0;i<n;i++)net[i]=B[i];this.mass=nb.m;this.gs=nb.g;}
     this.lm=nb.q||1;this.r=radiusOf(this.mass)*this.gs;const sp=segSp(this.r);
     /* at most 4000 outline points for one remote snake (a very long honest snake still fits): a forged giant stays cheap */
-    densify(net,sp,this.body,Math.min(4000,Math.floor(lengthOf(this.mass)*this.lm*this.gs/sp)+2));
-    this.x=this.body[0];this.y=this.body[1];if(n>=4)this.angle=Math.atan2(net[1]-net[3],net[0]-net[2]);bbox(this);}
+    const max=Math.min(4000,Math.floor(lengthOf(this.mass)*this.lm*this.gs/sp)+2);
+    if(path&&this.alive&&nb.l===this.tl&&this.tx.length>1)this.alongPath(net,sp,max);else densify(net,sp,this.body,max);
+    const bd=this.body;this.x=bd[0];this.y=bd[1];if(bd.length>=6)this.angle=Math.atan2(bd[1]-bd[5],bd[0]-bd[4]);else if(n>=4)this.angle=Math.atan2(net[1]-net[3],net[0]-net[2]);bbox(this);}
 }
 class Stream{
   constructor(){this.snaps=[];this.offs=[];this.views=new Map();this.lastRecv=0;this.hitSeen=-1;this.fxSeen=-1;this.mines=[];this.minesAt=0;
@@ -5267,7 +5349,7 @@ const G={zx:0,zy:0,zEnd:null,mode:'demo',auth:true,seed:1,map:0,obstacles:[],cod
   rule:'classic',control:null,controlState:null,
   bots:[],clones:[],cloneSeq:0,me:null,events:[],evSeq:0,lastEv:0,evInit:false,kills:0,bestRank:Infinity,streak:0,lastKillT:0,round:{id:0,end:0,over:false},rs:{id:0,best:0,kills:0,deaths:0,pk:0},deathSeq:0,dd:null,worldReady:true,botPts:BOT_PTS,
   hostSeenAt:0,roomCount:1,lastFg:'',lastD:'',lastIt:'',lastWAt:0,demoT:0,demoKey:null,
-  adoptKey:'',mineSeq:0,projs:[],mines:[],outHits:[],hitSeq:0,outFx:[],fxSeq:0,outDl:[],dlSeq:0,vfx:[],parts:[],floats:[],
+  adoptKey:'',mineSeq:0,projs:[],mines:[],holes:[],outHits:[],hitSeq:0,outFx:[],fxSeq:0,outDl:[],dlSeq:0,vfx:[],parts:[],floats:[],
   sc:new Map(),easy:false,tutWorld:false,tut:null,deathCause:'',lastLost:0,botTier:[],zr:R,zoneMsg:0,king:null,kingT:0};
 const foodGen=new Uint8Array(FOOD_SLOTS),food=new Array(FOOD_SLOTS);
 const all=[],remote=[],slurps=[];
@@ -5275,7 +5357,19 @@ const streams=new Map(),guests=new Map(),pendFood=new Map(),pendDrop=new Map(),p
 let myEats=[],hostPeer=null,frameNo=0;
 const V={x0:-1e9,x1:1e9,y0:-1e9,y1:1e9};
 
-function inSolid(x,y,pad){for(const o of G.obstacles){if(!o.meta.solid)continue;const rr=o.r+pad,dx=x-o.x,dy=y-o.y;if(dx*dx+dy*dy<rr*rr)return o;}return null;}
+/* v23: obstacles in a coarse grid, kept on the obstacle list itself and rebuilt whenever the list changes. Each one is
+   listed in every cell its circle's box touches, so a check near a point only looks at the obstacles around it (one may
+   come up twice, which every caller can take); gravity wells are kept in their own short list */
+const OG_CELL=500,OBS_Q=[],SOLID_Q=[];
+function obsQuery(x,y,pad,out){const L=G.obstacles;let g=L.og;
+  if(!g||L.ogn!==L.length){g=L.og=new Map();L.ogn=L.length;
+    for(const o of L)for(let cx=Math.floor((o.x-o.r)/OG_CELL),c1=Math.floor((o.x+o.r)/OG_CELL);cx<=c1;cx++)for(let cy=Math.floor((o.y-o.r)/OG_CELL),r1=Math.floor((o.y+o.r)/OG_CELL);cy<=r1;cy++){
+      const k=(cx+4096)*8192+cy+4096;let c=g.get(k);if(!c)g.set(k,c=[]);c.push(o);}}
+  let n=0;const x1=Math.floor((x+pad)/OG_CELL),y0=Math.floor((y-pad)/OG_CELL),y1=Math.floor((y+pad)/OG_CELL);
+  for(let cx=Math.floor((x-pad)/OG_CELL);cx<=x1;cx++)for(let cy=y0;cy<=y1;cy++){const c=g.get((cx+4096)*8192+cy+4096);if(c)for(let i=0;i<c.length;i++)out[n++]=c[i];}
+  return n;}
+function obsGrav(){const L=G.obstacles;if(!L.gv||L.gvn!==L.length){L.gvn=L.length;L.gv=L.filter(o=>o.meta&&o.meta.grav);}return L.gv;}
+function inSolid(x,y,pad){const n=obsQuery(x,y,pad,SOLID_Q);for(let i=0;i<n;i++){const o=SOLID_Q[i];if(!o.meta.solid)continue;const rr=o.r+pad,dx=x-o.x,dy=y-o.y;if(dx*dx+dy*dy<rr*rr)return o;}return null;}
 function foodAt(seed,slot,gen,now){const k=slot*36+gen,rich=MAPS[G.map].rich;let x=0,y=0;
   for(let a=0;a<6;a++){const u1=rnd3(seed,k,1+a*7),u2=rnd3(seed,k,2+a*7),an=u1*TAU,rr=(R-50)*Math.sqrt(u2);x=Math.cos(an)*rr;y=Math.sin(an)*rr;if(!inSolid(x,y,14))break;}
   const u3=rnd3(seed,k,3),u4=rnd3(seed,k,4),v=rich?(u4<0.15?3:(u4<0.45?2:1)):(u4<0.06?3:(u4<0.24?2:1));
@@ -5375,7 +5469,7 @@ function makeBot(i,life,now,mass){const p=G.rule==='duel'?duelSpot('b'+i):safeSp
 const EASY_ITEMS=['shield','turbo','magnet','heart','grow','arrow'];
 function spawnItem(now){let t=G.easy?IT[EASY_ITEMS[(Math.random()*EASY_ITEMS.length)|0]]:pickItemType(Math.random(),false);
   /* item frenzy: more than half of all pick-ups are weapons */
-  if(G.rule==='frenzy'&&Math.random()<0.45)t=IT.zap+((Math.random()*6)|0);
+  if(G.rule==='frenzy'&&Math.random()<0.45)t=WEAPON_IX[(Math.random()*WEAPON_IX.length)|0];
   if(t===IT.heart&&eliminationPhase(now))t=IT.shield;let x=0,y=0;
   for(let k=0;k<20;k++){const a=Math.random()*TAU,rr=Math.sqrt(Math.random())*(G.zr-120);x=G.zx+Math.cos(a)*rr;y=G.zy+Math.sin(a)*rr;if(!inSolid(x,y,40))break;}
   G.itemSeq=(G.itemSeq+1)%4096;G.items.delete(G.itemSeq);G.items.set(G.itemSeq,{id:G.itemSeq,x,y,t,born:now});}
@@ -5408,7 +5502,7 @@ function duelNext(){const now=performance.now();if(G.mode==='host'){hostNextRoun
    and reaches ZONE_MIN 15 s before the end, so the last seconds are a showdown in the middle.
    In a duel the ring is small from the first second and nobody comes back within the round */
 function zoneSpan(){const D=G.roomDur||0;if(!D)return null;if(G.rule==='duel')return {start:G.round.end-D,stop:G.round.end-D};
-  return ringRule()?{start:G.round.end-clamp(D*0.35,50000,150000),stop:G.round.end-15000}:null;}
+  return ringRule()?{start:G.round.end-clamp(D*0.35*ZONE_K,50000*ZONE_K,150000*ZONE_K),stop:G.round.end-15000}:null;}
 function eliminationPhase(now=performance.now()){if(!G.round.end||!G.roomDur||G.tutWorld)return false;const z=zoneSpan();return !!z&&now>=z.start;}
 /* me: asking for the player, for whom a death before the ring started is never an elimination,
    even if the death panel (or the respawn button) only comes up after the start */
@@ -5417,9 +5511,9 @@ function canRespawn(now=performance.now(),me){if(G.rule==='duel'&&G.round.end&&!
   const z=zoneSpan();return !!(z&&G.me.diedAt&&G.me.diedAt<z.start);}
 /* the closing ring closes on a random spot, the same on every phone (seeded by the world, the round and the map), picked
    among a few for the fewest walls in the last circle; the centre and the radius ease together and the end point is at
-   most 85% of (R - ZONE_MIN) out, so every circle lies inside the one before it */
+   most 85% of (R - ZONE_MIN) out (and never past ZONE_DRIFT), so every circle lies inside the one before it */
 function zoneEnd(){const k=G.seed+':'+G.round.id+':'+G.map;if(G.zEnd&&G.zEnd.k===k)return G.zEnd;
-  const rng=mulberry32(hash32(G.seed,(G.round.id|0)+7919,G.map+31)),lim=(R-ZONE_MIN)*0.85;let bx=0,by=0,low=Infinity;
+  const rng=mulberry32(hash32(G.seed,(G.round.id|0)+7919,G.map+31)),lim=Math.min((R-ZONE_MIN)*0.85,ZONE_DRIFT);let bx=0,by=0,low=Infinity;
   for(let i=0;i<8&&low>0;i++){const a=rng()*TAU,d=lim*(0.35+0.65*Math.sqrt(rng())),x=Math.cos(a)*d,y=Math.sin(a)*d;let bad=0;
     for(let j=0;j<24;j++){const q=j*2.39996,rr=ZONE_MIN*0.85*Math.sqrt((j+0.5)/24);if(inSolid(x+Math.cos(q)*rr,y+Math.sin(q)*rr,30))bad++;}
     if(bad<low){low=bad;bx=x;by=y;}}
@@ -5449,7 +5543,7 @@ function resetWorld(auth,seed,map,opts){const now=performance.now();G.zr=R;G.zx=
   G.auth=auth;G.seed=seed>>>0;G.map=map|0;G.obstacles=genObstacles(G.map,G.seed);foodGen.fill(0);setAllFood(now);
   G.drops.clear();G.dropSeq=0;G.items.clear();G.itemSeq=0;G.itemT=0;G.eruptT=now+5000;G.bots=[];G.clones=[];G.events=[];G.evSeq=0;G.lastEv=0;G.evInit=false;
   G.kills=0;G.bestRank=Infinity;G.dd=null;G.botPts=BOT_PTS;G.worldReady=auth;G.worldRound=0;G.lastWorldT=-1;G.pendingWorld=null;G.hostSeenAt=now;G.lastFg='';G.lastD='';G.lastIt='';G.wSig=[];G.wAt=[];G.wPage=0;G.roomCount=1;
-  G.adoptKey=auth?'':'none';G.projs=[];G.mines=[];G.outHits=[];G.outFx=[];G.outDl=[];G.vfx=[];G.parts.length=0;G.floats=[];
+  G.adoptKey=auth?'':'none';G.projs=[];G.mines=[];G.holes=[];G.outHits=[];G.outFx=[];G.outDl=[];G.vfx=[];G.parts.length=0;G.floats=[];
   pendFood.clear();pendDrop.clear();pendItem.clear();myEats=[];streams.clear();guests.clear();hostPeer=null;remote.length=0;slurps.length=0;
   G.botTier=tierMix(BOT_COUNT,G.easy,!!(opts&&opts.gentle));
   /* starting sizes: mostly small and medium snakes with a few big ones */
@@ -5482,7 +5576,7 @@ function bounce(s,nx,ny,px,py){const ca=Math.cos(s.angle),sa=Math.sin(s.angle),d
   if(dot<0){const vx=ca-2*dot*nx,vy=sa-2*dot*ny;s.angle=Math.atan2(vy,vx);s.target=s.angle;}
   s.x=px;s.y=py;s.px.push(px);s.py.push(py);}
 function envCheck(s,now,dt){s.burn=false;s.hide=false;
-  for(const o of G.obstacles){const m=o.meta,dx=s.x-o.x,dy=s.y-o.y,d2=dx*dx+dy*dy;
+  const no=obsQuery(s.x,s.y,s.r+4,OBS_Q);for(let q=0;q<no;q++){const o=OBS_Q[q],m=o.meta,dx=s.x-o.x,dy=s.y-o.y,d2=dx*dx+dy*dy;
     if(m.zone){const rr=o.r*(m.zone==='hide'?0.85:0.9);if(d2<rr*rr){if(m.zone==='hide')s.hide=true;else s.burn=true;}continue;}
     const rr=o.r*0.92+s.r*0.55;if(d2>=rr*rr)continue;const d=Math.sqrt(d2)||1,nx=dx/d,ny=dy/d;
     if(m.bounce||guarded(s,now)){bounce(s,nx,ny,o.x+nx*(rr+2),o.y+ny*(rr+2));
@@ -5544,23 +5638,75 @@ function useWeapon(s,now){const w=s.weapon;if(G.round.over||!w||!s.alive||now<s.
     case 'freeze':fireProj(s,'f',now);break;
     case 'split':ok=fireSplit(s,now);break;
     case 'giant':s.bf.giant=now+d.dur;vfx('ring',{x:s.x,y:s.y,col:d.rgb,r0:20,r1:260,dur:600});burst(s.x,s.y,10,24,d.rgb,320,600,12,0.4);break;
-    case 'mine':placeMine(s,now);break;}
+    case 'mine':placeMine(s,now);break;
+    case 'wave':fireWave(s,now);break;
+    case 'venom':fireProj(s,'v',now);break;
+    case 'hole':fireHole(s,now);break;}
   if(!ok)return false;
   if(s===G.me)sfx(d.id==='giant'?'giant':d.id);
-  s.fireT=now+(d.id==='arrow'?280:(d.id==='mine'?380:450));
+  s.fireT=now+(d.id==='arrow'?280:(d.id==='mine'||d.id==='venom'?380:450));
   if(--w.n<=0)s.weapon=null;return true;}
-function fireZap(s,now){const tg=nearestEnemy(s,760,true,s.isBot);if(!tg){if(s===G.me)toast(t('noTarget'));return false;}
-  vfx('bolt',{a:s.key,b:tg.key,x1:s.x,y1:s.y,x2:tg.x,y2:tg.y,dur:450});
-  pushFx(['Z',s.key,tg.key,Math.round(s.x),Math.round(s.y),Math.round(tg.x),Math.round(tg.y)],now);
-  hitTarget(tg,'z',0,s,0,tg.x,tg.y,now);return true;}
-function fireProj(s,kind,now){const ca=Math.cos(s.angle),sa=Math.sin(s.angle),x0=s.x+ca*(s.r+6),y0=s.y+sa*(s.r+6);
-  const sid=pushFx(['P',kind,Math.round(x0),Math.round(y0),Math.round(s.angle*1000),Math.round(now)],now);
-  G.projs.push({sid,kind,x0,y0,ang:s.angle,ca,sa,spd:kind==='a'?1450:920,maxD:kind==='a'?1050:950,pr:kind==='a'?7:20,t0:now,d:0,pd:0,own:true,
+/* the bolt strikes the nearest snake, then jumps on to the next snake near the last one it struck (each one once) */
+function fireZap(s,now){const W=WEAPON_BALANCE,tg=nearestEnemy(s,W.zapRange,true,s.isBot);if(!tg){if(s===G.me)toast(t('noTarget'));return false;}
+  const struck=[tg];let from=s,cur=tg;
+  for(let k=0;;k++){vfx('bolt',{a:from.key,b:cur.key,x1:from.x,y1:from.y,x2:cur.x,y2:cur.y,dur:500});
+    pushFx(['Z',from.key,cur.key,Math.round(from.x),Math.round(from.y),Math.round(cur.x),Math.round(cur.y)],now);
+    hitTarget(cur,'z',k?1:0,s,0,cur.x,cur.y,now);if(k>=W.zapChain)break;
+    let next=null,nd=W.zapHop*W.zapHop;
+    for(const o of all){if(struck.includes(o)||o===s||!o.alive||o.owner===s.owner||sameTeam(s,o)||(o.fl&(F.ghost|F.hide)))continue;const dx=o.x-cur.x,dy=o.y-cur.y,d=dx*dx+dy*dy;if(d<nd){nd=d;next=o;}}
+    if(!next)break;struck.push(next);from=cur;cur=next;}
+  return true;}
+/* arrows and venom bend toward the nearest snake in front (within cone radians of the heading), aimed where it is going */
+function aimAssist(s,spd,range,cone){let best=null,bs=Infinity;
+  for(const o of all){if(o===s||!o.alive||o.owner===s.owner||sameTeam(s,o)||(o.fl&(F.ghost|F.hide)))continue;
+    const dx=o.x-s.x,dy=o.y-s.y,d=Math.hypot(dx,dy);if(d>range||d<1)continue;const off=Math.abs(angDiff(s.angle,Math.atan2(dy,dx)));if(off>cone)continue;
+    const sc=d*(1+off*2.5);if(sc<bs){bs=sc;best=o;}}
+  if(!best)return s.angle;
+  const v=(best.fl&F.turbo?TURBO_SPEED:best.fl&F.boost?BOOST_SPEED:BASE_SPEED)*(best.fl&F.frozen?0.5:best.fl&(F.stun|F.chill)?0.6:1),vx=Math.cos(best.angle)*v,vy=Math.sin(best.angle)*v;
+  let tx=best.x,ty=best.y;for(let k=0;k<2;k++){const tt=Math.hypot(tx-s.x,ty-s.y)/spd;tx=best.x+vx*tt;ty=best.y+vy*tt;}
+  return s.angle+clamp(angDiff(s.angle,Math.atan2(ty-s.y,tx-s.x)),-cone,cone);}
+function fireProj(s,kind,now){const pj=PROJ[kind],W=WEAPON_BALANCE,ang=kind==='f'?s.angle:aimAssist(s,pj.spd,pj.maxD,s.isBot||s.kind==='c'?W.botAssist:W.arrowAssist);
+  const ca=Math.cos(ang),sa=Math.sin(ang),x0=s.x+ca*(s.r+6),y0=s.y+sa*(s.r+6);
+  const sid=pushFx(['P',kind,Math.round(x0),Math.round(y0),Math.round(ang*1000),Math.round(now)],now);
+  G.projs.push({sid,kind,x0,y0,ang,ca,sa,spd:pj.spd,maxD:pj.maxD,pr:pj.pr,t0:now,d:0,pd:0,own:true,
     owner:s.owner,key:s.key,name:s.name,endD:Infinity});}
+/* shockwave: every rival head in the circle is thrown back and dazed; shots, mines and clones of others in it are gone */
+function fireWave(s,now){const x=s.x,y=s.y;vfx('wave',{x,y,dur:650});burst(x,y,24,36,[1,0.45,0.85],560,700,14,0.6);if(s===G.me)R3.shake(10);
+  const sid=pushFx(['W',Math.round(x),Math.round(y),s.owner],now);
+  for(const o of all){if(o===s||!o.alive||o.owner===s.owner||sameTeam(s,o))continue;const rr=WAVE_R+o.r;if((o.x-x)*(o.x-x)+(o.y-y)*(o.y-y)<rr*rr)hitTarget(o,'w',0,s,sid,x,y,now);}
+  waveClear(x,y,s.owner,null);}
+/* the parts of a shockwave this phone looks after: its own shots and mines that belong to someone else, and the
+   flight of other phones' shots (their own phones remove them for real when the wave reaches them) */
+function waveClear(x,y,owner,peer){const r2=WAVE_R*WAVE_R;
+  for(const p of G.projs){const px=p.x0+p.ca*p.d,py=p.y0+p.sa*p.d;if((px-x)*(px-x)+(py-y)*(py-y)>=r2)continue;
+    if(p.own){if(p.owner!==owner&&!p.dead){p.dead=true;impactFx(px,py,'block');}}else if(p.peer!==peer)p.endD=Math.min(p.endD,p.d);}
+  for(let i=G.mines.length-1;i>=0;i--){const m=G.mines[i];if(m.owner!==owner&&(m.x-x)*(m.x-x)+(m.y-y)*(m.y-y)<r2){G.mines.splice(i,1);vfx('boom',{x:m.x,y:m.y,dur:500});}}}
+/* black hole: lands ahead of the head, pulls rivals in and drains them at its core (every phone does that to its own snakes) */
+function fireHole(s,now){const ca=Math.cos(s.angle),sa=Math.sin(s.angle);let x=s.x+ca*HOLE_THROW,y=s.y+sa*HOLE_THROW;
+  const ox=x-G.zx,oy=y-G.zy,d=Math.hypot(ox,oy),Z=Math.max(0,G.zr-140);if(d>Z){x=G.zx+ox*Z/(d||1);y=G.zy+oy*Z/(d||1);}
+  addHole({x,y,t0:now,t1:now+HOLE_MS,owner:s.owner,name:s.name,own:true});pushFx(['B',Math.round(x),Math.round(y),s.owner,cleanName(s.name),HOLE_MS],now);
+  vfx('ring',{x,y,col:[0.55,0.35,1],r0:HOLE_R,r1:HOLE_CORE,dur:700});}
+function addHole(h){G.holes.push(h);if(G.holes.length>12)G.holes.shift();}
+/* a black hole from another phone is believed if its owner was close to it (a phone may not have that many at once) */
+function holePlausible(st,ow,x,y,now,peer){if(G.holes.filter(h=>h.peer===peer&&now<h.t1).length>=4)return false;
+  const S=st.snaps,a=S.length?S[S.length-1].data.byKey.get(ow):null;return !!a&&Math.hypot(a.P[0]-x,a.P[1]-y)<HOLE_THROW+900;}
+/* inside a rival's frost aura (its owner's head within FROST_R) */
+function chilled(s){for(const o of all){if(!(o.fl&F.frost)||o===s||!o.alive||o.kind==='c'||o.owner===s.owner||sameTeam(s,o))continue;const dx=o.x-s.x,dy=o.y-s.y,rr=FROST_R+s.r;if(dx*dx+dy*dy<rr*rr)return true;}return false;}
+/* the core of a rival's black hole tears length off, shed around its rim; true if that killed s */
+function holeCore(s,now,dt){for(const h of G.holes){if(now>=h.t1||now<h.t0||h.owner===s.owner||(G.rule==='team'&&teamOfKey(h.owner)===teamOf(s)))continue;
+    const dx=s.x-h.x,dy=s.y-h.y;if(dx*dx+dy*dy>=HOLE_CORE*HOLE_CORE)continue;
+    if(s.kind==='c'){killOwned(s,h.owner,h.name,now);return true;}
+    if(guarded(s,now))return false;
+    if(s===G.me&&now-(s.holeHurtT||0)>2500){s.holeHurtT=now;uiHurt('h',h.name,1);}
+    const lost=s.mass*HOLE_DRAIN*dt;s.mass-=lost;s.holeAcc+=lost;
+    if(s.holeAcc>=Math.max(5,s.mass*0.03)){const a=Math.random()*TAU,rr=HOLE_CORE+50;lineDrops([h.x+Math.cos(a)*rr,h.y+Math.sin(a)*rr,h.x+Math.cos(a+0.7)*rr,h.y+Math.sin(a+0.7)*rr],s.holeAcc,s.skin,now,'');s.holeAcc=0;}
+    if(s.mass<9){if(s===G.me)G.deathCause='wh';fatal(s,h.owner,h.name,now);return !s.alive;}
+    return false;}
+  return false;}
 function fireSplit(s,now){const tg=nearestEnemy(s,1100,true,true);if(!tg){if(s===G.me)toast(t('noTarget'));return false;}
   const ca=Math.cos(s.angle),sa=Math.sin(s.angle),base=Math.atan2(s.y-tg.y,s.x-tg.x),col=skinMain(SKINS[s.skin]);
   for(const side of [-1,1]){const x=s.x-sa*side*60,y=s.y+ca*side*60;
-    const c=new Snake({key:'c'+myId+'_'+(++G.cloneSeq).toString(36),name:s.name,skin:s.skin,accessory:s.accessory,trail:s.trail,kind:'c',owner:s.owner,mass:36,x,y,angle:s.angle+side*0.8,expireAt:now+7000,free:true,lm:4.2,seed:30});
+    const c=new Snake({key:'c'+myId+'_'+(++G.cloneSeq).toString(36),name:s.name,skin:s.skin,accessory:s.accessory,trail:s.trail,kind:'c',owner:s.owner,mass:36,x,y,angle:s.angle+side*0.8,expireAt:now+14000,free:true,lm:4.2,seed:30});
     c.invulnT=c.expireAt;c.preyKey=tg.key;c.phi=base+(side>0?Math.PI:0);c.born=now;c.thinkT=0;G.clones.push(c);
     vfx('puff',{x,y,col,dur:600});burst(x,y,14,18,col,240,600,12,0.7);pushFx(['S',Math.round(x),Math.round(y),netSkin(s.skin)],now);}
   /* each shooter keeps its own six newest clones, so a bot's split never removes the player's; a hard ceiling keeps crowds cheap */
@@ -5573,7 +5719,7 @@ function placeMine(s,now){const b=s.body,n=b.length>>1,x=b[n*2-2],y=b[n*2-1];
   let mine=0;for(const m of G.mines)if(m.owner===s.owner)mine++;
   if(mine>6){const i=G.mines.findIndex(m=>m.owner===s.owner);if(i>=0)G.mines.splice(i,1);}}
 function updateProjs(dt,now){const P=G.projs;
-  for(let i=P.length-1;i>=0;i--){const p=P[i];if(now<p.t0){continue;}
+  for(let i=P.length-1;i>=0;i--){const p=P[i];if(p.dead){P.splice(i,1);continue;}if(now<p.t0){continue;}
     const d=(now-p.t0)/1000*p.spd;
     if(p.own){let hit=null,hd=0,hx=0,hy=0,idx=0;
       for(let dd=p.pd;dd<=d&&!hit;dd+=10){const x=p.x0+p.ca*dd,y=p.y0+p.sa*dd;
@@ -5598,7 +5744,8 @@ function hitTarget(o,kind,frac,src,sid,x,y,now){
   if(G.round.over)return;
   if(src.owner===myKey)sfx('hit');
   const blocked=o.kind!=='c'&&(o.remote?!!(o.fl&(F.shield|F.blink))||o.gs>1.3:guarded(o,now));
-  if(src.owner===myKey&&o.kind!=='c'&&!blocked){floatAt(x,y,kind==='f'?t('fFroze'):(kind==='g'?t('fCrush'):t('fHit')),'#ffe066');missionAdd('hits',1);}
+  if(src.owner===myKey&&o.kind!=='c'&&!blocked){const W=WEAPON_BALANCE,cut=kind==='a'?1-clamp(frac,W.arrowKeep[0],W.arrowKeep[1]):kind==='z'?1-(frac>0.5?W.zapChainKeep:W.zapKeep):kind==='m'?0.34:0;
+    floatAt(x,y,kind==='f'?t('fFroze'):(kind==='g'?t('fCrush'):t('fHit')+(cut>0?' -'+Math.round(cut*100)+'%':'')),'#ffe066');missionAdd('hits',1);}
   if(!o.remote){applyHit(o,kind,frac,src.owner,src.name,now,x,y);return;}
   G.outHits.push({seq:++G.hitSeq,t:now,a:[o.key,o.life,kind,Math.round(frac*1000),src.owner,cleanName(src.name),sid|0,Math.round(x),Math.round(y)]});
   impactFx(x,y,kind);}
@@ -5606,11 +5753,15 @@ function applyHit(s,kind,frac,atkOwner,atkName,now,x,y){if(G.round.over||!s.aliv
   if(s.kind!=='c'&&guarded(s,now)){impactFx(s.x,s.y,'block');if(s===G.me){floatAt(s.x,s.y,t('fBlock'),'#8fd3ff');sfx('block');}return;}
   let keep=1;
   switch(kind){
-    case 'z':keep=WEAPON_BALANCE.zapKeep;s.bf.stun=now+WEAPON_BALANCE.zapSlowMs;break;
-    case 'a':keep=1-Math.min(WEAPON_BALANCE.arrowLoss,s.mass*0.15,Math.max(0,s.mass-9))/Math.max(1,s.mass);break;
+    case 'z':{const W=WEAPON_BALANCE,until=now+W.zapMs;keep=frac>0.5?W.zapChainKeep:W.zapKeep;s.bf.stun=Math.max(s.bf.stun||0,until);s.bf.shock=Math.max(s.bf.shock||0,until);break;}
+    /* cut where the arrow landed, within the limits; a shot near the head also stuns */
+    case 'a':{const W=WEAPON_BALANCE;keep=clamp(frac,W.arrowKeep[0],W.arrowKeep[1]);if(frac<W.arrowHead)s.bf.stun=Math.max(s.bf.stun||0,now+W.arrowStunMs);break;}
     case 'f':s.bf.frozen=now+WEAPON_BALANCE.freezeMs;break;
     case 'g':keep=clamp(frac,0.3,0.92);break;
-    case 'm':keep=0.66;s.bf.stun=now+600;break;
+    case 'm':keep=0.66;s.bf.stun=Math.max(s.bf.stun||0,now+WEAPON_BALANCE.mineStunMs);break;
+    case 'v':s.bf.poison=now+POISON_MS;break;
+    /* thrown away from the blast (harder near its middle) and dazed */
+    case 'w':{const dx=s.x-x,dy=s.y-y,d=Math.hypot(dx,dy)||1,k=WAVE_PUSH*(0.55+0.45*clamp(1-d/WAVE_R,0,1));s.kx=dx/d*k;s.ky=dy/d*k;s.bf.stun=Math.max(s.bf.stun||0,now+WAVE_MS);break;}
     default:return;}
   impactFx(x,y,kind);
   if(s.kind==='c'&&kind!=='f'){killOwned(s,atkOwner,atkName,now);return;}
@@ -5675,12 +5826,17 @@ function stepOwned(dt,now){
     if(!s.alive)continue;
     if(s.kind==='b'&&(s.thinkT-=dt)<=0){const T=tierOf(s);s.thinkT=T.think[0]+Math.random()*(T.think[1]-T.think[0]);botThink(s,now);}
     else if(s.kind==='c'){if(now>s.expireAt){killOwned(s,'','',now);continue;}if((s.thinkT-=dt)<=0){s.thinkT=0.08;cloneThink(s,now);}}
+    s.chill=chilled(s);
     const beforeMass=s.mass;s.step(dt,now);s.buildBody();if(s===G.me&&s.boosting)missionAdd('boost',dt);
     if(s.boosting&&!s.free&&!act(s,'turbo',now)){const spent=Math.max(0,beforeMass-s.mass);if(scoring()&&s.kind!=='c'&&G.rule!=='gold')G.sc.set(s.key,Math.max(0,(G.sc.get(s.key)||0)-spent));
       while(s.dropT>=2){s.dropT-=2;const b=s.body;lineDrops([b[b.length-2],b[b.length-1]],2,s.skin,now,s.key);}}
     if(s.kind==='b'){if(s.mass>BOT_MASS_CAP)s.mass-=(s.mass-BOT_MASS_CAP)*BOT_MASS_DECAY*dt;if(G.botTax&&s.mass>300)s.mass-=(s.mass-300)*G.botTax*dt;}
     if(s.boosting&&Math.random()<dt*20){const b=s.body;burst(b[b.length-2],b[b.length-1],s.r*0.6,1,skinMain(SKINS[s.skin]),40,500,s.r*0.9,0.3);}
     eat(s,now);
+    /* venom: length keeps dripping away as orbs (a shield stops it, and it never kills) */
+    if(act(s,'poison',now)&&s.mass>POISON_FLOOR&&!guarded(s,now)){const lost=Math.min(s.mass-POISON_FLOOR,s.mass*POISON_RATE*dt);s.mass-=lost;s.poisonAcc+=lost;
+      if(s.poisonAcc>=Math.max(4,s.mass*0.02)){const b=s.body,n=b.length>>1;lineDrops(b.slice(Math.max(0,n-6)*2),s.poisonAcc,s.skin,now,'');s.poisonAcc=0;}}
+    if(G.holes&&G.holes.length&&holeCore(s,now,dt))continue;
     const env=envCheck(s,now,dt);
     if(env){const why=env.o?'#'+env.o.type:(env.lava?'#lava':(env.zone?'#zone':''));if(s===G.me)G.deathCause=why||'#edge';
       fatal(s,'',why,now);if(!s.alive)continue;}
@@ -5722,7 +5878,10 @@ function botWeapon(b,now,T){if(G.easy||now<b.fireT)return;const d=ITEMS[b.weapon
       case 'arrow':case 'freeze':fire=aimLine(b,700)&&Math.random()<0.5*k;break;
       case 'split':fire=dist<650&&Math.random()<0.08*k;break;
       case 'giant':fire=dist<240+b.r*3&&Math.random()<0.35*k;break;
-      case 'mine':fire=dist<380&&rel>2.1&&Math.random()<0.35*k;break;}}
+      case 'mine':fire=dist<380&&rel>2.1&&Math.random()<0.35*k;break;
+      case 'venom':fire=aimLine(b,800)&&Math.random()<0.45*k;break;
+      case 'wave':fire=dist<300&&Math.random()<0.5*k;break;
+      case 'hole':fire=dist>260&&dist<700&&rel<0.5&&Math.random()<0.25*k;break;}}
   else if(d.id==='mine'&&Math.random()<0.01*k)fire=true;
   if(fire)useWeapon(b,now);}
 const botFood=[],botDrops=[];
@@ -5765,9 +5924,10 @@ function botSafeHeading(b,desired,now,T){const M=MAPS[G.map],r0=radiusOf(b.mass)
       const body=o.body;for(let i=0;i<body.length;i+=4){const dx=body[i]-b.x,dy=body[i+1]-b.y;if(dx*dx+dy*dy<lim*lim)thAdd(body[i],body[i+1],margin,0,0);}}
     const speed=(o.fl&F.turbo?TURBO_SPEED:(o.fl&F.boost?BOOST_SPEED:BASE_SPEED))*(M.speed||1),reach=scan+speed*horizon;
     if((o.x-b.x)*(o.x-b.x)+(o.y-b.y)*(o.y-b.y)<reach*reach)thAdd(o.x,o.y,margin,Math.cos(o.angle)*speed,Math.sin(o.angle)*speed);}
-  for(const o of G.obstacles){if(o.meta.zone==='hide')continue;const lim=scan+o.r+(o.meta.grav?30:0);
+  const no=obsQuery(b.x,b.y,scan+30,OBS_Q);for(let q=0;q<no;q++){const o=OBS_Q[q];if(o.meta.zone==='hide')continue;const lim=scan+o.r+(o.meta.grav?30:0);
     if((o.x-b.x)*(o.x-b.x)+(o.y-b.y)*(o.y-b.y)<lim*lim)thAdd(o.x,o.y,o.r+b.r+18+(o.meta.grav?30:0),0,0);}
   const sc2=scan*scan;eachMine(m=>{if(m.owner!==b.owner&&(m.x-b.x)*(m.x-b.x)+(m.y-b.y)*(m.y-b.y)<sc2)thAdd(m.x,m.y,b.r+36,0,0);});
+  for(const h of G.holes||[]){const lim=scan+HOLE_CORE+120;if(h.owner!==b.owner&&now<h.t1&&(h.x-b.x)*(h.x-b.x)+(h.y-b.y)*(h.y-b.y)<lim*lim)thAdd(h.x,h.y,HOLE_CORE+b.r+120,0,0);}
   if(!botThreats.length)return desired;
   /* Braking is immediate for manual boost; turbo still has to make the wider turn at full speed. */
   b.boost=false;
@@ -5825,12 +5985,14 @@ function botThink(b,now){const T=tierOf(b),hx=b.x,hy=b.y,r=b.r,dc=Math.hypot(hx-
   const goal=nav.goal,desired=Math.atan2(goal.y-hy,goal.x-hx);
   const dist=Math.hypot(goal.x-hx,goal.y-hy);
   b.boost=goal.kind==='hunt'&&hard&&b.mass>45&&dist>350&&dist<900&&Math.abs(angDiff(b.angle,desired))<0.45;
-  b.target=botSafeHeading(b,desired,now,T);}
+  b.target=botSafeHeading(b,desired,now,T);
+  /* caught in a rival's black hole: head straight out, boosting if there is length to spare */
+  for(const h of G.holes||[]){if(h.owner===b.owner||now>=h.t1)continue;const dx=hx-h.x,dy=hy-h.y;if(dx*dx+dy*dy<HOLE_R*HOLE_R*0.6){b.target=Math.atan2(dy,dx);b.boost=b.mass>MIN_BOOST+20;break;}}}
 /* split clones circle their target and close in, so the target has to break out or get boxed in */
 function cloneThink(c,now){let t=c.preyKey?findSnake(c.preyKey):null;
   if(!t||!t.alive||(t.fl&F.ghost)||t.owner===c.owner||sameTeam(c,t)){t=nearestEnemy(c,1500,true,true);c.preyKey=t?t.key:null;}
   if(!t){c.boost=false;if(Math.random()<0.2)c.target=c.angle+(Math.random()-.5)*1.2;return;}
-  const age=(now-c.born)/1000,rr=lerp(320,125,clamp((age-1.2)/4.5,0,1))+t.r;c.phi+=(300/rr)*0.08;
+  const age=(now-c.born)/1000,rr=lerp(320,125,clamp((age-1.2)/9,0,1))+t.r;c.phi+=(300/rr)*0.08;
   let px=t.x+Math.cos(c.phi)*rr,py=t.y+Math.sin(c.phi)*rr;const qx=px-G.zx,qy=py-G.zy,d=Math.hypot(qx,qy),Z=G.zr-80;if(d>Z){px=G.zx+qx*Z/d;py=G.zy+qy*Z/d;}
   c.target=Math.atan2(py-c.y,px-c.x);c.boost=true;}
 
@@ -5985,7 +6147,7 @@ function updateRemote(now){if(G.round.over)return;remote.length=0;frameNo++;cons
     else{for(let i=S.length-1;i>=0;i--){if(S[i].t<=rt){a=S[i];b=S[i+1]||S[i];break;}}f=b.t>a.t?clamp((rt-a.t)/(b.t-a.t),0,1):1;}
     st.far=b.data.far||null;
     for(const nb of b.data.snakes){let v=st.views.get(nb.k);if(!v){v=new RView(nb.k);st.views.set(nb.k,v);}v.seen=frameNo;
-      v.apply(a.data.byKey.get(nb.k),nb,f);
+      v.feed(S,f>1?b.t:a.t,nb.k);v.apply(a.data.byKey.get(nb.k),nb,f,true);
       if(v.wasAlive&&!v.alive)deathBurst(v);v.wasAlive=v.alive;if(v.alive)remote.push(v);}
     /* a bot that only moved out of the host's detailed range is still alive, so it leaves without a death burst */
     const far=b.data.farKeys;
@@ -6056,25 +6218,28 @@ function processHits(st,arr,now,peer){if(st.hitSeen<0){st.hitSeen=maxSeq(arr);re
    and close, the impact is on this snake, and reports do not pour in faster than any weapon can fire */
 function hitPlausible(st,tgt,kind,sid,ao,x,y,now){const m=tgt.r+300;if(x<tgt.minx-m||x>tgt.maxx+m||y<tgt.miny-m||y>tgt.maxy+m)return false;
   st.hitT=(st.hitT||[]).filter(t=>now-t<1000);if(st.hitT.length>=8)return false;let ok=false;
-  if(kind==='a'||kind==='f'){const s=(st.shots||[]).find(s=>s.sid===sid&&s.kind===kind);
+  if(kind==='a'||kind==='f'||kind==='v'){const s=(st.shots||[]).find(s=>s.sid===sid&&s.kind===kind);
     if(s){const dx=x-s.x0,dy=y-s.y0,al=dx*s.ca+dy*s.sa;ok=al>-150&&al<s.maxD+250&&Math.abs(dx*s.sa-dy*s.ca)<250;}}
-  else if(kind==='z')ok=(st.zaps||[]).some(z=>z.b===tgt.key&&Math.hypot(z.x1-tgt.x,z.y1-tgt.y)<760+700);
+  else if(kind==='z')ok=(st.zaps||[]).some(z=>z.b===tgt.key&&Math.hypot(z.x1-tgt.x,z.y1-tgt.y)<WEAPON_BALANCE.zapRange+700);
+  else if(kind==='w')ok=(st.waves||[]).some(w=>Math.hypot(w.x-x,w.y-y)<120&&Math.hypot(tgt.x-w.x,tgt.y-w.y)<WAVE_R+tgt.r+500);
   else if(kind==='m')ok=(st.booms||[]).some(b=>Math.hypot(b.x-x,b.y-y)<220);
   else if(kind==='g'){const S=st.snaps,a=S.length&&S[S.length-1].data.byKey.get(ao);ok=!!a&&a.g>1.25&&Math.hypot(a.P[0]-x,a.P[1]-y)<radiusOf(a.m)*a.g+tgt.r+450;}
   if(ok)st.hitT.push(now);return ok;}
 function processFx(st,arr,now,peer){if(G.round.over)return;
   /* what this phone announced lately, kept a few seconds so its hit reports can be checked */
-  const keep=a=>(a||[]).filter(v=>now-v.t<3000).slice(-24);st.shots=keep(st.shots);st.zaps=keep(st.zaps);st.booms=keep(st.booms);
+  const keep=a=>(a||[]).filter(v=>now-v.t<3000).slice(-24);st.shots=keep(st.shots);st.zaps=keep(st.zaps);st.booms=keep(st.booms);st.waves=keep(st.waves);
   if(st.fxSeen<0){st.fxSeen=maxSeq(arr);return;}
   for(const e of sortedNew(arr,st.fxSeen)){st.fxSeen=e[0];const ty=e[1];
     switch(ty){
-      case 'P':{const kind=e[2]==='f'?'f':'a',x0=+e[3]||0,y0=+e[4]||0,ang=(+e[5]||0)/1000,t0=Math.max(now-250,(+e[6]||0)+st.off()+(st.delay||NET_DELAY));
-        G.projs.push({sid:e[0],peer,kind,x0,y0,ang,ca:Math.cos(ang),sa:Math.sin(ang),spd:kind==='a'?1450:920,maxD:kind==='a'?1050:950,pr:kind==='a'?7:20,t0,d:0,own:false,endD:Infinity});
-        st.shots.push({t:now,sid:e[0],kind,x0,y0,ca:Math.cos(ang),sa:Math.sin(ang),maxD:kind==='a'?1050:950});
+      case 'P':{const kind=e[2]==='f'||e[2]==='v'?e[2]:'a',pj=PROJ[kind],x0=+e[3]||0,y0=+e[4]||0,ang=(+e[5]||0)/1000,t0=Math.max(now-250,(+e[6]||0)+st.off()+(st.delay||NET_DELAY));
+        G.projs.push({sid:e[0],peer,kind,x0,y0,ang,ca:Math.cos(ang),sa:Math.sin(ang),spd:pj.spd,maxD:pj.maxD,pr:pj.pr,t0,d:0,own:false,endD:Infinity});
+        st.shots.push({t:now,sid:e[0],kind,x0,y0,ca:Math.cos(ang),sa:Math.sin(ang),maxD:pj.maxD});
         if(G.projs.length>40)G.projs.shift();break;}
       case 'Z':vfx('bolt',{a:safeKey(e[2]),b:safeKey(e[3]),x1:+e[4]||0,y1:+e[5]||0,x2:+e[6]||0,y2:+e[7]||0,dur:450});sfxAt('zap',+e[6]||0,+e[7]||0);
         st.zaps.push({t:now,b:safeKey(e[3]),x1:+e[4]||0,y1:+e[5]||0});break;
       case 'X':{const x=+e[2]||0,y=+e[3]||0;vfx('boom',{x,y,dur:700});sfxAt('boom',x,y);burst(x,y,12,30,[1,0.55,0.15],380,700,14,1.1);st.booms.push({t:now,x,y});break;}
+      case 'W':{const x=+e[2]||0,y=+e[3]||0;vfx('wave',{x,y,dur:650});sfxAt('wave',x,y);burst(x,y,24,30,[1,0.45,0.85],520,700,14,0.6);st.waves.push({t:now,x,y});waveClear(x,y,safeKey(e[4]),peer);break;}
+      case 'B':{const x=+e[2]||0,y=+e[3]||0,ow=safeKey(e[4]);if(ow&&holePlausible(st,ow,x,y,now,peer)){addHole({x,y,t0:now,t1:now+clamp(+e[6]||HOLE_MS,500,HOLE_MS),owner:ow,name:cleanName(e[5]),own:false,peer});sfxAt('hole',x,y);}break;}
       case 'S':{const x=+e[2]||0,y=+e[3]||0,col=skinMain(SKINS[(e[4]|0)%SKINS.length]||SKINS[0]);vfx('puff',{x,y,col,dur:600});burst(x,y,14,20,col,240,600,12,0.7);break;}
       case 'H':{const x=+e[2]||0,y=+e[3]||0;vfx('ring',{x,y,col:[1,0.3,0.42],r0:20,r1:200,dur:600});burst(x,y,20,26,[1,0.35,0.45],260,700,12,1);break;}
       case 'E':{const o=G.obstacles[e[2]|0];if(o&&o.type==='lava')erupt(o,now);break;}
@@ -6183,7 +6348,7 @@ function sendS(now){const me=G.me,host=G.mode==='host';
   G.botPts=pts<BOT_PTS&&bytes<PRES_LIMIT-500?pts+1:pts;
   RS.presence(o).catch(e=>{if(e&&e.code==='invalid_argument')G.botPts=Math.max(8,G.botPts-6);});}
 /* world strings: food generations 2 bits each (3 orbs per character), drops 8 characters, power-ups 7, positions in 4-unit steps */
-const FG_LEN=Math.ceil(FOOD_SLOTS/3),PQ=4,qpos=v=>e64(clamp((v+R)/PQ,0,4095),2);
+const FG_LEN=Math.ceil(FOOD_SLOTS/3),PQ=5,qpos=v=>e64(clamp((v+R)/PQ,0,4095),2);
 /* orbs go out in pages by id, one page per world packet: a full pool (MAX_DROPS orbs) still fits well under the packet limit */
 const WORLD_PAGES=3;
 function sendWorld(now){let fg='';for(let i=0;i<FOOD_SLOTS;i+=3)fg+=B64[(foodGen[i]&3)|((i+1<FOOD_SLOTS?foodGen[i+1]&3:0)<<2)|((i+2<FOOD_SLOTS?foodGen[i+2]&3:0)<<4)];
@@ -6407,6 +6572,10 @@ R3.init=function(canvas){if(typeof THREE==='undefined')return false;
   GEO.box=new THREE.BoxGeometry(1,1,1);GEO.halo=new THREE.TorusGeometry(0.55,0.07,8,28);GEO.halo.rotateX(Math.PI/2);GEO.crownBand=new THREE.CylinderGeometry(0.55,0.5,0.4,12,1,true);
   GEO.plane=new THREE.PlaneGeometry(1,1);GEO.plane.rotateX(-Math.PI/2);
   GEO.ring=new THREE.RingGeometry(0.86,1,56);GEO.ring.rotateX(-Math.PI/2);
+  /* v23: the frost aura, black hole and shockwave shapes, flat on the ground */
+  GEO.disc=new THREE.CircleGeometry(1,48);GEO.disc.rotateX(-Math.PI/2);GEO.band=new THREE.RingGeometry(1,2.4,64,2);GEO.band.rotateX(-Math.PI/2);
+  GEO.rim=new THREE.RingGeometry(0.955,1,96);GEO.rim.rotateX(-Math.PI/2);
+  {const parts=[];for(let k=0;k<12;k++){const g=new THREE.RingGeometry(0.9,1,3,1,k*TAU/12,TAU/26).toNonIndexed();g.rotateX(-Math.PI/2);parts.push(g);}GEO.frostTeeth=mergeGeos(parts);}
   GEO.cone=new THREE.ConeGeometry(1,1,8);GEO.ico=new THREE.IcosahedronGeometry(1,0);GEO.ico1=new THREE.IcosahedronGeometry(1,1);
   GEO.blob=new THREE.SphereGeometry(1,18,14);GEO.rbox=roundedBox(0.2,3);
   GEO.smile=new THREE.TorusGeometry(1,0.2,5,10,Math.PI);GEO.smile.rotateZ(Math.PI);GEO.smile.rotateY(Math.PI/2);GEO.dot=new THREE.SphereGeometry(1,8,6);
@@ -6463,7 +6632,7 @@ R3.setMap=function(mi,obs){const th=THEMES[MAPS[mi].id];
   if(tc.em){const em=canvasTex(tc.em,true);em.repeat.set(rep,rep);groundMat.emissiveMap=em;groundMat.emissive=new THREE.Color(0xffffff);groundMat.emissiveIntensity=MAPS[mi].id==='lava'?0.9:MAPS[mi].id==='hive'?0.4:0.55;}
   arenaMesh=new THREE.Mesh(new THREE.CircleGeometry(R,360),groundMat);arenaMesh.rotation.x=-Math.PI/2;arenaMesh.renderOrder=0;worldGroup.add(arenaMesh);
   const outCol=new THREE.Color(th.bg).multiplyScalar(0.8);
-  outsideMesh=new THREE.Mesh(new THREE.PlaneGeometry(16000,16000),new THREE.MeshBasicMaterial({color:outCol}));outsideMesh.rotation.x=-Math.PI/2;outsideMesh.position.y=-3;outsideMesh.userData.ownMat=1;worldGroup.add(outsideMesh);
+  outsideMesh=new THREE.Mesh(new THREE.PlaneGeometry(2*R+6000,2*R+6000),new THREE.MeshBasicMaterial({color:outCol}));outsideMesh.rotation.x=-Math.PI/2;outsideMesh.position.y=-3;outsideMesh.userData.ownMat=1;worldGroup.add(outsideMesh);
   const bc=new THREE.Color(th.border);
   borderMesh=new THREE.Mesh(new THREE.CylinderGeometry(R+4,R+4,30,360,1,true),new THREE.MeshStandardMaterial({color:bc,emissive:bc,emissiveIntensity:0.8,transparent:true,opacity:0.75,side:THREE.DoubleSide}));
   borderMesh.position.y=15;borderMesh.userData.ownMat=1;worldGroup.add(borderMesh);
@@ -6906,7 +7075,7 @@ class SnakeMesh{
     for(const [mat,l] of groups){if(l.s.length>1||mat.vertexColors)merge(l.s,mat);if(l.p.length>1){const m=merge(l.p,mat);m.userData.z0=0;pupils.push(m);}else pupils.push(...l.p);}
     this.pupils=pupils;}
   reset(){this.gulps.length=0;this.lastEat=0;this.lastGulp=0;this.prevAng=0;this.turn=0;this.giantWas=false;this.fl=0;this.seen=0;this.tongueT=performance.now()+Math.random()*3000;
-    if(this.crown)this.crown.visible=false;if(this.shield)this.shield.visible=false;if(this.magnet)this.magnet.visible=false;}
+    if(this.crown)this.crown.visible=false;if(this.shield)this.shield.visible=false;if(this.magnet)this.magnet.visible=false;if(this.frost)this.frost.visible=false;}
   setAccessory(id){if(id===this.accessory)return;if(!Object.prototype.hasOwnProperty.call(ACCESSORY_ID,id))id='none';
     if(this.accessoryGroup){this.head.remove(this.accessoryGroup);disposeGroup(this.accessoryGroup);for(const m of this.accessoryGroup.userData.mats)m.dispose();this.accessoryGroup=null;}
     this.accessory=id;if(id!=='none'){this.accessoryGroup=buildAccessory(id,SKINS[this.skin].wearY||1.1);this.head.add(this.accessoryGroup);}}
@@ -6989,7 +7158,9 @@ class SnakeMesh{
     const em=this.mat.emissive;let ei=this.baseEi;em.copy(this.baseEm);this.mat.color.setRGB(1,1,1);
     if(fl&F.frozen){this.mat.color.setRGB(0.6,0.85,1.05);em.setRGB(0.2,0.65,1);ei=0.4;}
     else if(fl&F.stun){em.setRGB(1,0.95,0.35);ei=0.25+0.35*Math.abs(Math.sin(now*0.03));}
+    else if(fl&F.poison){em.setRGB(0.45,1,0.15);ei=0.22+0.22*Math.abs(Math.sin(now*0.012));}
     else if(fl&F.burn){em.setRGB(1,0.35,0.05);ei=0.3+0.2*Math.sin(now*0.02);}
+    else if(fl&F.chill){this.mat.color.setRGB(0.78,0.9,1.08);em.setRGB(0.5,0.78,1);ei=0.24;}
     else if(fl&(F.boost|F.turbo)){const c=skinMain(sk);em.setRGB(c[0],c[1],c[2]);ei=Math.max(ei,0.28+0.12*Math.sin(now*0.025));}
     else if(fl&F.giant){em.setRGB(1,0.4,0.15);ei=Math.max(ei,0.12);}
     if(s.kind==='c'){const c=skinMain(sk);em.setRGB(c[0],c[1],c[2]);ei=Math.max(ei,0.5+0.2*Math.sin(now*0.012));}
@@ -7005,10 +7176,18 @@ class SnakeMesh{
         for(let k=0;k<8;k++){const a=new THREE.Mesh(new THREE.RingGeometry(0.95,1,10,1,k*TAU/8,TAU/16),m);a.rotation.x=-Math.PI/2;g.add(a);}this.ownMats.push(m);this.magnet=g;this.root.add(g);}
       this.magnet.visible=op>0.2;this.magnet.position.set(b[0],2,b[1]);this.magnet.scale.setScalar(300);this.magnet.rotation.y=now*0.0015;}
     else if(this.magnet)this.magnet.visible=false;
+    if(fl&F.frost){if(!this.frost){const g=new THREE.Group(),m1=new THREE.MeshBasicMaterial({color:0x7fc4ff,transparent:true,opacity:0.16,depthWrite:false}),
+        m2=new THREE.MeshBasicMaterial({color:0x6cbcff,transparent:true,opacity:0.9,depthWrite:false,side:THREE.DoubleSide}),m3=new THREE.MeshBasicMaterial({color:0xbfe6ff,transparent:true,opacity:0.85,depthWrite:false,side:THREE.DoubleSide});
+        m1.userData.op0=0.16;m2.userData.op0=0.9;m3.userData.op0=0.85;
+        const a=new THREE.Mesh(GEO.disc,m1),b=new THREE.Mesh(GEO.rim,m2),c=new THREE.Mesh(GEO.frostTeeth,m3);a.renderOrder=2;b.renderOrder=3;c.renderOrder=3;g.add(a,b,c);this.ownMats.push(m1,m2,m3);this.frost=g;this.root.add(g);}
+      this.frost.visible=op>0.2;this.frost.position.set(b[0],1.6,b[1]);this.frost.scale.setScalar(FROST_R);this.frost.children[2].rotation.y=-now*0.0007;}
+    else if(this.frost)this.frost.visible=false;
     const giant=!!(fl&F.giant);if(giant&&!this.giantWas)vfx('ring',{x:s.x,y:s.y,col:[1,0.45,0.2],r0:20,r1:300,dur:650});this.giantWas=giant;
     if((fl&F.grow)&&Math.random()<dt*10)burst(s.x,s.y,hr*1.6,1,[1,0.8,0.25],50,700,8,1.2);
     if((fl&F.stun)&&Math.random()<dt*14)burst(s.x,s.y,hr*1.4,1,[1,0.95,0.4],140,300,7,0.6);
     if((fl&F.frozen)&&Math.random()<dt*10)burst(s.x,s.y,hr,1,[0.75,0.95,1],40,800,7,0.4);
+    if((fl&F.poison)&&Math.random()<dt*12)burst(s.x,s.y,hr,1,[0.55,1,0.3],40,700,8,1.2);
+    if((fl&F.chill)&&Math.random()<dt*8)burst(s.x,s.y,hr,1,[0.85,0.95,1],30,800,6,0.3);
     this.fl=fl;this.seen=now;}
 }
 /* one blob-shadow instanced mesh shared by every snake segment and item */
@@ -7066,7 +7245,39 @@ function stepParts(dt){const P=G.parts,A=partGeo.attributes.position.array,T=par
   P.length=k;partGeo.setDrawRange(0,w);for(const n of ['position','tint','size','alpha']){const a=partGeo.attributes[n];a.updateRange.offset=0;a.updateRange.count=Math.max(1,w)*a.itemSize;a.needsUpdate=true;}}
 
 /* ================= 3D: pooled meshes for items, shots, mines, effects ================= */
-const pools={item:[],arrow:[],orb:[],mine:[],ring:[],boom:[],bolt:[],col:[]};
+const pools={item:[],arrow:[],orb:[],mine:[],ring:[],boom:[],bolt:[],col:[],venom:[],wave:[],hole:[]};
+/* venom: a wobbling green glob */
+function makeVenom(){const g=new THREE.Group(),core=new THREE.Mesh(GEO.sphereHi,stdMat(0x9cf05a,{rough:0.15,em:0x47c21a,ei:0.7,op:0.95}));core.scale.setScalar(18);
+  const glow=new THREE.Sprite(new THREE.SpriteMaterial({map:TEXC.glow,color:0x7bdc3a,transparent:true,opacity:0.7,depthWrite:false}));glow.scale.set(90,90,1);g.add(core,glow);g.userData.core=core;scene.add(g);return g;}
+/* shockwave: a bright ring and a softer one behind it (not additive, so they show on light ground too) */
+function makeWave(){const mk=(c,o)=>{const m=new THREE.Mesh(GEO.rim,new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:o,depthWrite:false,side:THREE.DoubleSide}));m.renderOrder=6;return m;};
+  const g=new THREE.Group(),a=mk(0xff4fd0,0.9),b=mk(0xffffff,0.8),d=new THREE.Mesh(GEO.disc,new THREE.MeshBasicMaterial({color:0xff9ae6,transparent:true,opacity:0.25,depthWrite:false}));d.renderOrder=5;
+  g.add(d,a,b);scene.add(g);return {g,a,b,d};}
+/* black hole: a dark core, a turning disk of purple light around it and a faint circle where its pull ends */
+function holeTex(){if(TEXC.hole)return TEXC.hole;const c=document.createElement('canvas');c.width=c.height=256;const g=c.getContext('2d'),h=128,ri=h/2.4;
+  const gr=g.createRadialGradient(h,h,ri,h,h,h);gr.addColorStop(0,'rgba(255,240,255,1)');gr.addColorStop(0.12,'rgba(255,120,235,0.95)');gr.addColorStop(0.45,'rgba(140,80,255,0.6)');gr.addColorStop(1,'rgba(90,50,220,0)');
+  g.fillStyle=gr;g.beginPath();g.arc(h,h,h,0,TAU);g.arc(h,h,ri,0,TAU,true);g.fill();
+  /* four spiral arms of brighter light */
+  g.globalCompositeOperation='lighter';g.lineCap='round';
+  for(let a=0;a<4;a++){g.beginPath();for(let k=0;k<=40;k++){const t=k/40,rr=ri+t*(h-ri),an=a*Math.PI/2+t*2.2;const x=h+Math.cos(an)*rr,y=h+Math.sin(an)*rr;if(k)g.lineTo(x,y);else g.moveTo(x,y);}
+    g.strokeStyle='rgba(255,200,255,0.55)';g.lineWidth=7;g.stroke();}
+  const t=new THREE.CanvasTexture(c);return TEXC.hole=t;}
+function makeHole(){const g=new THREE.Group(),core=new THREE.Mesh(GEO.sphereHi,new THREE.MeshBasicMaterial({color:0x08040f}));core.renderOrder=5;
+  const disk=new THREE.Mesh(GEO.band,new THREE.MeshBasicMaterial({map:holeTex(),transparent:true,opacity:0.95,depthWrite:false,side:THREE.DoubleSide}));disk.renderOrder=4;
+  const lip=new THREE.Mesh(GEO.rim,new THREE.MeshBasicMaterial({color:0xffd6fb,transparent:true,opacity:0.9,depthWrite:false,side:THREE.DoubleSide}));lip.renderOrder=5;
+  const field=new THREE.Mesh(GEO.rim,new THREE.MeshBasicMaterial({color:0x6c4bff,transparent:true,opacity:0.35,depthWrite:false,side:THREE.DoubleSide}));field.renderOrder=3;
+  const glow=new THREE.Sprite(new THREE.SpriteMaterial({map:TEXC.glow,color:0x7a4dff,transparent:true,opacity:0.8,depthWrite:false}));glow.renderOrder=3;
+  g.add(field,glow,disk,lip,core);scene.add(g);return {g,core,disk,lip,field,glow};}
+function drawHoles(now){let k=0;
+  for(const h of G.holes||[]){if(now>=h.t1||now<h.t0||h.x<V.x0-HOLE_R||h.x>V.x1+HOLE_R||h.y<V.y0-HOLE_R||h.y>V.y1+HOLE_R)continue;const o=poolGet('hole',makeHole,k++);
+    const a=Math.max(0.01,Math.min(1,(now-h.t0)/350,(h.t1-now)/350)),c=HOLE_CORE*0.55*a*(1+0.05*Math.sin(now*0.02));
+    o.g.position.set(h.x,0,h.y);o.core.position.y=c*0.5;o.core.scale.set(c,c*0.55,c);o.disk.position.y=2;o.disk.scale.setScalar(HOLE_CORE*a);o.disk.rotation.y=-now*0.004;
+    o.lip.position.y=2.5;o.lip.scale.setScalar(HOLE_CORE*0.62*a);o.field.position.y=1.5;o.field.scale.setScalar(HOLE_R*(0.97+0.03*Math.sin(now*0.006)));o.field.material.opacity=0.35*a;
+    o.glow.position.y=20;o.glow.scale.set(HOLE_CORE*3.4*a,HOLE_CORE*3.4*a,1);o.glow.material.opacity=0.45*a;
+    /* sparks spiral into the core */
+    if(Math.random()<0.6&&G.parts.length<690){const an=Math.random()*TAU,rr=HOLE_R*(0.45+Math.random()*0.5),px=h.x+Math.cos(an)*rr,py=h.y+Math.sin(an)*rr,sp=170+Math.random()*120,tx=-Math.sin(an),ty=Math.cos(an);
+      G.parts.push({x:px,y:py,z:6,vx:(-Math.cos(an)*0.8+tx*0.6)*sp,vz:(-Math.sin(an)*0.8+ty*0.6)*sp,vy:0,life:rr/sp*900,max:rr/sp*900,size:7,c:Math.random()<0.5?[0.7,0.45,1]:[1,0.55,0.95],g:0});}}
+  poolHide('hole',k);}
 function poolGet(name,make,idx){const p=pools[name];if(!p[idx])p[idx]=make();const o=p[idx];(o.g||o).visible=true;return o;}
 function poolHide(name,from){const p=pools[name];for(let i=from;i<p.length;i++)(p[i].g||p[i]).visible=false;}
 const ADD=()=>THREE.AdditiveBlending;
@@ -7091,8 +7302,8 @@ function makeBoom(){const g=new THREE.Group(),m1=new THREE.MeshBasicMaterial({co
   const a=new THREE.Mesh(GEO.sphereHi,m1),b=new THREE.Mesh(GEO.sphere,m2);a.renderOrder=b.renderOrder=7;g.add(a,b);scene.add(g);return {g,a,b,m1,m2};}
 function makeCol(){const m=new THREE.Mesh(new THREE.CylinderGeometry(0.6,1,1,18,1,true),new THREE.MeshBasicMaterial({color:0xff6a1a,transparent:true,blending:ADD(),depthWrite:false,side:THREE.DoubleSide}));m.renderOrder=6;scene.add(m);return m;}
 function makeBolt(){const mk=(col,op)=>{const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.BufferAttribute(new Float32Array(14*6*3),3).setUsage(THREE.DynamicDrawUsage));
-    const m=new THREE.Mesh(geo,new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:op,blending:ADD(),depthWrite:false,depthTest:false,side:THREE.DoubleSide}));m.frustumCulled=false;m.renderOrder=9;scene.add(m);return m;};
-  return {core:mk(0xffffff,0.95),glow:mk(0xfff04d,0.45)};}
+    const m=new THREE.Mesh(geo,new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:op,depthWrite:false,depthTest:false,side:THREE.DoubleSide}));m.frustumCulled=false;m.renderOrder=9;scene.add(m);return m;};
+  const o={glow:mk(0x5a64ff,0.55),core:mk(0xfff6a0,0.95)};o.glow.renderOrder=8;return o;}
 function boltGeom(mesh,pts,w){const a=mesh.geometry.attributes.position.array;let k=0;
   for(let i=0;i<pts.length-1;i++){const [x0,y0,z0]=pts[i],[x1,y1,z1]=pts[i+1],dx=x1-x0,dz=z1-z0,l=Math.hypot(dx,dz)||1,nx=-dz/l*w,nz=dx/l*w;
     const q=[[x0-nx,y0,z0-nz],[x0+nx,y0,z0+nz],[x1+nx,y1,z1+nz],[x0-nx,y0,z0-nz],[x1+nx,y1,z1+nz],[x1-nx,y1,z1-nz]];for(const v of q){a[k++]=v[0];a[k++]=v[1];a[k++]=v[2];}}
@@ -7106,32 +7317,35 @@ function drawItems(now){let k=0;
     o.ring.position.y=1.2-36-bob;o.ring.scale.set(40+Math.sin(now*0.006+it.id)*5,1,40+Math.sin(now*0.006+it.id)*5);o.frame.rotation.set(now*0.0011,now*0.0017,0);o.bubble.rotation.y=now*0.001;
     shadowAdd(it.x+10,it.y+10,60*sp);}
   poolHide('item',k);}
-function drawShots(now){let ka=0,ko=0;
+function drawShots(now){let ka=0,ko=0,kv=0;
   for(const p of G.projs){if(now<p.t0)continue;const x=p.x0+p.ca*p.d,y=p.y0+p.sa*p.d;
     if(p.kind==='a'){const g=poolGet('arrow',makeArrow,ka++);g.position.set(x,22,y);g.rotation.set(0,-p.ang,0);if(Math.random()<0.5)burst(x,y,22,1,[1,0.85,0.6],20,250,6,0);}
+    else if(p.kind==='v'){const g=poolGet('venom',makeVenom,kv++),w=1+0.18*Math.sin(now*0.03);g.position.set(x,22,y);g.userData.core.scale.set(18*w,18/w,18*w);if(Math.random()<0.8)burst(x,y,22,1,[0.55,1,0.3],40,500,8,0.1);}
     else{const g=poolGet('orb',makeOrb,ko++);g.position.set(x,24,y);g.userData.core.rotation.set(now*0.004,now*0.006,0);if(Math.random()<0.8)burst(x,y,24,1,[0.7,0.95,1],60,450,9,0.2);}
     shadowAdd(x+10,y+10,p.kind==='a'?30:44);}
-  poolHide('arrow',ka);poolHide('orb',ko);
+  poolHide('arrow',ka);poolHide('orb',ko);poolHide('venom',kv);
   let km=0;eachMine(m=>{if(m.x<V.x0-40||m.x>V.x1+40||m.y<V.y0-40||m.y>V.y1+40)return;const o=poolGet('mine',makeMine,km++),mine=m.owner===myKey,armed=m.own?now>=m.arm:m.armed;
     o.g.position.set(m.x,0,m.y);o.g.scale.setScalar(m.own?Math.min(1,(now-m.t0)/300):1);o.g.rotation.y=m.id;
     const on=armed?(((now/(mine?500:220))|0)&1):0;o.lm.color.setHex(mine?(on?0x5dffb0:0x1f6b4c):(on?0xff2a2a:0x5a1010));o.glow.visible=!!on;o.glow.material.color.setHex(mine?0x5dffb0:0xff3030);
     shadowAdd(m.x+5,m.y+5,40);});
   poolHide('mine',km);}
-function drawVfx(now){let kr=0,kb=0,kl=0,kc=0;const keep=[];
+function drawVfx(now){let kr=0,kb=0,kl=0,kc=0,kw=0;const keep=[];
   for(const e of G.vfx){const q=(now-e.t0)/e.dur;if(q>=1)continue;if(q<0){keep.push(e);continue;}keep.push(e);
     switch(e.type){
       case 'ring':{const m=poolGet('ring',makeRing,kr++),rr=lerp(e.r0,e.r1,1-(1-q)*(1-q));m.position.set(e.x,3,e.y);m.scale.set(rr,1,rr);m.material.color.setRGB(e.col[0],e.col[1],e.col[2]);m.material.opacity=(1-q)*0.9;break;}
       case 'boom':{const o=poolGet('boom',makeBoom,kb++),s=lerp(14,135,1-(1-q)*(1-q)*(1-q));o.g.position.set(e.x,18,e.y);o.a.scale.setScalar(s);o.b.scale.setScalar(s*0.55*(1-q));o.m1.opacity=(1-q)*0.75;o.m2.opacity=(1-q);
         const m=poolGet('ring',makeRing,kr++);m.position.set(e.x,3,e.y);m.scale.set(s*1.6,1,s*1.6);m.material.color.setRGB(1,0.6,0.2);m.material.opacity=(1-q)*0.8;break;}
       case 'puff':{const m=poolGet('ring',makeRing,kr++),rr=lerp(10,90,q);m.position.set(e.x,3,e.y);m.scale.set(rr,1,rr);m.material.color.setRGB(e.col[0],e.col[1],e.col[2]);m.material.opacity=(1-q)*0.7;break;}
+      case 'wave':{const o=poolGet('wave',makeWave,kw++),e1=1-(1-q)*(1-q)*(1-q),r1=lerp(30,WAVE_R*1.04,e1),r2=lerp(20,WAVE_R*0.82,Math.max(0,e1-0.12));
+        o.g.position.set(e.x,3,e.y);o.a.scale.setScalar(r1);o.b.scale.setScalar(r2);o.d.scale.setScalar(r1);o.a.material.opacity=0.9*(1-q);o.b.material.opacity=0.8*(1-q);o.d.material.opacity=0.25*(1-q)*(1-q);break;}
       case 'erupt':{const m=poolGet('col',makeCol,kc++),h=lerp(40,520,Math.min(1,q*2.2));m.position.set(e.x,h/2,e.y);m.scale.set(e.r*0.55*(1-q*0.5),h,e.r*0.55*(1-q*0.5));m.material.opacity=(1-q)*0.55;break;}
       case 'bump':{const g=obsMeshes[e.i];if(g)g.userData.squashT=e.t0;break;}
       case 'bolt':{const o=poolGet('bolt',makeBolt,kl++);o.core.visible=o.glow.visible=true;const A=findSnake(e.a),B=findSnake(e.b);
         const x1=A?A.x:e.x1,z1=A?A.y:e.y1,x2=B?B.x:e.x2,z2=B?B.y:e.y2;if(!e.pts||now-(e.jt||0)>45){e.jt=now;const pts=[],L=Math.hypot(x2-x1,z2-z1),nx=-(z2-z1)/(L||1),nz=(x2-x1)/(L||1);
           for(let i=0;i<=12;i++){const t=i/12,j=(i===0||i===12)?0:(Math.random()-.5)*L*0.12;pts.push([lerp(x1,x2,t)+nx*j,30+Math.sin(t*Math.PI)*60,lerp(z1,z2,t)+nz*j]);}e.pts=pts;}
-        boltGeom(o.core,e.pts,3.2);boltGeom(o.glow,e.pts,13);o.core.material.opacity=0.95*(1-q*0.6);o.glow.material.opacity=0.5*(1-q);
+        boltGeom(o.core,e.pts,4);boltGeom(o.glow,e.pts,14);o.core.material.opacity=0.95*(1-q*0.6);o.glow.material.opacity=0.55*(1-q);
         if(B&&Math.random()<0.5)burst(x2,z2,20,2,[1,0.95,0.5],200,300,8,0.8);break;}}}
-  G.vfx=keep;poolHide('ring',kr);poolHide('boom',kb);poolHide('col',kc);for(let i=kl;i<pools.bolt.length;i++){pools.bolt[i].core.visible=pools.bolt[i].glow.visible=false;}}
+  G.vfx=keep;poolHide('ring',kr);poolHide('boom',kb);poolHide('col',kc);poolHide('wave',kw);for(let i=kl;i<pools.bolt.length;i++){pools.bolt[i].core.visible=pools.bolt[i].glow.visible=false;}}
 function animObstacles(now,dt){const me=viewSubject(now);if(lavaTex)lavaTex.offset.set(now*0.00002,now*0.000013);
   const x0=V.x0-400,x1=V.x1+400,y0=V.y0-400,y1=V.y1+400;
   for(const g of obsMeshes){const u=g.userData,o=u.o;
@@ -7277,7 +7491,7 @@ R3.frame=function(now,dt,realDt){VW=window.innerWidth;VH=window.innerHeight;upda
   for(const s of all){if(!s.alive||(s.remote&&s.body.length<4))continue;const m=s.r*2+60;if(s.maxx<V.x0-m||s.minx>V.x1+m||s.maxy<V.y0-m||s.miny>V.y1+m)continue;
     meshFor(s).update(s,now,dt,1,s===G.me);if(!(s.fl&(F.ghost|F.hide))||s===G.me)shadowSnake(s);}
   for(const [k,sm] of snakeMeshes)if(sm.seen!==now){sm.root.visible=false;if(now-sm.seen>3000){releaseMesh(sm);snakeMeshes.delete(k);}}
-  drawItems(now);drawShots(now);fillFood(now);stepParts(dt);drawVfx(now);animObstacles(now,dt);updateZoneMeshes(now);shadowsEnd();
+  drawItems(now);drawShots(now);drawHoles(now);fillFood(now);stepParts(dt);drawVfx(now);animObstacles(now,dt);updateZoneMeshes(now);shadowsEnd();
   renderer.render(scene,camera);drawOverlay(now);
   /* dynamic resolution: if frames keep running long (under about 48 fps), draw fewer pixels, a quarter step at a time.
      A phone held at 30 fps by Low Power Mode is not limited by pixels, so that pattern stops at 1.5 */
@@ -7989,7 +8203,7 @@ function uiMeDied(kn){const me=G.me;G.rs.deaths++;sfx('die');G.last={kn:cleanNam
   track('death',{m:G.mode,c:G.last.cause,len:G.last.len,k:G.last.kills,s:G.life?Math.round((performance.now()-G.life.t0)/1000):0});
   G.life.peak=Math.max(G.life.peak,G.last.len);G.lastAward=finishLife(true,0,performance.now());if(G.mode==='solo')Ads.matchDone();
   resetInput();R3.shake(26);clearTimeout(overTimer);overTimer=setTimeout(showOver,1000);}
-const TIP_KEYS=new Set(['body','#edge','#zone','#lava','#spike','#tree','#pillar','#planet','wa','wz','wm','wg']);
+const TIP_KEYS=new Set(['body','#edge','#zone','#lava','#spike','#tree','#pillar','#planet','wa','wz','wm','wg','wh']);
 function showOver(){if(!G.me||G.me.alive||G.round.over||G.mode==='demo')return;const L=G.last||{},who=$('#overWho');who.textContent='';
   if(!L.kn)who.append(t('overEdge'));else if(L.kn[0]==='#')who.append(t('over'+L.kn));
   else{who.append(t('overByPre'));const em=document.createElement('em');em.textContent=L.kn;who.append(em,t('overByPost'));}
@@ -8151,7 +8365,7 @@ btnSound.addEventListener('click',()=>{SFX.set(!SFX.on);paintSound();});paintSou
 
 /* ================= feedback ================= */
 const toastEl=$('#toast'),feed=$('#feed'),hurtEl=$('#hurt');
-function toast(msg,sub){toastEl.textContent=msg;if(sub){const s=document.createElement('small');s.textContent=sub;toastEl.append(s);}toastEl.classList.remove('show');void toastEl.offsetWidth;toastEl.classList.add('show');}
+function toast(msg,sub){toastEl.textContent=msg;if(sub){const s=document.createElement('small');s.textContent=sub;toastEl.append(s);}fitFonts([toastEl],16);toastEl.classList.remove('show');void toastEl.offsetWidth;toastEl.classList.add('show');}
 function feedLine(msg,mine){const d=document.createElement('div');d.textContent=msg;if(mine)d.className='mine';feed.prepend(d);
   while(feed.children.length>3)feed.lastChild.remove();setTimeout(()=>d.remove(),4000);}
 function uiPickup(ti){const d=ITEMS[ti],w=G.me&&G.me.weapon;
@@ -8159,8 +8373,9 @@ function uiPickup(ti){const d=ITEMS[ti],w=G.me&&G.me.weapon;
   else{toast(t('gotWeapon',{n:d.name})+(w&&w.n>1?' ×'+w.n:''));fireBtn.classList.remove('pop');void fireBtn.offsetWidth;fireBtn.classList.add('pop');
     if(!hintShown){hintShown=true;feedLine(t('weaponHint'),true);}}
   updateFire();}
-function uiHurt(kind,name,keep){sfx('hurt');const k=['z','a','f','g','m'].includes(kind)?kind:'x';
-  toast(name?t('hurtN.'+k,{n:name}):t('hurt.'+k));hurtEl.classList.remove('show');void hurtEl.offsetWidth;hurtEl.classList.add('show');R3.shake(kind==='m'||kind==='g'?24:14);}
+function uiHurt(kind,name,keep){sfx('hurt');const k=['z','a','f','g','m','v','w','h'].includes(kind)?kind:'x';
+  /* how much length the hit took, under the line */
+  toast(name?t('hurtN.'+k,{n:name}):t('hurt.'+k),keep<1?'-'+Math.round((1-keep)*100)+'%':'');hurtEl.classList.remove('show');void hurtEl.offsetWidth;hurtEl.classList.add('show');R3.shake(kind==='m'||kind==='g'||kind==='w'?24:14);}
 
 /* ================= HUD ================= */
 const hCode=$('#hCode'),hTimer=$('#hTimer'),hLen=$('#hLen'),hKills=$('#hKills'),hRank=$('#hRank'),board=$('#board'),hRoom=$('#hRoom'),netWarn=$('#netWarn'),hHearts=$('#hHearts'),hBuffs=$('#hBuffs');
@@ -8173,7 +8388,7 @@ function updateFire(){const me=G.me,w=me&&me.alive?me.weapon:null,key=w?w.t+':'+
     if(w.n>1){const n=document.createElement('span');n.className='n';n.textContent=w.n;fireBtn.append(n);}
     const wn=document.createElement('span');wn.className='wn';wn.textContent=ITEMS[w.t].name;fireBtn.append(wn);fireBtn.setAttribute('aria-label',t('fireAria',{w:ITEMS[w.t].name}));}
   else{fireBtn.classList.remove('armed');fireBtn.textContent=t('fire');fireBtn.setAttribute('aria-label',t('fireEmpty'));}}
-const BUFF_SHOW=[['shield','shield'],['turbo','turbo'],['magnet','magnet'],['grow','grow'],['ghost','ghost'],['giant','giant'],['frozen','freeze'],['stun','zap']];
+const BUFF_SHOW=[['shield','shield'],['turbo','turbo'],['magnet','magnet'],['grow','grow'],['ghost','ghost'],['giant','giant'],['frost','frost'],['frozen','freeze'],['stun','zap'],['poison','venom']];
 /* in timed matches the HUD and leaderboard follow the round score; in practice they follow length */
 function scoreOf(s){if(!s.remote)return Math.round(G.sc.get(s.key)||0);let v=s.score|0;
   if(G.mode==='host'&&s.kind==='p'){const g=guestByKey(s.key);if(g)v=Math.min(v,Math.ceil(g.ub*1.1+40));}return v;}
@@ -8223,7 +8438,7 @@ function updateHud(){if(hud.hidden)return;const me=G.me,now=performance.now(),ti
   const kids=board.children;let same=!!kids&&kids.length===want.length;for(let k=0;same&&k<want.length;k++)same=kids[k]===want[k];
   if(!same){if(board.replaceChildren)board.replaceChildren(...want);else{board.textContent='';for(const li of want)board.append(li);}}
   const hc=me&&me.alive&&!eliminationPhase(now)?me.hearts:0;if(hc!==heartState){heartState=hc;hHearts.textContent='';for(let k=0;k<hc;k++){const im=document.createElement('img');im.src=HEART;im.alt='';hHearts.append(im);}hHearts.setAttribute('aria-label',t('heartsAria',{n:hc}));}
-  hBuffs.textContent='';if(me&&me.alive)for(const [k,icon] of BUFF_SHOW){const left=(me.bf[k]||0)-now;if(left<=0)continue;const it=ITEMS[IT[icon]],dur=it.dur||(k==='frozen'?WEAPON_BALANCE.freezeMs:WEAPON_BALANCE.zapSlowMs);
+  hBuffs.textContent='';if(me&&me.alive)for(const [k,icon] of BUFF_SHOW){const left=(me.bf[k]||0)-now;if(left<=0)continue;const it=ITEMS[IT[icon]],dur=it.dur||DEBUFF_MS[k]||1000;
     const d=document.createElement('div');d.className='buff';const ring=document.createElement('span');ring.className='ring';ring.style.setProperty('--c',it.color);ring.style.setProperty('--p',clamp(left/dur,0,1).toFixed(3));
     const im=document.createElement('img');im.src=BADGE[IT[icon]];im.alt='';ring.append(im);d.append(ring,Math.ceil(left/1000)+'s');hBuffs.append(d);}
   if(me&&me.alive){const gl=(me.bf.giant||0)-now;if(gl>0&&gl<1600&&G.giantWarned!==me.bf.giant){G.giantWarned=me.bf.giant;toast(t('giantEnding'));sfx('warn');}
@@ -8776,7 +8991,7 @@ paintCloud();
 /* ================= anonymous play statistics =================
    Only sent when the page has an account server, and players can turn it off in the account sheet.
    A random device id (not the account token), a session id, and small events like "match started" or "died to lava". */
-const GAME_VER='22';
+const GAME_VER='23';
 const PLATFORM=/iPhone|iPad|iPod/.test(navigator.userAgent)||(navigator.maxTouchPoints>1&&/Mac/.test(navigator.platform||''))?'ios':/Android/.test(navigator.userAgent)?'android':'desktop';
 const STATS=(()=>{let dev=store.get('ssld-dev','');if(typeof dev!=='string'||!/^[a-z0-9]{12,24}$/.test(dev)){dev=(Math.random().toString(36).slice(2,10)+Math.random().toString(36).slice(2,10)).replace(/[^a-z0-9]/g,'').slice(0,16).padEnd(12,'0');store.set('ssld-dev',dev);}
   return {dev,sid:(Math.random().toString(36).slice(2,12)+'000000').slice(0,10),q:[],on:CLOUD&&store.get('ssld-stats',true)!==false,perf:null};})();
