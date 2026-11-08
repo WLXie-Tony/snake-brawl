@@ -499,6 +499,19 @@ a.linkbtn{text-decoration:none}
 .tutbtns{display:flex;justify-content:center;align-items:center;gap:14px}
 .tutbtns .linkbtn{padding:4px 2px;font-size:13px;color:var(--muted)}
 .tutpulse{animation:tutp 1s ease-in-out infinite}
+/* how a mode works, the first time it is played: over a light veil, the match running behind it */
+.miwrap{position:fixed;inset:0;z-index:6;display:grid;place-items:center;padding:16px;background:rgba(14,22,40,.34);pointer-events:auto;text-shadow:none}
+.modeintro{width:min(100%,340px);box-sizing:border-box;padding:16px 18px 16px;border-radius:20px;background:var(--panel);border:1px solid var(--line-strong);
+  box-shadow:0 16px 40px rgba(20,30,60,.3);text-align:center;color:var(--ink);animation:miIn .3s ease-out}
+@keyframes miIn{from{opacity:0;transform:translateY(-10px) scale(.96)}}
+.mi-h{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:6px}
+.mi-h i{font-style:normal;font-size:30px;line-height:1}
+.mi-h b{font:400 24px var(--f-display);color:var(--gold-ink);line-height:1.2}
+.modeintro p{margin:6px 0 0;font:700 15px var(--f-body);line-height:1.4}
+.modeintro p.mi-s{font-weight:500;font-size:13.5px;color:var(--muted)}
+.modeintro .btn{margin-top:14px;min-width:150px}
+/* the control and gold line: what to do on the first line, the clock on the second (the column is narrow on phones) */
+#controlHud{white-space:pre-line}
 @keyframes tutp{50%{box-shadow:0 0 0 12px rgba(255,201,60,.32)}}
 .lost{margin:-8px 0 0;color:var(--danger-ink);font-weight:700;font-size:14.5px}
 .tip{margin:0;padding:9px 12px;border-radius:12px;background:var(--fill);color:var(--soft-ink);font-size:13px;line-height:1.5}
@@ -553,6 +566,8 @@ a.linkbtn{text-decoration:none}
   </div>
   <div id="netWarn" class="netwarn" hidden></div>
   <div id="hTimer" class="timer" hidden>5:00</div>
+  <div id="modeIntro" class="miwrap" hidden><div class="modeintro" role="dialog" aria-modal="true" aria-labelledby="miName"><div class="mi-h"><i id="miIcon"></i><b id="miName"></b></div>
+    <p id="miL1"></p><p id="miL2" class="mi-s"></p><p id="miL3" class="mi-s"></p><button id="miGo" class="btn primary" type="button" data-i="introGo"></button></div></div>
   <div id="tutBox" class="tutbox" hidden><p id="tutText"></p><div class="tutbar"><i id="tutFill"></i></div><div class="tutbtns"><button id="tutGo" class="btn primary small" type="button" hidden data-i="tutStart"></button><button id="tutSkip" class="linkbtn" type="button" data-i="skip"></button></div></div>
 </div>
 <div id="joy" class="joy" hidden><div class="knob" id="knob"></div></div>
@@ -899,15 +914,15 @@ en:{
   zoneSoon:'Elimination starts in 10 s',zoneGo:'The ring is closing. Elimination begins!',zoneSub:'Get inside the ring: it closes on a random spot, the dashed circle on the map. No respawns; hearts and shields cannot save you from the ring.',
   eliminated:'You are eliminated. Watch the survivors or return to the lobby.',spectate:'Watch match',
   watching:'Watching · {n}',watchWaiting:'Waiting for a survivor…',watchPrev:'Watch previous snake',watchNext:'Watch next snake',
-  ruleAria:'Game rules',ruleClassic:'Classic brawl',ruleControl:'Energy control',ruleClassicTip:'Grow, outmaneuver rivals, and survive the closing ring.',ruleControlTip:'Hold the golden zone alone for +8 score/s. Contested zones pause scoring. Zones rotate every 35 s; no time limit becomes 3 min.',
-  controlHeld:'Holding · +8 score/s',controlContested:'Contested · scoring paused',controlTaken:'Held by {n}',controlGo:'Capture the golden zone',controlNext:'Next zone in {n}s',controlChip:'Control',
+  ruleAria:'Game rules',ruleClassic:'Classic brawl',ruleControl:'Energy control',ruleClassicTip:'Grow, outmaneuver rivals, and survive the closing ring.',ruleControlTip:"Hold the golden zone alone for +8 score/s. Contested zones pause scoring. A gold arrow shows the way; the zone moves every 45 s and the next spot shows first as a dashed ring. No time limit becomes 3 min.",
+  controlHeld:'Holding · +8 score/s',controlContested:'Contested · scoring paused',controlTaken:'Held by {n}',controlGo:"Follow the arrow to the zone",controlNext:"Moves in {n}s",controlChip:'Control',
   'mode.classic':'Classic','mode.control':'Control','mode.gold':'Gold Rush','mode.team':'Teams','mode.frenzy':'Frenzy','mode.duel':'Duel',
   ruleGold:'Gold Rush',ruleTeam:'Team Battle',ruleFrenzy:'Item Frenzy',ruleDuel:'Duel',
-  ruleGoldTip:'Gold veins keep appearing. Coins are your score, and when you die every coin you carry drops for others to grab. Most gold at the end wins; no time limit plays 3 minutes.',
+  ruleGoldTip:"Gold veins keep appearing near you and a gold arrow points to the closest. Coins are your score, and when you die every coin you carry drops for others to grab. Most gold at the end wins; no time limit plays 3 minutes.",
   ruleTeamTip:'Red against blue. You and your friends are red. Teammates pass through each other and weapons never hit them. The higher team total wins; no time limit plays 3 minutes.',
   ruleFrenzyTip:'Power-ups everywhere and everyone spawns with a weapon. Fast and chaotic.',
   ruleDuelTip:'A small ring and no computer snakes (one strong one when you play alone). No respawns within a round and the ring edge is deadly. First to two rounds wins.',
-  goldLbl:'Gold',goldVein:'A gold vein appeared: look for the ring on the minimap',teamRed:'Red',teamBlue:'Blue',teamWins:'{t} team wins! {a} : {b}',teamDraw:'The teams are level',
+  goldLbl:'Gold',goldVein:"A gold vein appeared: follow the gold arrow",teamRed:'Red',teamBlue:'Blue',teamWins:'{t} team wins! {a} : {b}',teamDraw:'The teams are level',
   duelRound:'Round {n}',duelBest:'best of three',duelTook:'Round {n}: {p} wins',duelYouTook:'Round {n}: you win!',duelDraw:'Round {n}: nobody survived, a draw',
   resWins:'Rounds won ',resGold:'Gold ',resNoteGold:'Ranked by the gold carried at the end.',resNoteTeam:'Teams are compared by total score. You and your friends play red.',resNoteDuel:'The first to win two rounds takes the match.',duelWait:'Warming up against a bot until a friend joins',duelStart:'A friend is here: the duel starts!',duelBestLong:'First to win two rounds',
   'tip.lava':'Lava melts your length. Steer around the orange pools.',
@@ -1025,15 +1040,15 @@ zh:{
   zoneSoon:'10 秒后进入缩圈淘汰阶段',zoneGo:'缩圈开始，进入淘汰阶段！',zoneSub:'往圈里走，圈会缩到一个随机的位置（小地图上的白色虚线圈）。死亡不能复活，爱心和护盾都不能抵挡缩圈。',
   eliminated:'你已被淘汰，可以观战或返回大厅。',spectate:'观战',
   watching:'观战 · {n}',watchWaiting:'等待存活的蛇…',watchPrev:'观战上一条蛇',watchNext:'观战下一条蛇',
-  ruleAria:'玩法',ruleClassic:'经典乱斗',ruleControl:'能量据点',ruleClassicTip:'吃能量成长，利用走位击败对手，在缩圈中生存。',ruleControlTip:'独占金色据点每秒 +8 分，多条蛇进入时停止计分。每 35 秒轮换，不限时选项自动使用 3 分钟。',
-  controlHeld:'占领中 · 每秒 +8 分',controlContested:'争夺中 · 暂停计分',controlTaken:'{n} 占领中',controlGo:'前往金色据点争夺积分',controlNext:'{n} 秒后轮换',controlChip:'据点',
+  ruleAria:'玩法',ruleClassic:'经典乱斗',ruleControl:'能量据点',ruleClassicTip:'吃能量成长，利用走位击败对手，在缩圈中生存。',ruleControlTip:"独占金色据点每秒 +8 分，多条蛇进入时停止计分。金色箭头会指路；据点每 45 秒转移一次，下一个位置会先用虚线圈标出来。不限时选项自动使用 3 分钟。",
+  controlHeld:'占领中 · 每秒 +8 分',controlContested:'争夺中 · 暂停计分',controlTaken:'{n} 占领中',controlGo:"跟着箭头去据点",controlNext:"{n} 秒后转移",controlChip:'据点',
   'mode.classic':'经典乱斗','mode.control':'能量据点','mode.gold':'金币狂潮','mode.team':'团队对抗','mode.frenzy':'道具狂欢','mode.duel':'双人决斗',
   ruleGold:'金币狂潮',ruleTeam:'团队对抗',ruleFrenzy:'道具狂欢',ruleDuel:'双人决斗',
-  ruleGoldTip:'地图上会不断冒出金矿，金币就是分数。被淘汰会掉光身上的金币，别人可以捡走。结束时金币最多的赢，不限时选项自动用 3 分钟。',
+  ruleGoldTip:"你附近会不断冒出金矿，金色箭头指向最近的一个。金币就是分数，被淘汰会掉光身上的金币，别人可以捡走。结束时金币最多的赢，不限时选项自动用 3 分钟。",
   ruleTeamTip:'红蓝两队对抗，你和朋友都在红队。队友之间不会互撞，武器也不会打到队友。全队得分加起来高的一方赢，不限时选项自动用 3 分钟。',
   ruleFrenzyTip:'道具和武器多好几倍，出生就带一件武器，节奏很快很乱。',
   ruleDuelTip:'小圆形场地，没有电脑蛇（一个人玩时会有一条很强的电脑蛇当对手）。每局不能复活，碰到圈边就出局，先赢两局的获胜。',
-  goldLbl:'金币',goldVein:'新的金矿出现了，看小地图上的光圈',teamRed:'红队',teamBlue:'蓝队',teamWins:'{t}获胜！{a} : {b}',teamDraw:'两队打平了',
+  goldLbl:'金币',goldVein:"金矿出现了，跟着金色箭头去抢",teamRed:'红队',teamBlue:'蓝队',teamWins:'{t}获胜！{a} : {b}',teamDraw:'两队打平了',
   duelRound:'第 {n} 局',duelBest:'三局两胜',duelTook:'第 {n} 局：{p} 赢了',duelYouTook:'第 {n} 局：你赢了！',duelDraw:'第 {n} 局：同归于尽，算平局',
   resWins:'胜局 ',resGold:'金币 ',resNoteGold:'按结束时身上的金币排名。',resNoteTeam:'按全队总分比输赢，你和朋友都在红队。',resNoteDuel:'先赢两局的获胜。',duelWait:'朋友还没进来，先和电脑蛇热身',duelStart:'朋友来了，决斗开始！',duelBestLong:'先赢两局的获胜',
   'tip.lava':'熔岩会烫掉长度，绕开橙色的熔岩池。',
@@ -1673,12 +1688,12 @@ es:{
   "ruleClassic":"Batalla clásica",
   "ruleControl":"Control de energía",
   "ruleClassicTip":"Crece, muévete mejor que tus rivales y sobrevive al círculo que se cierra.",
-  "ruleControlTip":"Controla la zona dorada sin rivales dentro para ganar +8 puntos/s. Si está en disputa, no suma puntos. Las zonas cambian cada 35 s; con la opción sin límite, la partida dura 3 min.",
+  "ruleControlTip":"Controla la zona dorada sin rivales dentro para ganar +8 puntos/s. Si está en disputa, no suma puntos. Una flecha dorada te guía; la zona se mueve cada 45 s y la siguiente aparece antes como un círculo discontinuo. Con la opción sin límite, la partida dura 3 min.",
   "controlHeld":"Controlando · +8 puntos/s",
   "controlContested":"En disputa · puntos en pausa",
   "controlTaken":"En manos de {n}",
-  "controlGo":"Captura la zona dorada",
-  "controlNext":"Próxima zona en {n} s",
+  "controlGo":"Sigue la flecha hasta la zona",
+  "controlNext":"Se mueve en {n} s",
   "controlChip":"Control",
   "mode.classic":"Clásico",
   "mode.control":"Control",
@@ -1690,12 +1705,12 @@ es:{
   "ruleTeam":"Batalla por equipos",
   "ruleFrenzy":"Frenesí de potenciadores",
   "ruleDuel":"Duelo",
-  "ruleGoldTip":"No paran de salir vetas de oro. Las monedas son tus puntos y, al morir, sueltas todas las que llevas para que otros las recojan. Gana quien tenga más oro al final; con la opción sin límite, se juegan 3 minutos.",
+  "ruleGoldTip":"Siguen apareciendo vetas de oro cerca de ti y una flecha dorada señala la más cercana. Las monedas son tus puntos y, al morir, sueltas todas las que llevas para que otros las recojan. Gana quien tenga más oro al final; con la opción sin límite, se juegan 3 minutos.",
   "ruleTeamTip":"Rojo contra azul. Juegas en rojo con tus amigos. Los compañeros de equipo se atraviesan y las armas nunca los dañan. Gana el equipo con más puntos en total; con la opción sin límite, se juegan 3 minutos.",
   "ruleFrenzyTip":"Potenciadores por todas partes y todos aparecen con un arma. Rápido y caótico.",
   "ruleDuelTip":"Un círculo pequeño y sin bots (salvo uno fuerte si juegas en solitario). No se reaparece dentro de una ronda y el borde del círculo es mortal. Gana quien se lleve primero dos rondas.",
   "goldLbl":"Oro",
-  "goldVein":"Apareció una veta de oro: busca la marca en el minimapa",
+  "goldVein":"Apareció una veta de oro: sigue la flecha dorada",
   "teamRed":"Rojo",
   "teamBlue":"Azul",
   "teamWins":"¡Gana el equipo {t}! {a} : {b}",
@@ -2450,12 +2465,12 @@ pt:{
   "ruleClassic":"Batalha clássica",
   "ruleControl":"Domínio de energia",
   "ruleClassicTip":"Cresça, engane os rivais e sobreviva ao círculo.",
-  "ruleControlTip":"Fique sozinho na zona dourada para ganhar +8 pontos/s. Zona disputada pausa a contagem. As zonas mudam a cada 35 s; “Sem limite” vira 3 min.",
+  "ruleControlTip":"Fique sozinho na zona dourada para ganhar +8 pontos/s. Zona disputada pausa a contagem. Uma seta dourada mostra o caminho; a zona muda a cada 45 s e a próxima aparece antes como um círculo tracejado. “Sem limite” vira 3 min.",
   "controlHeld":"Dominando · +8 pontos/s",
   "controlContested":"Disputada · contagem pausada",
   "controlTaken":"Dominada por {n}",
-  "controlGo":"Conquiste a zona dourada",
-  "controlNext":"Próxima zona em {n} s",
+  "controlGo":"Siga a seta até a zona",
+  "controlNext":"Muda em {n} s",
   "controlChip":"Domínio",
   "mode.classic":"Clássico",
   "mode.control":"Domínio",
@@ -2467,12 +2482,12 @@ pt:{
   "ruleTeam":"Batalha de Times",
   "ruleFrenzy":"Frenesi de Itens",
   "ruleDuel":"Duelo",
-  "ruleGoldTip":"Veios de ouro não param de aparecer. As moedas são seus pontos, e quando você morre todas as moedas que carrega caem para os outros pegarem. Quem tiver mais ouro no final vence; “Sem limite” vira 3 minutos.",
+  "ruleGoldTip":"Veios de ouro não param de aparecer perto de você e uma seta dourada aponta o mais próximo. As moedas são seus pontos, e quando você morre todas as moedas que carrega caem para os outros pegarem. Quem tiver mais ouro no final vence; “Sem limite” vira 3 minutos.",
   "ruleTeamTip":"Vermelho contra azul. Você e seus amigos são do vermelho. Colegas de time atravessam uns aos outros e as armas nunca os atingem. Vence o time com mais pontos somados; “Sem limite” vira 3 minutos.",
   "ruleFrenzyTip":"Power-ups por todo lado e todo mundo nasce com uma arma. Rápido e caótico.",
   "ruleDuelTip":"Arena pequena e sem bots (um bot forte quando você joga sozinho). Sem renascer durante a rodada, e a borda do círculo é mortal. Quem vencer duas rodadas primeiro ganha.",
   "goldLbl":"Ouro",
-  "goldVein":"Apareceu um veio de ouro: procure o anel no minimapa",
+  "goldVein":"Apareceu um veio de ouro: siga a seta dourada",
   "teamRed":"Vermelho",
   "teamBlue":"Azul",
   "teamWins":"Time {t} venceu! {a} : {b}",
@@ -3227,12 +3242,12 @@ ja:{
   "ruleClassic":"クラシックバトル",
   "ruleControl":"陣取りバトル",
   "ruleClassicTip":"大きく育ってライバルを出し抜き、縮むリングの中で生き残ろう。",
-  "ruleControlTip":"金色のゾーンを1匹だけで占領すると毎秒+8スコア。取り合いになると加算ストップ。ゾーンは35秒ごとに移動し、時間無制限は3分になります。",
+  "ruleControlTip":"金色のゾーンを1匹だけで占領すると毎秒+8スコア。取り合いになると加算ストップ。金色の矢印が道案内。ゾーンは45秒ごとに移動し、次の場所は先に点線の円で表示されます。時間無制限は3分になります。",
   "controlHeld":"占領中 · 毎秒+8スコア",
   "controlContested":"取り合い中 · 加算ストップ",
   "controlTaken":"{n}が占領中",
-  "controlGo":"金色のゾーンを占領しよう",
-  "controlNext":"次のゾーンまで{n}秒",
+  "controlGo":"矢印についていこう",
+  "controlNext":"あと{n}秒で移動",
   "controlChip":"陣取り",
   "mode.classic":"クラシック",
   "mode.control":"陣取り",
@@ -3244,12 +3259,12 @@ ja:{
   "ruleTeam":"チームバトル",
   "ruleFrenzy":"アイテムフィーバー",
   "ruleDuel":"タイマン勝負",
-  "ruleGoldTip":"金鉱が次々に出現！集めたゴールドがスコアになり、やられると持っているゴールドをすべて落として、ほかのヘビに拾われます。最後に一番多く持っていた人の勝ち。時間無制限は3分になります。",
+  "ruleGoldTip":"近くに金鉱が次々に出現し、金色の矢印が一番近い金鉱を指します。集めたゴールドがスコアになり、やられると持っているゴールドをすべて落として、ほかのヘビに拾われます。最後に一番多く持っていた人の勝ち。時間無制限は3分になります。",
   "ruleTeamTip":"赤チーム対青チーム。あなたと友だちは赤チームです。味方同士はすり抜けられ、武器も当たりません。チームの合計スコアが高い方の勝ち。時間無制限は3分になります。",
   "ruleFrenzyTip":"アイテムがそこらじゅうに出現し、全員が武器を持ってスタート。スピーディーで大混戦！",
   "ruleDuelTip":"小さなリングで、CPUのヘビはなし（1人で遊ぶときは強いCPUが1匹）。ラウンド中は復活できず、リングの端に触れるとアウト。2本先取で勝利。",
   "goldLbl":"ゴールド",
-  "goldVein":"金鉱が出現：ミニマップのリングを探そう",
+  "goldVein":"金鉱が出現！金色の矢印についていこう",
   "teamRed":"赤",
   "teamBlue":"青",
   "teamWins":"{t}チームの勝利！{a} : {b}",
@@ -4004,12 +4019,12 @@ ko:{
   "ruleClassic":"클래식 난투",
   "ruleControl":"에너지 점령전",
   "ruleClassicTip":"몸을 키우고, 상대를 따돌리고, 좁혀 오는 자기장에서 살아남으세요.",
-  "ruleControlTip":"황금 구역을 혼자 차지하면 초당 +8점. 다른 뱀이 함께 있으면 점수가 멈춰요. 구역은 35초마다 옮겨 가고, ‘제한 없음’은 3분으로 진행돼요.",
+  "ruleControlTip":"황금 구역을 혼자 차지하면 초당 +8점. 다른 뱀이 함께 있으면 점수가 멈춰요. 금색 화살표가 길을 알려 주고, 구역은 45초마다 옮겨 가며 다음 위치는 먼저 점선 원으로 보여요. ‘제한 없음’은 3분으로 진행돼요.",
   "controlHeld":"점령 중 · 초당 +8점",
   "controlContested":"쟁탈 중 · 점수 정지",
   "controlTaken":"{n} 점령 중",
-  "controlGo":"황금 구역을 점령하세요",
-  "controlNext":"{n}초 후 구역 이동",
+  "controlGo":"화살표를 따라가세요",
+  "controlNext":"{n}초 후 이동",
   "controlChip":"점령전",
   "mode.classic":"클래식",
   "mode.control":"점령전",
@@ -4021,12 +4036,12 @@ ko:{
   "ruleTeam":"팀 대전",
   "ruleFrenzy":"아이템 대잔치",
   "ruleDuel":"결투",
-  "ruleGoldTip":"금광이 계속 나타나요. 모은 골드가 곧 점수이고, 죽으면 가지고 있던 골드를 모두 떨어뜨려서 다른 뱀이 주워 갈 수 있어요. 끝날 때 골드가 가장 많은 뱀이 이겨요. ‘제한 없음’은 3분으로 진행돼요.",
+  "ruleGoldTip":"근처에 금광이 계속 나타나고, 금색 화살표가 가장 가까운 금광을 가리켜요. 모은 골드가 곧 점수이고, 죽으면 가지고 있던 골드를 모두 떨어뜨려서 다른 뱀이 주워 갈 수 있어요. 끝날 때 골드가 가장 많은 뱀이 이겨요. ‘제한 없음’은 3분으로 진행돼요.",
   "ruleTeamTip":"레드 팀 대 블루 팀! 나와 친구들은 레드 팀이에요. 팀원끼리는 서로 통과하고, 무기에도 맞지 않아요. 팀 점수 합계가 높은 쪽이 이겨요. ‘제한 없음’은 3분으로 진행돼요.",
   "ruleFrenzyTip":"곳곳에 아이템이 가득하고, 모두 무기를 하나씩 들고 시작해요. 빠르고 정신없어요!",
   "ruleDuelTip":"작은 원형 경기장에 봇은 없어요(혼자 하면 강한 봇 하나가 상대해요). 라운드 중에는 부활할 수 없고, 가장자리에 닿으면 죽어요. 2라운드를 먼저 이기면 승리!",
   "goldLbl":"골드",
-  "goldVein":"금광이 나타났어요: 미니맵에서 동그라미를 찾아보세요",
+  "goldVein":"금광이 나타났어요. 금색 화살표를 따라가세요",
   "teamRed":"레드",
   "teamBlue":"블루",
   "teamWins":"{t} 팀 승리! {a} : {b}",
@@ -4560,6 +4575,13 @@ Object.assign(I18N.es,{"item.frost":"Aura gélida","item.frost.d":"Durante 14 s,
 Object.assign(I18N.pt,{"item.frost":"Aura Gélida","item.frost.d":"Por 14 s, rivais perto de você ficam com 60% da velocidade e não conseguem acelerar","item.wave":"Onda de Choque","item.wave.d":"Empurra para longe todas as cobras ao seu redor e atordoa por 1,2 s. Também apaga tiros, minas e clones por perto","item.venom":"Veneno","item.venom.d":"2 tiros. Envenena por 8 s a cobra atingida: ela perde tamanho sem parar, deixando energia para trás","item.hole":"Buraco Negro","item.hole.d":"Joga à frente um buraco negro que puxa os rivais por 7 s. O centro arranca tamanho bem rápido","hurt.v":"Você foi envenenado","hurtN.v":"{n} te envenenou","hurt.w":"Uma onda de choque te empurrou","hurtN.w":"Onda de choque de {n}","hurt.h":"Um buraco negro te pegou","hurtN.h":"Buraco negro de {n}","tip.wh":"Buracos negros puxam você. Vire e acelere para sair antes que o centro te destrua."});
 Object.assign(I18N.ja,{"item.frost":"フロストオーラ","item.frost.d":"14秒間、近くのライバルは速度が60%になり、ダッシュできない","item.wave":"衝撃波","item.wave.d":"周りのヘビをすべて吹き飛ばし、1.2秒間気絶させる。近くの弾、地雷、分身も消える","item.venom":"毒液","item.venom.d":"2発。当たったヘビは8秒間毒になり、長さが減り続けて後ろにエネルギーとして落ちる","item.hole":"ブラックホール","item.hole.d":"前方にブラックホールを投げ、7秒間ライバルを引き寄せる。中心に入ると長さがどんどん削られる","hurt.v":"毒をくらった","hurtN.v":"{n}の毒液をくらった","hurt.w":"衝撃波で吹き飛ばされた","hurtN.w":"{n}の衝撃波で吹き飛ばされた","hurt.h":"ブラックホールに捕まった","hurtN.h":"{n}のブラックホールに捕まった","tip.wh":"ブラックホールは引き寄せてきます。中心に飲まれる前に、向きを変えてダッシュで抜け出しましょう。"});
 Object.assign(I18N.ko,{"item.frost":"서리 오라","item.frost.d":"14초 동안 내 근처의 상대는 속도가 60%로 줄고 부스트를 쓸 수 없어요","item.wave":"충격파","item.wave.d":"주변의 뱀을 모두 밀어내고 1.2초 동안 기절시켜요. 근처의 탄, 지뢰, 분신도 없애요","item.venom":"독액","item.venom.d":"2발. 맞은 뱀은 8초 동안 중독돼 길이가 계속 줄고, 줄어든 만큼 뒤에 에너지로 떨어져요","item.hole":"블랙홀","item.hole.d":"앞으로 블랙홀을 던져 7초 동안 상대를 끌어당겨요. 중심에 빨려 들면 길이가 빠르게 줄어요","hurt.v":"중독됐어요","hurtN.v":"{n}의 독액에 중독됐어요","hurt.w":"충격파에 밀려났어요","hurtN.w":"{n}의 충격파에 밀려났어요","hurt.h":"블랙홀에 붙잡혔어요","hurtN.h":"{n}의 블랙홀에 붙잡혔어요","tip.wh":"블랙홀은 나를 끌어당겨요. 중심에 빨려 들기 전에 방향을 틀고 부스트로 빠져나오세요."});
+/* v24: how control and gold rush work, the arrow and the next zone */
+Object.assign(I18N.en,{"controlGoNext":"Head for the dashed ring","introGo":"Got it","controlSoon":"Next zone in {n}s","objNext":"Next","goldGo":"Coins are your score\nFollow the arrow","intro.control.1":"Follow the gold arrow to the zone","intro.control.2":"Alone inside: +8 a second. Another snake in it pauses scoring","intro.control.3":"It moves every 45 s. The next spot shows first as a dashed ring","intro.gold.1":"Coins are your score. Follow the gold arrow to a gold vein","intro.gold.2":"Die and you drop every coin. Most gold at the end wins"});
+Object.assign(I18N.zh,{"controlGoNext":"去虚线圈等下一个据点","introGo":"知道了","controlSoon":"{n} 秒后转移到虚线圈","objNext":"下一个","goldGo":"金币就是分数\n跟着箭头去金矿","intro.control.1":"跟着金色箭头找到据点","intro.control.2":"一个人待在圈里每秒 +8 分，有别的蛇进来就暂停","intro.control.3":"每 45 秒换个地方，下一个会先用虚线圈标出来","intro.gold.1":"金币就是分数，跟着金色箭头去抢金矿","intro.gold.2":"被吃掉会掉光身上的金币，结束时金币最多的赢"});
+Object.assign(I18N.es,{"controlGoNext":"Ve al círculo discontinuo","introGo":"Entendido","controlSoon":"Próxima zona en {n} s","objNext":"Siguiente","goldGo":"Las monedas son tus puntos\nSigue la flecha","intro.control.1":"Sigue la flecha dorada hasta la zona","intro.control.2":"Solo dentro: +8 por segundo. Si entra otra serpiente, se pausa","intro.control.3":"Cambia de sitio cada 45 s. La siguiente aparece antes como un círculo discontinuo","intro.gold.1":"Las monedas son tus puntos. Sigue la flecha dorada hasta una veta","intro.gold.2":"Si mueres, sueltas todas tus monedas. Gana quien tenga más oro al final"});
+Object.assign(I18N.pt,{"controlGoNext":"Vá para o círculo tracejado","introGo":"Entendi","controlSoon":"Próxima zona em {n} s","objNext":"Próxima","goldGo":"Moedas são seus pontos\nSiga a seta","intro.control.1":"Siga a seta dourada até a zona","intro.control.2":"Sozinho dentro: +8 por segundo. Se outra cobra entrar, a contagem para","intro.control.3":"Ela muda de lugar a cada 45 s. A próxima aparece antes como um círculo tracejado","intro.gold.1":"As moedas são seus pontos. Siga a seta dourada até um veio de ouro","intro.gold.2":"Se morrer, você solta todas as moedas. Quem tiver mais ouro no final vence"});
+Object.assign(I18N.ja,{"controlGoNext":"点線の円へ向かおう","introGo":"わかった","controlSoon":"あと{n}秒で次のゾーン","objNext":"次","goldGo":"ゴールドがスコア\n矢印についていこう","intro.control.1":"金色の矢印についていってゾーンへ","intro.control.2":"1匹だけで入っていると毎秒+8。ほかのヘビが入ると止まります","intro.control.3":"ゾーンは45秒ごとに移動。次の場所は先に点線の円で表示されます","intro.gold.1":"ゴールドがスコア。金色の矢印についていって金鉱へ","intro.gold.2":"やられると持っているゴールドを全部落とします。最後に一番多い人の勝ち"});
+Object.assign(I18N.ko,{"controlGoNext":"점선 원으로 가세요","introGo":"알겠어요","controlSoon":"{n}초 후 다음 구역","objNext":"다음","goldGo":"골드가 점수예요\n화살표를 따라가요","intro.control.1":"금색 화살표를 따라 구역으로 가세요","intro.control.2":"혼자 안에 있으면 초당 +8점. 다른 뱀이 들어오면 멈춰요","intro.control.3":"구역은 45초마다 옮겨 가요. 다음 위치는 먼저 점선 원으로 보여요","intro.gold.1":"골드가 곧 점수예요. 금색 화살표를 따라 금광으로 가세요","intro.gold.2":"죽으면 가진 골드를 모두 떨어뜨려요. 끝날 때 골드가 가장 많으면 승리"});
 const LANGS=['en','zh','es','pt','ja','ko'],LANG_NAMES={en:'English',zh:'中文',es:'Español',pt:'Português',ja:'日本語',ko:'한국어'},LANG_SHORT={en:'EN',zh:'中文',es:'ES',pt:'PT',ja:'日本語',ko:'한국어'};
 const LOCALES={en:'en-US',zh:'zh-CN',es:'es-ES',pt:'pt-BR',ja:'ja-JP',ko:'ko-KR'};
 /* numbers and dates the way the phone writes them when it speaks the game's language (es-MX, pt-PT, en-GB), else the usual one */
@@ -4599,8 +4621,9 @@ const AREA_K=(R*R)/(2600*2600);
    63 s) and keeps the end point within ZONE_DRIFT of the middle, so the far side can still reach the last circle */
 const ZONE_MIN=1800,ZONE_K=1.15,ZONE_DRIFT=4590;
 /* bumped whenever two builds can no longer play together; rooms from other versions are not joinable
-   (11: v22 moved rooms to the game's own signalling server and added skins; 13: v23 bigger arena, new power-ups) */
-const NET_VER=13;
+   (11: v22 moved rooms to the game's own signalling server and added skins; 13: v23 bigger arena, new power-ups;
+   14: v24 control zones in a chain, gold veins near players) */
+const NET_VER=14;
 const B64='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
 const B64I=new Int16Array(128).fill(-1);for(let i=0;i<64;i++)B64I[B64.charCodeAt(i)]=i;
 /* fixed-width base64 numbers for the compact network strings */
@@ -4609,7 +4632,9 @@ function d64(s,i,w){let v=0;for(let k=0;k<w;k++){const c=s.charCodeAt(i+k),d=c<1
 /* BOT_MASS_CAP: a computer snake above this size slowly sheds the excess (BOT_MASS_DECAY per second). BOT_MASS_BUDGET: once all computer
    snakes together weigh more than a normal match ever reaches, the bigger ones shed a little more, so a long endless session stays as light to run as its first minutes */
 const BASE_SPEED=205, BOOST_SPEED=400, TURBO_SPEED=500, BOOST_COST=6, MIN_BOOST=14, OWN_CRUMB_MS=600, OWN_CRUMB_SHARE=0.5, FOOD_MASS=2, GROWTH_RATE=0.75, BOT_MASS_CAP=2000, BOT_MASS_DECAY=0.03, BOT_MASS_BUDGET=50000;
-const CONTROL_PERIOD=35000,CONTROL_RADIUS=280,CONTROL_SCORE=8;
+/* control: a zone holds for CONTROL_PERIOD. The next one lies a short run from the last (CONTROL_HOP: 10 to 18 s at cruising
+   speed) and shows as a dashed ring for the last CONTROL_PREVIEW of the current one; the first zone is near the middle */
+const CONTROL_PERIOD=45000,CONTROL_RADIUS=300,CONTROL_SCORE=8,CONTROL_PREVIEW=15000,CONTROL_HOP=[2000,3600],CONTROL_FIRST=2200;
 /* ================= game modes =================
    classic: everyone for themselves. control: hold the gold circle. gold: grab gold coins, a death drops all of them.
    team: red against blue, teammates pass through each other. frenzy: power-ups everywhere. duel: a small ring,
@@ -4619,7 +4644,7 @@ const ruleOf=r=>RULES.includes(r)?r:'classic';
 /* modes that always run on a clock (choosing no time limit plays 3 minutes) */
 const CLOCKED=new Set(['control','gold','team','duel']);
 /* gold coins are drops of a colour of their own; veins of coins keep appearing around the arena */
-const GOLD_C=63,GOLD_V=5,GOLD_VEIN_N=14,GOLD_VEIN_EVERY=15000;
+const GOLD_C=63,GOLD_V=5,GOLD_VEIN_N=14,GOLD_VEIN_EVERY=15000,GOLD_FRESH=8000;
 /* players are red together with the first RED_BOTS bots; the other bots are blue */
 const RED_BOTS=45,TEAM_COL=['#ff6b6b','#5aa9ff'],TEAM_RGB=[[1,0.3,0.32],[0.25,0.55,1]];
 const DUEL_R=1700,DUEL_ROUND=90000,DUEL_WINS=2;
@@ -5526,21 +5551,56 @@ function zoneAt(now,out){out.r=R;out.x=0;out.y=0;if(!G.round.end||!G.roomDur||G.
   const e=f*f*(3-2*f),c=zoneEnd();out.r=R-(R-ZONE_MIN)*e;out.x=c.x*e;out.y=c.y*e;return out;}
 const ZT={r:R,x:0,y:0};
 function zoneR(now){return zoneAt(now,ZT).r;}
+/* The zones of a round, one per phase, worked out in order and kept: the first near the middle, each next one a short run
+   (CONTROL_HOP) from the last so the crowd moves on together, always inside the ring as it will be when its phase ends and
+   clear of walls, lava and gravity wells. Only the seed, the map and the round clock go in, so every phone gets the same chain */
+function controlPhase(n){if(!(n>=0)||!G.round.end||!G.roomDur)return null;const start=G.round.end-G.roomDur,key=G.round.id+':'+G.seed+':'+G.map+':'+G.roomDur;
+  if(!G.control||G.control.key!==key)G.control={key,list:[]};const L=G.control.list;
+  while(L.length<=n){const k=L.length,s0=start+k*CONTROL_PERIOD;if(s0>=G.round.end){L.push(null);continue;}
+    const end=Math.min(G.round.end,s0+CONTROL_PERIOD),ze=zoneAt(end,{r:0,x:0,y:0}),lim=ze.r-CONTROL_RADIUS-160,rng=mulberry32(hash32(G.seed,k,G.map));
+    /* looking one zone ahead: while the ring closes, stay within a hop of where the next zone can still be */
+    const z2=end<G.round.end?zoneAt(Math.min(G.round.end,end+CONTROL_PERIOD),{r:0,x:0,y:0}):null,reach=z2?z2.r-CONTROL_RADIUS-160+CONTROL_HOP[1]*0.9:0;
+    let prev=null;for(let j=k-1;j>=0&&!prev;j--)prev=L[j];
+    let zone=null,best=Infinity;
+    for(let i=0;i<120&&lim>0;i++){const a=rng()*TAU,u=rng();let x,y;
+      if(prev&&i<80){const d=CONTROL_HOP[0]+u*(CONTROL_HOP[1]-CONTROL_HOP[0]);x=prev.x+Math.cos(a)*d;y=prev.y+Math.sin(a)*d;}
+      else{const d=Math.sqrt(u)*(prev||i>=40?lim:Math.min(lim,CONTROL_FIRST));x=ze.x+Math.cos(a)*d;y=ze.y+Math.sin(a)*d;}
+      if(Math.hypot(x-ze.x,y-ze.y)>lim||inSolid(x,y,CONTROL_RADIUS+50))continue;
+      if(G.obstacles.some(o=>(o.meta.zone==='burn'||o.meta.grav)&&Math.hypot(x-o.x,y-o.y)<o.r*(o.meta.grav||1)+CONTROL_RADIUS+50))continue;
+      /* a hop of the right length wins at once; failing that, the spot closest to that length (or, for the first, any spot) */
+      const dp=prev?Math.hypot(x-prev.x,y-prev.y):0,sc=(prev?(dp<CONTROL_HOP[0]?CONTROL_HOP[0]-dp:dp>CONTROL_HOP[1]?dp-CONTROL_HOP[1]:0):(i<40?0:1))+(z2?Math.max(0,Math.hypot(x-z2.x,y-z2.y)-reach):0);
+      if(sc<best){best=sc;zone={x,y,r:CONTROL_RADIUS,phase:k,start:s0,end};if(sc===0)break;}}
+    L.push(zone);}
+  return L[n];}
 function controlZone(now){if(G.rule!=='control'||G.tutWorld||!G.round.end||!G.roomDur||G.round.over||now>=G.round.end)return null;
-  const start=G.round.end-G.roomDur,elapsed=Math.max(0,now-start),phase=Math.floor(elapsed/CONTROL_PERIOD),key=G.round.id+':'+G.seed+':'+G.map+':'+G.roomDur+':'+phase;
-  if(G.control&&G.control.key===key)return G.control.zone;
-  const end=Math.min(G.round.end,start+(phase+1)*CONTROL_PERIOD),ze=zoneAt(end,{r:0,x:0,y:0}),lim=ze.r-CONTROL_RADIUS-160,rng=mulberry32(hash32(G.seed,phase,G.map));let zone=null;
-  for(let i=0;i<80&&lim>0;i++){const a=rng()*TAU,d=Math.sqrt(rng())*lim,x=ze.x+Math.cos(a)*d,y=ze.y+Math.sin(a)*d;
-    if(inSolid(x,y,CONTROL_RADIUS+50))continue;
-    if(G.obstacles.some(o=>(o.meta.zone==='burn'||o.meta.grav)&&Math.hypot(x-o.x,y-o.y)<o.r*(o.meta.grav||1)+CONTROL_RADIUS+50))continue;
-    zone={x,y,r:CONTROL_RADIUS,phase,end};break;}
-  G.control={key,zone};return zone;}
+  return controlPhase(Math.floor(Math.max(0,now-(G.round.end-G.roomDur))/CONTROL_PERIOD));}
+/* the zone after the current one, shown for the last CONTROL_PREVIEW of a phase (there is none after the last phase) */
+function controlNext(now){const z=controlZone(now);if(!z||z.end-now>CONTROL_PREVIEW||z.end>=G.round.end)return null;return controlPhase(z.phase+1);}
+/* a new snake in control starts a short run from the zone it should make for (the next one when the current moves very soon) */
+function controlSpot(now){const z=controlZone(now);if(!z)return null;const nx=controlNext(now),tg=nx&&z.end-now<8000?nx:z;let best=null,bestD=-1;
+  for(let k=0;k<40;k++){const a=Math.random()*TAU,d=1400+Math.random()*1200,x=tg.x+Math.cos(a)*d,y=tg.y+Math.sin(a)*d;
+    if(Math.hypot(x-G.zx,y-G.zy)>G.zr*0.92-160||inSolid(x,y,140))continue;
+    if(G.obstacles.some(o=>(o.meta.zone==='burn'||o.meta.grav)&&Math.hypot(x-o.x,y-o.y)<o.r*(o.meta.grav||1)+120))continue;
+    let md=Infinity;for(const s of all){if(!s||!s.alive)continue;const b=s.body;for(let i=0;i<b.length;i+=6){const dx=b[i]-x,dy=b[i+1]-y,dd=dx*dx+dy*dy;if(dd<md)md=dd;}}
+    if(md>bestD){bestD=md;best={x,y,tx:tg.x,ty:tg.y};}if(md>260*260)break;}
+  return best;}
+/* where the player should head, or null: the control zone (or the next one, once the current would move on before this snake
+   got there, and while holding it during the preview), or the nearest gold vein that still has a few coins */
+function objTarget(me,now){
+  if(G.rule==='control'){const z=controlZone(now);if(!z)return null;const nx=controlNext(now),d=Math.hypot(me.x-z.x,me.y-z.y);
+    if(d<=z.r)return nx?{x:nx.x,y:nx.y,r:nx.r,kind:'next'}:null;
+    if(nx&&(d-z.r)/BASE_SPEED*1000>z.end-now)return {x:nx.x,y:nx.y,r:nx.r,kind:'next'};
+    return {x:z.x,y:z.y,r:z.r,kind:'zone'};}
+  if(G.rule==='gold'){veinScan(now);let best=null,bd=Infinity;for(const v of G.veins||[]){if(v.n<3)continue;const d=Math.hypot(me.x-v.x,me.y-v.y);if(d<bd){bd=d;best=v;}}
+    return best?{x:best.x,y:best.y,r:VEIN_R*0.6,kind:'gold',n:best.n}:null;}
+  return null;}
 function stepControl(dt,now){const zone=controlZone(now);G.controlState=null;if(!zone)return;
   let holder=null,count=0;for(const s of all)if(s.alive&&s.kind!=='c'&&Math.hypot(s.x-zone.x,s.y-zone.y)<=zone.r){count++;holder=s;}
   G.controlState={zone,count,holder:count===1?holder.key:null};
-  if(count===1){const owned=ownedByKey(holder.key);if(owned&&owned.alive)gainScore(owned,CONTROL_SCORE*dt);}}
+  if(count===1){const owned=ownedByKey(holder.key);if(owned&&owned.alive){gainScore(owned,CONTROL_SCORE*dt);
+    if(owned===G.me&&now>=(G.ctlFloatT||0)){G.ctlFloatT=now+1000;floatAt(owned.x,owned.y,'+'+CONTROL_SCORE,'#ffd23f');}}}}
 function resetWorld(auth,seed,map,opts){const now=performance.now();G.zr=R;G.zx=0;G.zy=0;G.zEnd=null;G.king=null;G.watchKey=null;
-  G.rule=ruleOf(opts&&opts.rule);G.control=null;G.controlState=null;if(G.rule==='duel')G.zr=DUEL_R;G.goldT=now+6000;G.trickleT=now+2500;G.teamSc=[0,0];
+  G.rule=ruleOf(opts&&opts.rule);G.control=null;G.controlState=null;if(G.rule==='duel')G.zr=DUEL_R;G.goldT=now+6000;G.trickleT=now+2500;G.veins=[];G.vein=null;G.veinN=0;G.veinScanT=0;G.ctlFloatT=0;G.teamSc=[0,0];
   G.easy=!!(opts&&opts.easy);G.tutWorld=!!(opts&&opts.tut);G.tut=null;
   G.auth=auth;G.seed=seed>>>0;G.map=map|0;G.obstacles=genObstacles(G.map,G.seed);foodGen.fill(0);setAllFood(now);
   G.drops.clear();G.dropSeq=0;G.items.clear();G.itemSeq=0;G.itemT=0;G.eruptT=now+5000;G.bots=[];G.clones=[];G.events=[];G.evSeq=0;G.lastEv=0;G.evInit=false;
@@ -5858,12 +5918,29 @@ function hostUpkeep(now){
     if(pools.length){const o=pools[(Math.random()*pools.length)|0];erupt(o,now);pushFx(['E',o.i],now);}}}
 /* gold rush: a vein of coins every 15 s (every 9 s in the last minute), plus a trickle of single coins */
 function goldUpkeep(now){if(now>G.trickleT){G.trickleT=now+2200;for(let k=0;k<2;k++){const p=goldSpot(G.zr*0.85);addDrop(p.x,p.y,GOLD_V,GOLD_C,now);}}
-  if(now<G.goldT)return;G.goldT=now+(G.round.end-now<60000?9000:GOLD_VEIN_EVERY);const p=goldSpot(G.zr*0.7);
-  for(let k=0;k<GOLD_VEIN_N;k++){const a=Math.random()*TAU,d=30+Math.sqrt(Math.random())*170;addDrop(p.x+Math.cos(a)*d,p.y+Math.sin(a)*d,GOLD_V,GOLD_C,now);}
+  if(now<G.goldT)return;G.goldT=now+(G.round.end-now<60000?9000:GOLD_VEIN_EVERY);const p=goldVeinSpot();
+  for(let k=0;k<GOLD_VEIN_N;k++){const a=Math.random()*TAU,d=30+Math.sqrt(Math.random())*170;addDrop(p.x+Math.cos(a)*d,p.y+Math.sin(a)*d,GOLD_V,GOLD_C,now,false,'vein');}
   pushFx(['V',Math.round(p.x),Math.round(p.y)],now);goldVein(p.x,p.y,now);}
-function goldSpot(lim){for(let k=0;k<30;k++){const a=Math.random()*TAU,d=Math.sqrt(Math.random())*lim,x=Math.cos(a)*d,y=Math.sin(a)*d;if(!inSolid(x,y,60))return {x,y};}return {x:0,y:0};}
-/* every phone: a toast, a ring on the ground and a pulsing mark on the minimap */
-function goldVein(x,y,now){G.vein={x,y,t:now};vfx('ring',{x,y,col:[1,0.82,0.2],r0:30,r1:260,dur:900});if(G.mode!=='demo'&&G.me)toast(t('goldVein'));}
+function goldSpot(lim){for(let k=0;k<30;k++){const a=Math.random()*TAU,d=Math.sqrt(Math.random())*lim,x=G.zx+Math.cos(a)*d,y=G.zy+Math.sin(a)*d;if(!inSolid(x,y,60))return {x,y};}return {x:G.zx,y:G.zy};}
+/* a vein comes up a short run (1000 to 2000, 5 to 10 s) from one of the players, each in turn, so everyone has one to go for */
+function goldVeinSpot(){const hs=[];if(G.me&&G.me.alive)hs.push(G.me);for(const v of remote)if(v.kind==='p'&&v.alive)hs.push(v);
+  if(hs.length){const h=hs[(G.veinN=(G.veinN|0)+1)%hs.length];
+    for(let k=0;k<30;k++){const a=Math.random()*TAU,d=1000+Math.random()*1000,x=h.x+Math.cos(a)*d,y=h.y+Math.sin(a)*d;
+      if(Math.hypot(x-G.zx,y-G.zy)>G.zr*0.82||inSolid(x,y,80))continue;
+      if(G.obstacles.some(o=>(o.meta.zone==='burn'||o.meta.grav)&&Math.hypot(x-o.x,y-o.y)<o.r*(o.meta.grav||1)+120))continue;
+      return {x,y};}}
+  return goldSpot(G.zr*0.7);}
+/* every phone: a toast, a ring on the ground, and the vein joins the list the arrow and the minimap follow */
+const VEIN_R=300;
+function goldVein(x,y,now){G.vein={x,y,t:now};const vs=G.veins||(G.veins=[]);vs.push({x,y,t:now,n:GOLD_VEIN_N});if(vs.length>8)vs.shift();
+  vfx('ring',{x,y,col:[1,0.82,0.2],r0:30,r1:260,dur:900});if(G.mode!=='demo'&&G.me&&G.me.alive)toast(t('goldVein'));}
+/* coins left in each vein, counted a few times a second; a vein whose coins are gone (or that is older than its coins) leaves
+   the list. A vein seen through the network may arrive before its coins do, so a young one keeps its count for a moment */
+function veinScan(now){const vs=G.veins;if(!vs||!vs.length||now<(G.veinScanT||0))return;G.veinScanT=now+400;
+  for(const v of vs)v.c=0;
+  for(const d of G.drops.values()){if(d.c!==GOLD_C)continue;for(const v of vs){const dx=d.x-v.x,dy=d.y-v.y;if(dx*dx+dy*dy<VEIN_R*VEIN_R){v.c++;break;}}}
+  for(const v of vs)if(now-v.t>1500||v.c>0)v.n=v.c;
+  G.veins=vs.filter(v=>(v.n>0||now-v.t<3000)&&now-v.t<95000);}
 function erupt(o,now){if(G.auth)for(let k=0;k<9;k++){const a=Math.random()*TAU,d=o.r+50+Math.random()*160;addDrop(o.x+Math.cos(a)*d,o.y+Math.sin(a)*d,4+Math.random()*5,[1,2,8][(Math.random()*3)|0],now);}
   vfx('erupt',{x:o.x,y:o.y,r:o.r,dur:1100});burst(o.x,o.y,20,40,[1,0.5,0.1],420,1100,16,2.4);}
 
@@ -5979,7 +6056,7 @@ function botThink(b,now){const T=tierOf(b),hx=b.x,hy=b.y,r=b.r,dc=Math.hypot(hx-
       if(s>bs){bs=s;best={kind,ref:o,slot,x:o.x,y:o.y,until:now+4000};}};
     if(!G.easy&&G.items.size){const IL=itemList();for(let q=0;q<IL.length;q++){const it=IL[q];choose(it,'item',(ITEMS[it.t].kind==='weapon'&&b.weapon?3:7)*T.items,T.itemR);}}
     const nf=foodNear(hx,hy,550,botFood);for(let q=0;q<nf;q++){const i=botFood[q];choose(food[i],'food',food[i].v,550,i);}
-    const nd=dropsNear(hx,hy,650,botDrops);for(let q=0;q<nd;q++){const d=botDrops[q];botDrops[q]=null;if(d.by!==b.key)choose(d,'drop',d.c===GOLD_C?d.v*9:d.v*1.4,650);}
+    const nd=dropsNear(hx,hy,650,botDrops);for(let q=0;q<nd;q++){const d=botDrops[q];botDrops[q]=null;if(d.by!==b.key&&!(d.by==='vein'&&now-d.born<GOLD_FRESH))choose(d,'drop',d.c===GOLD_C?d.v*9:d.v*1.4,650);}
     nav.goal=best||botRoamGoal(b,now);}
   /* Even a rich food patch cannot keep a bot in the same little circle forever. */
   if(now>=nav.roamAt&&nav.goal.kind!=='return'&&nav.goal.kind!=='hunt'&&nav.goal.kind!=='roam'&&nav.goal.kind!=='control'){
@@ -7432,14 +7509,22 @@ function warmStep(){if(warmDone||!R3.ready)return;
       if(!(MESH_POOL.get(i)||[]).length){const m=new SnakeMesh(i);m.bake();m.root.visible=false;releaseMesh(m);}}
     renderer.compile(scene,camera);}catch(e){warmDone=true;return;}
   if(!warmQ.length)warmDone=true;}
-let controlMesh=null;
-function drawControl(now){const zone=controlZone(now);if(!zone){if(controlMesh)controlMesh.visible=false;return;}
-  if(!controlMesh){controlMesh=new THREE.Group();const base=new THREE.Mesh(new THREE.CircleGeometry(1,48),new THREE.MeshBasicMaterial({color:0xffd45b,transparent:true,opacity:0.11,depthWrite:false,side:THREE.DoubleSide}));
-    const ring=new THREE.Mesh(new THREE.RingGeometry(0.96,1,64),new THREE.MeshBasicMaterial({color:0xffd45b,transparent:true,opacity:0.85,depthWrite:false,side:THREE.DoubleSide}));
-    base.rotation.x=ring.rotation.x=-Math.PI/2;base.renderOrder=ring.renderOrder=2;controlMesh.add(base,ring);scene.add(controlMesh);}
-  controlMesh.visible=true;controlMesh.position.set(zone.x,3,zone.y);controlMesh.scale.setScalar(zone.r);
+let controlMesh=null,controlNextMesh=null;
+/* a ring of short dashes on the ground (one material; the group turns as a whole) */
+function dashRing(n,r0,r1,col,op){const grp=new THREE.Group(),mat=new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:op,depthWrite:false,side:THREE.DoubleSide});
+  for(let k=0;k<n;k++){const m=new THREE.Mesh(new THREE.RingGeometry(r0,r1,4,1,k*TAU/n,TAU/n*0.55),mat);m.rotation.x=-Math.PI/2;m.renderOrder=2;grp.add(m);}return grp;}
+function drawControl(now){const zone=controlZone(now),nx=zone?controlNext(now):null;
+  if(!zone){if(controlMesh)controlMesh.visible=false;if(controlNextMesh)controlNextMesh.visible=false;return;}
+  if(!controlMesh){controlMesh=new THREE.Group();const base=new THREE.Mesh(new THREE.CircleGeometry(1,48),new THREE.MeshBasicMaterial({color:0xffd45b,transparent:true,opacity:0.16,depthWrite:false,side:THREE.DoubleSide}));
+    const ring=new THREE.Mesh(new THREE.RingGeometry(0.93,1,64),new THREE.MeshBasicMaterial({color:0xffd45b,transparent:true,opacity:0.9,depthWrite:false,side:THREE.DoubleSide}));
+    base.rotation.x=ring.rotation.x=-Math.PI/2;base.renderOrder=ring.renderOrder=2;controlMesh.add(base,ring,dashRing(24,0.78,0.84,0xffd45b,0.75));scene.add(controlMesh);}
+  controlMesh.visible=true;controlMesh.position.set(zone.x,3,zone.y);controlMesh.scale.setScalar(zone.r);controlMesh.children[2].rotation.y=now*0.0005;
   const state=G.controlState,col=state&&state.count>1?0xff766d:state&&state.holder?0x7ee6bb:0xffd45b;
-  for(const child of controlMesh.children)child.material.color.setHex(col);controlMesh.children[1].material.opacity=0.7+0.2*Math.sin(now*0.004);}
+  controlMesh.traverse(o=>{if(o.material)o.material.color.setHex(col);});controlMesh.children[1].material.opacity=0.75+0.2*Math.sin(now*0.004);
+  if(nx){if(!controlNextMesh){controlNextMesh=dashRing(32,0.94,1,0xff9f1a,0.9);scene.add(controlNextMesh);}
+    controlNextMesh.visible=true;controlNextMesh.position.set(nx.x,3,nx.y);controlNextMesh.scale.setScalar(nx.r);controlNextMesh.rotation.y=-now*0.0004;
+    controlNextMesh.children[0].material.opacity=0.55+0.4*Math.abs(Math.sin(now*0.005));}
+  else if(controlNextMesh)controlNextMesh.visible=false;}
 /* outlined names are drawn once into small bitmaps and reused: stroking dozens of names every frame was slow on phones */
 const LBL=new Map();let lblDpr=0;
 function labelBitmap(text,font,fill,stroke,lw){const dpr=Math.min(2,window.devicePixelRatio||1);if(dpr!==lblDpr){LBL.clear();lblDpr=dpr;}
@@ -7451,6 +7536,31 @@ function labelBitmap(text,font,fill,stroke,lw){const dpr=Math.min(2,window.devic
   if(LBL.size>360){let n=0;for(const [kk,v] of LBL)if(frameNo-v.used>120&&n++<120)LBL.delete(kk);if(LBL.size>360)LBL.clear();}
   return c;}
 function drawLabel(g,text,font,fill,stroke,lw,x,y){if(!text)return;const c=labelBitmap(text,font,fill,stroke,lw),d=lblDpr||1;g.drawImage(c.m,Math.round((x-c.w/2)*d)/d,Math.round((y-c.h/2)*d)/d,c.w,c.h);}
+/* the way to the objective: an arrow circling your head (gold, orange for the next control zone) with the distance beside it,
+   and a pin standing over the spot once it is on screen. The direction comes from a short step toward the target, so a target
+   far behind the camera never flips the arrow */
+let hudRects=[],hudRectsT=0;
+function topPanels(now){if(now>hudRectsT){hudRectsT=now+500;hudRects=[];for(const sel of ['.stats','#board','#mini']){const e=document.querySelector(sel);if(!e||e.offsetParent===null)continue;const r=e.getBoundingClientRect();if(r.width&&r.height)hudRects.push(r);}}return hudRects;}
+function drawObjective(g,now,me){if(!me||G.round.over||G.tutWorld)return;const tg=objTarget(me,now);if(!tg)return;
+  const dx=tg.x-me.x,dy=tg.y-me.y,d=Math.hypot(dx,dy);if(d<tg.r*0.8)return;
+  const next=tg.kind==='next',col=next?'#ff9f1a':'#ffd23f',icon=tg.kind==='gold'?'\u{1F4B0}':'\u{1F3AF}',dist=t('meters',{d:Math.round(d/10)});
+  g.save();g.lineJoin='round';
+  const pin=proj(tg.x,30,tg.y);
+  if(pin.ok&&pin.sx>26&&pin.sx<VW-26&&pin.sy>120&&pin.sy<VH-160){
+    const y=pin.sy-40+Math.sin(now*0.005)*5;g.lineWidth=3;g.strokeStyle='rgba(5,8,16,.75)';g.fillStyle=col;
+    g.beginPath();g.moveTo(pin.sx,y+28);g.lineTo(pin.sx-9,y+10);g.lineTo(pin.sx+9,y+10);g.closePath();g.stroke();g.fill();
+    g.beginPath();g.arc(pin.sx,y,16,0,TAU);g.stroke();g.fill();g.font='17px '+BODY_FONT;g.fillText(icon,pin.sx,y+1);
+    if(next){g.font='800 12px '+BODY_FONT;g.lineWidth=3.5;g.strokeText(t('objNext'),pin.sx,y-26);g.fillStyle='#fff';g.fillText(t('objNext'),pin.sx,y-26);}
+    g.restore();return;}
+  const c=proj(me.x,10,me.y),ux=dx/d,uy=dy/d,p1=proj(me.x+ux*200,10,me.y+uy*200);let sx=p1.sx-c.sx,sy=p1.sy-c.sy;const sl=Math.hypot(sx,sy)||1;sx/=sl;sy/=sl;
+  const rad=clamp(Math.min(VW,VH)*0.2,70,118),pulse=1+0.08*Math.sin(now*0.008),ax=c.sx+sx*rad,ay=c.sy+sy*rad;
+  g.translate(ax,ay);g.rotate(Math.atan2(sy,sx));g.scale(pulse,pulse);g.lineWidth=3.5;g.strokeStyle='rgba(5,8,16,.75)';g.fillStyle=col;
+  g.beginPath();g.moveTo(19,0);g.lineTo(-10,-15);g.lineTo(-4,0);g.lineTo(-10,15);g.closePath();g.stroke();g.fill();g.restore();
+  const lab=(next?t('objNext'):icon)+' '+dist;g.save();g.font='800 12.5px '+BODY_FONT;
+  const w=g.measureText(lab).width+18,place=(ox,oy)=>({x:clamp(ax+ox,w/2+8,VW-w/2-8),y:clamp(ay+oy,40,VH-160)}),hits=q=>topPanels(now).some(r=>q.x+w/2>r.left-4&&q.x-w/2<r.right+4&&q.y+12>r.top-4&&q.y-12<r.bottom+4);
+  let q=place(sx*44,sy*36);if(hits(q)){const alt=place(-sx*40,-sy*32);if(!hits(alt))q=alt;}const bx=q.x,by=q.y;
+  g.fillStyle='rgba(12,16,30,.74)';g.beginPath();if(g.roundRect)g.roundRect(bx-w/2,by-12,w,24,12);else g.rect(bx-w/2,by-12,w,24);g.fill();
+  g.fillStyle=col;g.fillText(lab,bx,by+1);g.restore();}
 function drawOverlay(now){const g=octx,dpr=Math.min(2,window.devicePixelRatio||1);
   if(ovl.width!==Math.round(VW*dpr)||ovl.height!==Math.round(VH*dpr)){ovl.width=Math.round(VW*dpr);ovl.height=Math.round(VH*dpr);}
   g.setTransform(dpr,0,0,dpr,0,0);g.clearRect(0,0,VW,VH);g.textAlign='center';g.textBaseline='middle';g.lineJoin='round';
@@ -7480,7 +7590,7 @@ function drawOverlay(now){const g=octx,dpr=Math.min(2,window.devicePixelRatio||1
   G.floats=G.floats.filter(f=>now-f.t0<1100);
   for(const f of G.floats){const q=(now-f.t0)/1100,p=proj(f.x,50+q*70,f.y);if(!p.ok)continue;g.globalAlpha=q<0.75?1:(1-q)*4;
     g.font='900 '+(18+(q<0.15?(0.15-q)*40:0))+'px '+DISPLAY_FONT;g.lineWidth=4;g.strokeStyle='rgba(10,10,20,.75)';g.strokeText(f.text,p.sx,p.sy);g.fillStyle=f.col;g.fillText(f.text,p.sx,p.sy);}
-  g.globalAlpha=1;
+  g.globalAlpha=1;drawObjective(g,now,me);
   if(me)for(const s of all){if(s.kind!=='p'||s===G.me||!s.alive||(s.fl&F.ghost))continue;const p=proj(s.x,10,s.y);
     if(p.ok&&p.sx>0&&p.sx<VW&&p.sy>0&&p.sy<VH)continue;const c=proj(me.x,10,me.y),ang=Math.atan2(p.sy-c.sy,p.sx-c.sx),mx=VW/2-40,my=Math.sin(ang)>0?VH/2-160:VH/2-110;
     const tt=Math.min(Math.abs(mx/(Math.cos(ang)||1e-6)),Math.abs(my/(Math.sin(ang)||1e-6))),ax=VW/2+Math.cos(ang)*tt,ay=VH/2+Math.sin(ang)*tt;
@@ -8174,8 +8284,19 @@ let hintShown=false;
 function startGame(mode){G.mode=mode;lobby.hidden=true;connecting.hidden=true;over.hidden=true;closeSheets();hud.hidden=false;boostBtn.hidden=false;fireBtn.hidden=false;emoBtn.hidden=mode==='tut';
   hud.classList.toggle('tutmode',mode==='tut');tutBox.hidden=mode!=='tut';
   if(G.round.over){boostBtn.hidden=true;fireBtn.hidden=true;emoBtn.hidden=true;showResults();return;}
-  spawnMe(performance.now());requestWake();updateHud();if(mode!=='tut')feedLine(t('mapLine',{n:MAPS[G.map].name,tip:MAPS[G.map].tip}),false);
+  if(!introGate())spawnMe(performance.now());requestWake();updateHud();if(mode!=='tut')feedLine(t('mapLine',{n:MAPS[G.map].name,tip:MAPS[G.map].tip}),false);
   track('start',{m:mode,d:G.roomDur||0,map:G.map,e:G.easy?1:0});perfStart();}
+/* the first match of control or gold rush opens with a card on how it works; the snake appears when the player taps
+   "Got it" (the match runs on behind the card). Once seen, a mode never shows it again (prof.intro) */
+const MODE_INTRO={control:['\u{1F3AF}','intro.control.1','intro.control.2','intro.control.3'],gold:['\u{1FA99}','intro.gold.1','intro.gold.2','']};
+let introOpen=false;
+function introGate(){if(!MODE_INTRO[G.rule]||G.mode==='tut'||G.mode==='demo'||!G.round.end||G.round.over||(prof.intro&&prof.intro[G.rule]))return false;
+  const m=MODE_INTRO[G.rule];$('#miIcon').textContent=m[0];$('#miName').textContent=t('mode.'+G.rule);$('#miL1').textContent=t(m[1]);$('#miL2').textContent=t(m[2]);
+  const l3=$('#miL3');l3.textContent=m[3]?t(m[3]):'';l3.hidden=!m[3];
+  $('#modeIntro').hidden=false;introOpen=true;boostBtn.hidden=true;fireBtn.hidden=true;emoBtn.hidden=true;emoBar.hidden=true;return true;}
+function hideModeIntro(){$('#modeIntro').hidden=true;introOpen=false;}
+$('#miGo').addEventListener('click',()=>{if(!introOpen)return;hideModeIntro();(prof.intro||(prof.intro={}))[G.rule]=1;saveProf();
+  if(G.mode!=='demo'&&!G.round.over&&(!G.me||!G.me.alive)&&spawnMe(performance.now()))showPlayUI();});
 /* respawn somewhere 70 to 130 metres from a friend so the two of you actually meet */
 function spotNearFriend(){const fr=remote.filter(v=>v.kind==='p'&&v.alive);if(!fr.length)return null;const f=fr[(Math.random()*fr.length)|0];
   for(let k=0;k<40;k++){const a=Math.random()*TAU,d=700+Math.random()*600,x=f.x+Math.cos(a)*d,y=f.y+Math.sin(a)*d;
@@ -8186,8 +8307,9 @@ function spotNearFriend(){const fr=remote.filter(v=>v.kind==='p'&&v.alive);if(!f
   return null;}
 /* the kill count (G.kills) belongs to the match, so a respawn keeps it; rewards count per life in G.life */
 function spawnMe(now,mass0){if(!canRespawn(now,true)){boostBtn.hidden=true;fireBtn.hidden=true;emoBtn.hidden=true;toast(t('eliminated'));return false;}gather();
-  const p=G.rule==='duel'?duelSpot(myKey):((G.mode==='host'||G.mode==='guest')&&spotNearFriend())||safeSpot(),life=(G.me?G.me.life:0)+1;
-  G.me=new Snake({key:myKey,name:prof.name,skin:prof.skin,accessory:prof.accessory,trail:TRAIL_ID[prof.trail]|0,kind:'p',owner:myKey,x:p.x,y:p.y,angle:Math.atan2(G.zy-p.y,G.zx-p.x)+(Math.random()-.5),mass:mass0||10,life});
+  const cs=G.rule==='control'&&G.mode!=='tut'?controlSpot(now):null,p=G.rule==='duel'?duelSpot(myKey):cs||((G.mode==='host'||G.mode==='guest')&&spotNearFriend())||safeSpot(),life=(G.me?G.me.life:0)+1;
+  const face=cs?Math.atan2(cs.ty-p.y,cs.tx-p.x)+(Math.random()-.5)*0.4:Math.atan2(G.zy-p.y,G.zx-p.x)+(Math.random()-.5);
+  G.me=new Snake({key:myKey,name:prof.name,skin:prof.skin,accessory:prof.accessory,trail:TRAIL_ID[prof.trail]|0,kind:'p',owner:myKey,x:p.x,y:p.y,angle:face,mass:mass0||10,life});
   if(G.rule==='frenzy'&&G.mode!=='tut')G.me.weapon={t:IT.zap+((Math.random()*6)|0),n:2};
   G.me.invulnT=now+3000;G.watchKey=null;$('#spectatorBar').hidden=true;resetInput();inp.ang=G.me.angle;G.bestRank=Infinity;cam.x=p.x;cam.y=p.y;cam.lx=0;cam.ly=0;fireState='';G.deathCause='';G.lastLost=0;
   /* a little pop where you appear (the view box moves with the camera now, so the effect is not culled) */
@@ -8196,7 +8318,7 @@ function spawnMe(now,mass0){if(!canRespawn(now,true)){boostBtn.hidden=true;fireB
   G.life={t0:now,peak:mass0||10,base:mass0||0,kills:0,pk:0,done:false};return true;}
 /* leaving mid-life still banks the xp earned so far */
 function bankLife(){if(G.me&&G.me.alive&&G.mode!=='demo'&&G.mode!=='tut'&&G.life&&!G.life.done)finishLife(false,0,performance.now());}
-function goLobby(msg){if(G.mode!=='demo')track('leave',{m:G.mode,e:msg?1:0});QM.pub=false;clearTimeout(QM.timer);bankLife();leaveRooms();flowTok++;if(STANDALONE){P2P.close();ROOM=null;}clearTimeout(overTimer);G.me=null;resultsEl.hidden=true;G.roomDur=0;beginRound(0,performance.now());resetWorld(true,newSeed(),demoMap());G.mode='demo';G.code=null;busy=false;
+function goLobby(msg){if(G.mode!=='demo')track('leave',{m:G.mode,e:msg?1:0});hideModeIntro();QM.pub=false;clearTimeout(QM.timer);bankLife();leaveRooms();flowTok++;if(STANDALONE){P2P.close();ROOM=null;}clearTimeout(overTimer);G.me=null;resultsEl.hidden=true;G.roomDur=0;beginRound(0,performance.now());resetWorld(true,newSeed(),demoMap());G.mode='demo';G.code=null;busy=false;
   hud.hidden=true;$('#spectatorBar').hidden=true;boostBtn.hidden=true;fireBtn.hidden=true;emoBtn.hidden=true;emoBar.hidden=true;over.hidden=true;connecting.hidden=true;lobby.hidden=false;joyHide();inp.boost=false;boostBtn.classList.remove('on');
   tutBox.hidden=true;hud.classList.remove('tutmode');boostBtn.classList.remove('tutpulse');fireBtn.classList.remove('tutpulse');
   showLobbyMsg(msg||'');if(msg)friendsSheet.hidden=false;lobbyPresence();releaseWake();paintAcct();paintMissions();paintGrowth();if(!msg)setTimeout(lobbyNudge,700);}
@@ -8262,7 +8384,7 @@ function roundOver(now){if(G.round.over)return;if(G.me&&G.me.alive){G.rs.best=Ma
     if(w&&!d.warm){d.wins.set(w.key,(d.wins.get(w.key)||0)+1);d.names.set(w.key,w.name);if(d.wins.get(w.key)>=DUEL_WINS)d.over=true;}
     if(d.over){G.round.rows=duelRows();G.round.total=G.round.rows.length;}}
   if(!G.round.rows&&!(G.rule==='duel'&&G.duel&&!G.duel.over)){G.round.rows=roundRows();G.round.total=G.round.rows.length;}G.round.over=true;sfx('end');
-  clearTimeout(overTimer);over.hidden=true;$('#spectatorBar').hidden=true;$('#controlHud').hidden=true;boostBtn.hidden=true;fireBtn.hidden=true;emoBtn.hidden=true;emoBar.hidden=true;resetInput();toast(t('roundOverTitle'));
+  clearTimeout(overTimer);over.hidden=true;$('#spectatorBar').hidden=true;$('#controlHud').hidden=true;hideModeIntro();boostBtn.hidden=true;fireBtn.hidden=true;emoBtn.hidden=true;emoBar.hidden=true;resetInput();toast(t('roundOverTitle'));
   const id=G.round.id;
   if(G.rule==='duel'&&G.duel&&!G.duel.over){setTimeout(()=>{if(G.round.id===id&&G.round.over)duelBanner();},300);
     if(G.auth)setTimeout(()=>{if(G.round.id===id&&G.round.over&&G.duel&&!G.duel.over)duelNext();},3600);return;}
@@ -8418,12 +8540,13 @@ function modeLine(){if(G.mode==='demo')return '';
   return '';}
 function updateHud(){if(hud.hidden)return;const me=G.me,now=performance.now(),timed=!!G.round.end,watching=G.mode!=='demo'&&(!me||!me.alive),focus=watching?viewSubject(now):me;
   const modeHud=$('#modeHud'),mh=modeLine();modeHud.hidden=!mh||G.round.over||G.tutWorld;if(mh&&modeHud.dataset.v!==mh){modeHud.dataset.v=mh;modeHud.innerHTML=mh;}
-  const controlHud=$('#controlHud');controlHud.hidden=G.rule!=='control'||!G.round.end||G.round.over||G.tutWorld;
-  if(!controlHud.hidden){const zone=controlZone(now),state=G.controlState,holder=state&&state.holder?findSnake(state.holder):null;
-    controlHud.textContent=(state&&state.count>1?t('controlContested'):holder?(focus&&holder.key===focus.key?t('controlHeld'):t('controlTaken',{n:holder.name})):t('controlGo'))+(zone?' · '+t('controlNext',{n:Math.ceil(Math.max(0,zone.end-now)/1000)}):'');}
+  const controlHud=$('#controlHud');controlHud.hidden=(G.rule!=='control'&&G.rule!=='gold')||!G.round.end||G.round.over||G.tutWorld;
+  if(!controlHud.hidden&&G.rule==='gold'){const tg=me&&me.alive?objTarget(me,now):null;controlHud.hidden=!tg||Math.hypot(tg.x-me.x,tg.y-me.y)<700;if(!controlHud.hidden)controlHud.textContent=t('goldGo');}
+  else if(!controlHud.hidden){const zone=controlZone(now),nx=controlNext(now),state=G.controlState,holder=state&&state.holder?findSnake(state.holder):null;
+    controlHud.textContent=(state&&state.count>1?t('controlContested'):holder?(focus&&holder.key===focus.key?t('controlHeld'):t('controlTaken',{n:holder.name})):(me&&me.alive&&(objTarget(me,now)||{}).kind==='next'?t('controlGoNext'):t('controlGo')))+(zone?'\n'+t(nx?'controlSoon':'controlNext',{n:Math.ceil(Math.max(0,zone.end-now)/1000)}):'');}
   const val=s=>timed?scoreOf(s):Math.floor(s.mass);
   const ranked=all.filter(s=>s.alive&&s.kind!=='c').sort((a,b)=>val(b)-val(a)||b.mass-a.mass);
-  $('#spectatorBar').hidden=!watching||G.round.over||!over.hidden||!resultsEl.hidden;
+  $('#spectatorBar').hidden=!watching||G.round.over||!over.hidden||!resultsEl.hidden||introOpen;
   $('#spectatorName').textContent=focus?t('watching',{n:focus.name}):t('watchWaiting');
   const canSwitch=watching&&!G.round.over&&ranked.length>1;$('#btnWatchPrev').disabled=!canSwitch;$('#btnWatchNext').disabled=!canSwitch;
   $('#hLenLbl').textContent=timed?t(G.rule==='gold'?'goldLbl':'score'):t('lenLbl');hLen.textContent=focus?val(focus):'-';
@@ -8462,7 +8585,6 @@ function updateHud(){if(hud.hidden)return;const me=G.me,now=performance.now(),ti
   emoBtn.classList.toggle('cool',now<emoReadyAt);}
 function drawMini(){if(hud.hidden)return;const s=mini.width,g=mctx,c=s/2,k=(c-7)/R;g.clearRect(0,0,s,s);
   g.fillStyle='rgba(9,15,29,.72)';g.beginPath();g.arc(c,c,c-3,0,TAU);g.fill();g.lineWidth=4;g.strokeStyle=THEMES[MAPS[G.map].id].border;g.globalAlpha=0.8;g.stroke();g.globalAlpha=1;
-  if(G.rule==='control'){const zone=controlZone(performance.now());if(zone){g.fillStyle='rgba(255,210,75,.35)';g.strokeStyle='#ffd45b';g.lineWidth=2;g.beginPath();g.arc(c+zone.x*k,c+zone.y*k,Math.max(5,zone.r*k),0,TAU);g.fill();g.stroke();}}
   /* the closing ring: everything outside it is shaded red */
   if(G.zr<R-1){const zr=G.zr*k,zx=c+G.zx*k,zy=c+G.zy*k;g.beginPath();g.arc(c,c,c-3,0,TAU);g.moveTo(zx+zr,zy);g.arc(zx,zy,zr,0,TAU);g.fillStyle='rgba(255,40,60,.32)';g.fill('evenodd');
     g.lineWidth=3;g.strokeStyle='rgba(255,80,90,.95)';g.beginPath();g.arc(zx,zy,zr,0,TAU);g.stroke();}
@@ -8473,13 +8595,19 @@ function drawMini(){if(hud.hidden)return;const s=mini.width,g=mctx,c=s/2,k=(c-7)
     g.fillStyle=col;g.beginPath();g.arc(c+o.x*k,c+o.y*k,Math.max(2.5,o.r*k),0,TAU);g.fill();}
   for(const it of G.items.values()){if(!G.auth&&pendItem.has(it.id))continue;g.fillStyle=ITEMS[it.t].color;g.fillRect(c+it.x*k-2,c+it.y*k-2,4,4);}
   if(G.rule==='gold'){g.fillStyle='#ffd23f';for(const d of G.drops.values())if(d.c===GOLD_C)g.fillRect(c+d.x*k-1.5,c+d.y*k-1.5,3,3);
-    const v=G.vein,now=performance.now();if(v&&now-v.t<9000){const q=((now-v.t)%1200)/1200;g.strokeStyle='rgba(255,210,60,'+(1-q).toFixed(2)+')';g.lineWidth=2.5;g.beginPath();g.arc(c+v.x*k,c+v.y*k,4+q*14,0,TAU);g.stroke();}}
+    const now=performance.now();for(const v of G.veins||[]){if(v.n<3)continue;const q=((now-v.t)%1200)/1200;g.strokeStyle='rgba(255,210,60,'+(1-q).toFixed(2)+')';g.lineWidth=2.5;g.beginPath();g.arc(c+v.x*k,c+v.y*k,4+q*12,0,TAU);g.stroke();}}
   const team=G.rule==='team';
   for(const o of all){if(!o.alive||o===G.me||o.kind==='c')continue;const king=o.key===G.king;
     if(o.isBot){if(o.mass<100&&!king&&!team)continue;g.fillStyle=king?'#ffd23f':team?TEAM_COL[teamOf(o)]:'rgba(230,236,255,.35)';g.beginPath();g.arc(c+o.x*k,c+o.y*k,king?6:team?2.6:3.5,0,TAU);g.fill();}
     else if(!(o.fl&F.ghost)){g.fillStyle=skinCss(SKINS[o.skin]);g.beginPath();g.arc(c+o.x*k,c+o.y*k,7,0,TAU);g.fill();}
     if(king){g.lineWidth=2.5;g.strokeStyle='#ffd23f';g.beginPath();g.arc(c+o.x*k,c+o.y*k,10,0,TAU);g.stroke();}}
   const far=hostFar();if(far){g.fillStyle='rgba(230,236,255,.35)';for(const f of far){if(!f.big)continue;g.beginPath();g.arc(c+f.x*k,c+f.y*k,3.5,0,TAU);g.fill();}}
+  if(G.rule==='control'){const now=performance.now(),zone=controlZone(now),nx=controlNext(now);
+    if(nx){g.save();g.setLineDash([3,3]);g.lineWidth=2.5;g.strokeStyle='#ff9f1a';g.beginPath();g.arc(c+nx.x*k,c+nx.y*k,Math.max(6,nx.r*k),0,TAU);g.stroke();g.restore();}
+    if(zone){const zx=c+zone.x*k,zy=c+zone.y*k,pr=Math.max(6,zone.r*k),q=(now%1400)/1400;g.fillStyle='rgba(255,210,75,.6)';g.strokeStyle='#ffd45b';g.lineWidth=2;
+      g.beginPath();g.arc(zx,zy,pr,0,TAU);g.fill();g.stroke();g.strokeStyle='rgba(255,212,91,'+(1-q).toFixed(2)+')';g.beginPath();g.arc(zx,zy,pr+2+q*9,0,TAU);g.stroke();}}
+  {const me=G.me;if(me&&me.alive&&G.mode!=='demo'){const tg=objTarget(me,performance.now());if(tg){g.save();g.setLineDash([2,3]);g.lineWidth=1.5;
+    g.strokeStyle=tg.kind==='next'?'rgba(255,159,26,.9)':'rgba(255,214,90,.9)';g.beginPath();g.moveTo(c+me.x*k,c+me.y*k);g.lineTo(c+tg.x*k,c+tg.y*k);g.stroke();g.restore();}}}
   const focus=viewSubject();if(focus){g.fillStyle='#fff';g.beginPath();g.arc(c+focus.x*k,c+focus.y*k,7,0,TAU);g.fill();g.lineWidth=3;g.strokeStyle=G.king===focus.key?'#ffd23f':skinCss(SKINS[focus.skin]);g.stroke();}}
 
 /* ================= emotes ================= */
@@ -8993,7 +9121,7 @@ paintCloud();
 /* ================= anonymous play statistics =================
    Only sent when the page has an account server, and players can turn it off in the account sheet.
    A random device id (not the account token), a session id, and small events like "match started" or "died to lava". */
-const GAME_VER='23';
+const GAME_VER='24';
 const PLATFORM=/iPhone|iPad|iPod/.test(navigator.userAgent)||(navigator.maxTouchPoints>1&&/Mac/.test(navigator.platform||''))?'ios':/Android/.test(navigator.userAgent)?'android':'desktop';
 const STATS=(()=>{let dev=store.get('ssld-dev','');if(typeof dev!=='string'||!/^[a-z0-9]{12,24}$/.test(dev)){dev=(Math.random().toString(36).slice(2,10)+Math.random().toString(36).slice(2,10)).replace(/[^a-z0-9]/g,'').slice(0,16).padEnd(12,'0');store.set('ssld-dev',dev);}
   return {dev,sid:(Math.random().toString(36).slice(2,12)+'000000').slice(0,10),q:[],on:CLOUD&&store.get('ssld-stats',true)!==false,perf:null};})();
