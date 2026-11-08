@@ -1,0 +1,23 @@
+{
+  "appId": "com.wenlanxie.snakebrawl",
+  "appName": "Snake Brawl",
+  "webDir": "www",
+  "backgroundColor": "#e9eff9",
+  "loggingBehavior": "none",
+  "ios": {
+    "contentInset": "never",
+    "scrollEnabled": false,
+    "backgroundColor": "#e9eff9"
+  },
+  "android": {
+    "backgroundColor": "#e9eff9",
+    "webContentsDebuggingEnabled": false
+  },
+  "plugins": {
+    "SystemBars": {
+      "insetsHandling": "native",
+      "initialViewportFitValueHint": "cover",
+      "style": "LIGHT"
+    }
+  }
+}

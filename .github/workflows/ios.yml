@@ -1,0 +1,75 @@
+# Builds the iOS app (the app folder) on a GitHub Mac (Xcode 26), so no Mac of your own is needed.
+# It starts by itself when the app folder or this file changes on main, and then only checks that the app compiles.
+# Started from the Actions tab (iOS > Run workflow) with the App Store Connect secrets in place, it signs the app
+# (Xcode creates and manages the certificates) and uploads it to App Store Connect, where it shows up in TestFlight
+# after Apple processes it (usually 10 to 30 minutes). Without those secrets a manual run also only checks the compile.
+name: iOS
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'app/**'
+      - '.github/workflows/ios.yml'
+
+defaults:
+  run:
+    working-directory: app
+
+jobs:
+  build:
+    runs-on: macos-26
+    timeout-minutes: 60
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      UPLOAD: ${{ github.event_name == 'workflow_dispatch' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+
+      - name: Install
+        run: npm ci
+
+      # app.config.json (server, ad units, purchase keys) and the bundled plugins, then the native projects
+      - name: Apply app.config.json
+        run: node scripts/configure.mjs
+      - name: Bundle the native plugins for the game page
+        run: node scripts/build-native.mjs
+
+      - name: Copy the game into the iOS project
+        run: npx cap sync ios
+
+      - name: Xcode
+        run: xcodebuild -version
+
+      - name: Compile check (no Apple account needed)
+        if: env.ASC_KEY_P8 == '' || env.UPLOAD != 'true'
+        run: |
+          xcodebuild -project ios/App/App.xcodeproj -scheme App -configuration Debug \
+            -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO build
+
+      - name: Archive, sign and upload to App Store Connect
+        if: env.ASC_KEY_P8 != '' && env.UPLOAD == 'true'
+        shell: bash
+        run: |
+          KEY="$RUNNER_TEMP/AuthKey_${ASC_KEY_ID}.p8"
+          printf '%s' "$ASC_KEY_P8" > "$KEY"
+          AUTH=(-allowProvisioningUpdates -authenticationKeyPath "$KEY" -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID")
+          xcodebuild -project ios/App/App.xcodeproj -scheme App -configuration Release \
+            -destination 'generic/platform=iOS' -archivePath "$RUNNER_TEMP/App.xcarchive" \
+            DEVELOPMENT_TEAM="$APPLE_TEAM_ID" CODE_SIGN_STYLE=Automatic CURRENT_PROJECT_VERSION="${{ github.run_number }}" \
+            "${AUTH[@]}" archive
+          sed "s/TEAM_ID_HERE/$APPLE_TEAM_ID/" ios/ci/ExportOptions.plist > "$RUNNER_TEMP/ExportOptions.plist"
+          xcodebuild -exportArchive -archivePath "$RUNNER_TEMP/App.xcarchive" \
+            -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" -exportPath "$RUNNER_TEMP/export" \
+            "${AUTH[@]}"

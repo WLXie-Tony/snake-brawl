@@ -1,0 +1,18 @@
+node_modules/
+.DS_Store
+# the Android upload key lives outside this folder (app-signing) and only goes into GitHub secrets; ignored here too in case a copy lands in the app
+signing/
+*.jks
+*.keystore
+keystore-password.txt
+upload-keystore.base64.txt
+android/app/build/
+android/build/
+android/.gradle/
+ios/App/build/
+# store screenshots are upload material for App Store Connect and Play Console, not build input
+store/screenshots/
+
+# made by scripts/configure.mjs and scripts/build-native.mjs on every build
+www/app-config.js
+www/native.js

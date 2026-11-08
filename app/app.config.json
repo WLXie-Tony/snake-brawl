@@ -1,0 +1,29 @@
+{
+  "_readme": "Settings for the store apps. Change them here, commit, and run the build workflows again (they run scripts/configure.mjs). Until real AdMob ids are filled in, the apps show Google's test ads, which earn nothing. RevenueCat keys are the public SDK keys (appl_... and goog_...), not secret.",
+  "api": "",
+  "admob": {
+    "test": true,
+    "ios": {
+      "appId": "",
+      "rewarded": "",
+      "interstitial": ""
+    },
+    "android": {
+      "appId": "",
+      "rewarded": "",
+      "interstitial": ""
+    }
+  },
+  "revenuecat": {
+    "ios": "",
+    "android": ""
+  },
+  "trackingText": {
+    "en": "This lets the game show you ads that fit you better. You can say no and still play everything.",
+    "zh-Hans": "允许后，游戏里的广告会更贴合你的兴趣。不允许也能玩全部内容。",
+    "es": "Así el juego puede mostrarte anuncios más acordes a ti. Puedes decir que no y seguir jugando a todo.",
+    "pt-BR": "Assim o jogo pode mostrar anúncios mais a sua cara. Você pode recusar e continuar jogando tudo.",
+    "ja": "許可すると、あなたに合った広告が表示されやすくなります。許可しなくても、すべて遊べます。",
+    "ko": "허용하면 나에게 더 맞는 광고가 표시돼요. 허용하지 않아도 모든 콘텐츠를 즐길 수 있어요."
+  }
+}

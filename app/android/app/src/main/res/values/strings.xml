@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Snake Brawl</string>
+    <string name="title_activity_main">Snake Brawl</string>
+    <string name="package_name">com.wenlanxie.snakebrawl</string>
+    <string name="custom_url_scheme">com.wenlanxie.snakebrawl</string>
+</resources>

@@ -1,0 +1,10 @@
+# Private: the Android upload key and its password stay on your computer and only go into GitHub secrets.
+app-signing/
+*.jks
+*.keystore
+keystore-password.txt
+upload-keystore.base64.txt
+# local backups of earlier versions, and installed packages
+backups/
+node_modules/
+.DS_Store
