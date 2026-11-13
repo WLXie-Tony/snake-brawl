@@ -8,3 +8,5 @@ upload-keystore.base64.txt
 backups/
 node_modules/
 .DS_Store
+# the game server (Cloudflare Worker): deployed from its own folder, its code stays out of the public site
+server/
