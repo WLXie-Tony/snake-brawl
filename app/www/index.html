@@ -538,6 +538,62 @@ a.linkbtn{text-decoration:none}
 @media (max-width:380px){.board{width:128px}.timer{width:128px}.stats{max-width:calc(100vw - 180px)}.len b{font-size:30px}}
 @media (max-width:400px){#mini{width:88px;height:88px}.stats{top:calc(106px + env(safe-area-inset-top,0px))}.bottomc{width:min(calc(100vw - 210px),340px)}}
 @media (max-width:340px){#hRoom{display:none}}
+/* ---------- v26: phones held sideways (short screens in landscape); upright phones, tablets and computers are unchanged ---------- */
+.lob-a,.lob-b{display:contents}
+@media (orientation:landscape) and (max-height:560px){
+  /* lobby: two columns, what to play on the right with the start button on top, so nothing needs scrolling to start */
+  #lobby{padding-block:calc(8px + env(safe-area-inset-top,0px)) calc(8px + env(safe-area-inset-bottom,0px))}
+  #lobby .card{box-sizing:border-box;max-width:min(940px,100%);grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);column-gap:20px;align-items:start;padding:12px 16px}
+  .lob-a,.lob-b{display:grid;gap:8px;align-content:start;min-width:0}
+  #lobby .lobby-h .tag{display:none}
+  #lobby .brand{font-size:44px}
+  #lobby .brand.en{font-size:34px}
+  #lobby .showcase{padding:6px 10px 8px}
+  #lobby .showcase canvas{max-width:250px}
+  #lobby .feat{padding:6px 4px 5px}
+  #lobby .feat i{font-size:19px}
+  #lobby .namefield input{height:38px}
+  #lobby .btn.big{height:54px;font-size:24px}
+  #lobby .btn.online{height:46px;font-size:17px}
+  #lobby .qdur{margin-top:-2px}
+  #lobby .qdur button{height:30px}
+  #lobby .seg.modes button{height:34px;padding:0 3px;gap:4px}
+  #lobby #ruleTip{font-size:12.5px;line-height:1.35;margin:0}
+  #lobby .btn.friends{height:44px}
+  /* in a match: the score beside the minimap, the weapon beside boost; the middle of the screen stays clear */
+  #mini{width:84px;height:84px}
+  .stats{top:calc(10px + env(safe-area-inset-top,0px));left:calc(max(12px,env(safe-area-inset-left,0px)) + 92px);padding:4px 10px 5px;gap:2px;
+    max-width:calc(50vw - 66px - max(12px,env(safe-area-inset-left,0px)) - 92px)}
+  .len b{font-size:26px}
+  .sub{font-size:12px}
+  .board{padding:6px 9px}
+  .board li{line-height:1.38}
+  .fire{bottom:calc(24px + env(safe-area-inset-bottom,0px));right:calc(max(18px,calc(env(safe-area-inset-right,0px) + 10px)) + 94px)}
+  .bottomc{bottom:calc(12px + env(safe-area-inset-bottom,0px));width:min(calc(100vw - 400px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px)),340px)}
+  .spectator{bottom:calc(112px + env(safe-area-inset-bottom,0px))}
+  .tutbox{top:calc(100px + env(safe-area-inset-top,0px));width:min(calc(100vw - 400px),380px)}
+  /* the death screen: what happened on the left, rewards and the buttons on the right */
+  #over .card{box-sizing:border-box;max-width:min(820px,100%);grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);column-gap:18px;row-gap:10px;align-items:start;padding:16px 18px;
+    grid-template-areas:"who rew" "lost rew" "stats rew" "tip act"}
+  #overWho{grid-area:who}#oLost{grid-area:lost;margin:0}#over .over-stats{grid-area:stats}#oTip{grid-area:tip}#oRew{grid-area:rew}#over .actions{grid-area:act;align-self:end}
+  #over .over-k{font-size:26px}
+  #over .over-stats div{padding:7px 9px}
+  #over .over-stats b{font-size:24px}
+  /* the results: the ranking scrolls on the left, rewards and the buttons stay on the right */
+  #results .card{box-sizing:border-box;max-width:min(860px,100%);grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);column-gap:18px;row-gap:10px;align-items:start;padding:16px 18px;
+    grid-template-areas:"who who" "list rew" "list note" "list act"}
+  #resWho{grid-area:who;font-size:26px}
+  #resList{grid-area:list;max-height:calc(100dvh - 120px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));overflow-y:auto;-webkit-overflow-scrolling:touch;touch-action:pan-y}
+  #resList li{padding:7px 10px}
+  #resRew{grid-area:rew}#resNote{grid-area:note;margin:0}#results .actions{grid-area:act}
+}
+/* narrow phones sideways: the English title stays on one line beside the language button */
+@media (orientation:landscape) and (max-height:560px) and (max-width:700px){#lobby .brand.en{font-size:28px;gap:8px}}
+/* the smallest phones sideways (568 px wide): long mode names take two lines, the map row drops its "change" word */
+@media (orientation:landscape) and (max-height:560px) and (max-width:600px){
+  #lobby .seg.modes button span{white-space:normal;line-height:1.05;text-align:center}
+  #lobby .maprow{gap:8px}#lobby .maprow .mr-go span{display:none}
+}
 @media (prefers-reduced-motion:reduce){.tutpulse{animation:none}.xpbar i{transition:none}.brand span,.toast.show,.feed div,.spin,.timer.hot,.net[data-s="wait"] i,.fire.pop,.hurt.show{animation-duration:.01ms!important;animation-iteration-count:1!important}.toast.show{opacity:1}}
 </style>
 
@@ -581,6 +637,7 @@ a.linkbtn{text-decoration:none}
 
 <section id="lobby" class="screen">
   <div class="card">
+    <div class="lob-a">
     <header class="lobby-h">
       <h1 class="brand" id="brand"></h1>
       <button id="btnLang" class="langbtn" type="button" data-i-al="langAria" tabindex="-1">EN</button>
@@ -611,6 +668,8 @@ a.linkbtn{text-decoration:none}
       <input id="nick" maxlength="10" autocomplete="off" enterkeyhint="done" spellcheck="false">
     </div>
     <button id="mapRow" class="maprow" type="button" data-i-al="mapChangeAria"><canvas width="128" height="80" aria-hidden="true"></canvas><span class="mr-t"><small data-i="map"></small><b class="mr-n"></b></span><span class="mr-go"><span data-i="mapChange"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></span></button>
+    </div>
+    <div class="lob-b">
     <p id="lobbyMsg" class="msg" hidden></p>
     <button id="btnPlay" class="btn primary big" type="button"><span data-i="play"></span><small id="playSub"></small></button>
     <button id="btnOnline" class="btn ghost online" type="button" hidden><span data-i="qmBtn"></span><small id="qmSub" data-i="qmSub"></small></button>
@@ -631,6 +690,7 @@ a.linkbtn{text-decoration:none}
     <p id="ruleTip" class="help"></p>
     <button id="btnFriends" class="btn ghost friends" type="button"><span data-i="friendsBtn"></span><i id="roomBadge" class="badge" hidden></i></button>
     <button id="btnGuide" class="linkbtn" type="button" data-i="btnGuide"></button>
+    </div>
   </div>
 </section>
 
@@ -7613,7 +7673,9 @@ function updateCamera(dt,now){let tx=cam.x,ty=cam.y,r=12;const me=G.me,subject=v
     tx=me.x+cam.lx;ty=me.y+cam.ly;r=radiusOf(me.mass)+(me.gs-1)*7;}
   else if(subject){tx=subject.x;ty=subject.y;r=subject.r;}
   const aspect=VW/Math.max(1,VH),zoom=1+(r-10)/52;
-  let dist=aspect<1?510*zoom/(2*TAN_HALF*aspect):640*zoom*Math.sin(PITCH)/(2*TAN_HALF);if(G.mode==='demo')dist*=1.2;dist=clamp(dist,500,7000);
+  /* upright: the screen's width spans 510; a phone on its side: its height spans the same 510, so turning the phone never shows
+     more or less of the arena (in the app the two views are the same picture turned); computers and tablets keep their view */
+  let dist=aspect<1?510*zoom/(2*TAN_HALF*aspect):VH<=560?510*zoom/(2*TAN_HALF):640*zoom*Math.sin(PITCH)/(2*TAN_HALF);if(G.mode==='demo')dist*=1.2;dist=clamp(dist,500,7000);
   const k=1-Math.exp(-dt*(following?cam.kp:7)),kz=1-Math.exp(-dt*2.2);
   if(Math.hypot(tx-cam.x,ty-cam.y)>1500){cam.x=tx;cam.y=ty;}else{cam.x+=(tx-cam.x)*k;cam.y+=(ty-cam.y)*k;}cam.dist+=(dist-cam.dist)*kz;
   /* boosting pulls the camera back a touch so speed reads on screen */
@@ -9301,7 +9363,7 @@ paintCloud();
 /* ================= anonymous play statistics =================
    Only sent when the page has an account server, and players can turn it off in the account sheet.
    A random device id (not the account token), a session id, and small events like "match started" or "died to lava". */
-const GAME_VER='25';
+const GAME_VER='26';
 const PLATFORM=/iPhone|iPad|iPod/.test(navigator.userAgent)||(navigator.maxTouchPoints>1&&/Mac/.test(navigator.platform||''))?'ios':/Android/.test(navigator.userAgent)?'android':'desktop';
 const STATS=(()=>{let dev=store.get('ssld-dev','');if(typeof dev!=='string'||!/^[a-z0-9]{12,24}$/.test(dev)){dev=(Math.random().toString(36).slice(2,10)+Math.random().toString(36).slice(2,10)).replace(/[^a-z0-9]/g,'').slice(0,16).padEnd(12,'0');store.set('ssld-dev',dev);}
   return {dev,sid:(Math.random().toString(36).slice(2,12)+'000000').slice(0,10),q:[],on:CLOUD&&store.get('ssld-stats',true)!==false,perf:null};})();
