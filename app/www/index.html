@@ -544,13 +544,23 @@ a.linkbtn{text-decoration:none}
   /* lobby: two columns, what to play on the right with the start button on top, so nothing needs scrolling to start */
   #lobby{padding-block:calc(8px + env(safe-area-inset-top,0px)) calc(8px + env(safe-area-inset-bottom,0px))}
   #lobby .card{box-sizing:border-box;max-width:min(940px,100%);grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);column-gap:20px;align-items:start;padding:12px 16px}
-  .lob-a,.lob-b{display:grid;gap:8px;align-content:start;min-width:0}
+  .lob-a,.lob-b{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;align-content:start;min-width:0}
   #lobby .lobby-h .tag{display:none}
   #lobby .brand{font-size:44px}
   #lobby .brand.en{font-size:34px}
   #lobby .showcase{padding:6px 10px 8px}
   #lobby .showcase canvas{max-width:250px}
+  /* the left column is narrow: a long skin name, map name or shortcut label takes a second line instead of being cut short
+     (shortcut labels only break between words; one that still does not fit gets a smaller font, see fitModes) */
+  #lobby .sc-row b{white-space:normal;line-height:1.15;overflow-wrap:anywhere}
+  #lobby .sc-row .btn{flex:none;white-space:nowrap}
+  #lobby .maprow .mr-t b{white-space:normal;line-height:1.15}
   #lobby .feat{padding:6px 4px 5px}
+  #lobby .feat span{white-space:normal;word-break:keep-all;line-height:1.1;text-align:center}
+  /* four shortcuts (the app once the server answers, or the website with store links) sit two by two, the icon beside the label */
+  #lobby .featrow[data-n="4"]{grid-auto-flow:row;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+  #lobby .featrow[data-n="4"] .feat{grid-auto-flow:column;grid-template-columns:auto minmax(0,max-content);justify-content:center;align-items:center;gap:6px;padding:7px 8px}
+  #lobby .featrow[data-n="4"] .feat i{font-size:17px}
   #lobby .feat i{font-size:19px}
   #lobby .namefield input{height:38px}
   #lobby .btn.big{height:54px;font-size:24px}
@@ -575,24 +585,43 @@ a.linkbtn{text-decoration:none}
   /* the death screen: what happened on the left, rewards and the buttons on the right */
   #over .card{box-sizing:border-box;max-width:min(820px,100%);grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);column-gap:18px;row-gap:10px;align-items:start;padding:16px 18px;
     grid-template-areas:"who rew" "lost rew" "stats rew" "tip act"}
-  #overWho{grid-area:who}#oLost{grid-area:lost;margin:0}#over .over-stats{grid-area:stats}#oTip{grid-area:tip}#oRew{grid-area:rew}#over .actions{grid-area:act;align-self:end}
+  #overWho{grid-area:who}#oLost{grid-area:lost;margin:0}#over .over-stats{grid-area:stats}#oTip{grid-area:tip}#oRew{grid-area:rew}#over .actions{grid-area:act;align-self:start}
   #over .over-k{font-size:26px}
   #over .over-stats div{padding:7px 9px}
   #over .over-stats b{font-size:24px}
-  /* the results: the ranking scrolls on the left, rewards and the buttons stay on the right */
+  /* the results: the ranking scrolls on the left, rewards and the buttons on the right, the scoring note under the buttons */
   #results .card{box-sizing:border-box;max-width:min(860px,100%);grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);column-gap:18px;row-gap:10px;align-items:start;padding:16px 18px;
-    grid-template-areas:"who who" "list rew" "list note" "list act"}
+    grid-template-areas:"who who" "list rew" "list act" "list note"}
   #resWho{grid-area:who;font-size:26px}
   #resList{grid-area:list;max-height:calc(100dvh - 120px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));overflow-y:auto;-webkit-overflow-scrolling:touch;touch-action:pan-y}
   #resList li{padding:7px 10px}
   #resRew{grid-area:rew}#resNote{grid-area:note;margin:0}#results .actions{grid-area:act}
+  /* rewards on both screens: a level-up with its unlocks plus the app's ad buttons can be taller than a short screen, so the box is
+     compact, and past a height it scrolls by itself with the ad buttons kept in view; the buttons under it always stay on screen */
+  #over .rew,#results .rew{gap:6px;padding:8px 10px}
+  #over .rew-up,#results .rew-up{font-size:12.5px;gap:2px 10px}
+  #over .rew .adrow .btn{height:36px;font-size:14px}
+  #over .rew .adrow .btn.primary{height:40px;font-size:16px}
+  #results .rew .adrow .btn{flex:1 1 0;height:36px;font-size:14px}
+  #oRew,#resRew{overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+  #oRew{max-height:max(150px,calc(100dvh - 124px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px)))}
+  #resRew{max-height:max(120px,calc(100dvh - 156px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px)))}
+  #oRew .adrow,#resRew .adrow{position:sticky;bottom:-8px;margin-bottom:-8px;padding-bottom:8px;
+    background:linear-gradient(rgba(62,224,143,.07),rgba(62,224,143,.07)),var(--panel)}
 }
-/* narrow phones sideways: the English title stays on one line beside the language button */
-@media (orientation:landscape) and (max-height:560px) and (max-width:700px){#lobby .brand.en{font-size:28px;gap:8px}}
-/* the smallest phones sideways (568 px wide): long mode names take two lines, the map row drops its "change" word */
+/* narrower phones sideways: the map row drops its "change" word (the arrow stays) so long map names fit */
+@media (orientation:landscape) and (max-height:560px) and (max-width:800px){#lobby .maprow{gap:8px}#lobby .maprow .mr-go span{display:none}}
+/* narrow phones sideways: the title stays on one line clear of the language button (日本語 is the widest at 80 px),
+   the missions chip keeps its icon and count */
+@media (orientation:landscape) and (max-height:560px) and (max-width:700px){#lobby .brand{font-size:40px}#lobby .brand.en{font-size:26px;gap:8px}#lobby .mbtn span[data-i]{display:none}}
+/* the smallest phones sideways (568 px wide): long mode names take two lines, smaller titles, a tighter level bar */
 @media (orientation:landscape) and (max-height:560px) and (max-width:600px){
-  #lobby .seg.modes button span{white-space:normal;line-height:1.05;text-align:center}
-  #lobby .maprow{gap:8px}#lobby .maprow .mr-go span{display:none}
+  #lobby .seg.modes button span{white-space:normal;word-break:keep-all;line-height:1.05;text-align:center}
+  #lobby .brand{font-size:32px}
+  #lobby .brand.en{font-size:20px}
+  #lobby .acct{gap:6px;padding:9px}
+  #lobby .sc-row .btn{padding:0 10px;font-size:14px}
+  #over .over-k,#resWho{font-size:22px}
 }
 @media (prefers-reduced-motion:reduce){.tutpulse{animation:none}.xpbar i{transition:none}.brand span,.toast.show,.feed div,.spin,.timer.hot,.net[data-s="wait"] i,.fire.pop,.hurt.show{animation-duration:.01ms!important;animation-iteration-count:1!important}.toast.show{opacity:1}}
 </style>
@@ -8388,7 +8417,7 @@ function markRule(){for(const b of $('#rules').children)b.setAttribute('aria-che
 for(const b of $('#rules').children)b.addEventListener('click',()=>{prof.rule=ruleOf(b.dataset.rule);saveProf();markRule();});
 langHooks.push(markRule);markRule();
 /* long mode names shrink a little instead of being cut (Portuguese "Mina de Ouro" on a 390 px phone) */
-function fitModes(){if(!lobby.hidden)fitFonts(document.querySelectorAll('#rules button span'),10);}
+function fitModes(){if(!lobby.hidden){fitFonts(document.querySelectorAll('#rules button span'),10);fitFonts(document.querySelectorAll('#featRow .feat span'),9);}}
 langHooks.push(fitModes);addEventListener('resize',fitModes);try{document.fonts.ready.then(fitModes);}catch(e){}
 
 /* daily missions: the chip shows how many are done, the sheet lists them with their rewards */
@@ -9663,7 +9692,8 @@ function paintGrowth(){const fd=$('#featDaily'),fp=$('#featPass'),fs=$('#featSho
   fr.hidden=!CLOUD;
   const link=!NATIVE&&RCFG.links&&RCFG.links[PLATFORM==='android'?'android':'ios'];fa.hidden=!link;if(link)fa.dataset.href=link;
   $('#btnOnline').hidden=!NET_SERVER||!P2P.supported();
-  const nw=RCFG.news&&(RCFG.news[LANG]||RCFG.news.en);const ne=$('#newsLine');ne.hidden=!nw;if(nw)ne.textContent=String(nw).slice(0,140);}
+  const nw=RCFG.news&&(RCFG.news[LANG]||RCFG.news.en);const ne=$('#newsLine');ne.hidden=!nw;if(nw)ne.textContent=String(nw).slice(0,140);
+  $('#featRow').dataset.n=[fd,fp,fs,fr,fa].filter(x=>!x.hidden).length;fitModes();}
 const chestReady=()=>Date.now()-prof.ads.chest>=num(RCFG.ads.chest&&RCFG.ads.chest.hours,4)*3600e3;
 function openDaily(auto){closeSheets();const sh=$('#dailySheet');sh.hidden=false;renderDaily(auto);}
 function renderDaily(){const box=$('#dGrid');box.textContent='';const i0=dailyIndex(),ready=dailyReady();
