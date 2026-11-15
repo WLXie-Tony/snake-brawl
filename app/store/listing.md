@@ -40,6 +40,8 @@
 
 游戏免费，所有玩法都不用花钱。内含可选的游戏内购买和广告。
 
+使用条款：https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+
 ## App Store（English）
 
 - Name: [英文名]
@@ -75,6 +77,8 @@ EIGHT MAPS
 Neon Hive, Frozen Lake, Lava Volcano, Candy Land, Deep Space, Misty Jungle, Desert Ruins and Sakura Garden.
 
 Free to play: every mode is free. Contains optional in-app purchases and ads.
+
+Terms of Use: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
 
 ## App Store（Español，西班牙语）
 
@@ -114,6 +118,8 @@ Colmena de neón, Lago helado, Volcán de lava, Mundo dulce, Espacio profundo, S
 
 Gratis para jugar: todos los modos son gratuitos. Incluye compras opcionales dentro de la app y anuncios.
 
+Términos de uso: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+
 ## App Store（Português do Brasil，葡萄牙语）
 
 - Nome: [英文名]
@@ -149,6 +155,8 @@ OITO MAPAS
 Colmeia Neon, Lago Congelado, Vulcão de Lava, Terra dos Doces, Espaço Profundo, Selva Nebulosa, Ruínas do Deserto e Jardim Sakura.
 
 Grátis para jogar: todos os modos são gratuitos. Contém compras opcionais no app e anúncios.
+
+Termos de uso: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
 
 ## App Store（日本語，日语）
 
@@ -186,6 +194,8 @@ Grátis para jogar: todos os modos são gratuitos. Contém compras opcionais no 
 
 基本プレイ無料。すべてのモードを無料で遊べます。任意のアプリ内課金と広告があります。
 
+利用規約：https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+
 ## App Store（한국어，韩语）
 
 - 이름: [英文名]
@@ -221,6 +231,8 @@ Grátis para jogar: todos os modos são gratuitos. Contém compras opcionais no 
 네온 벌집, 꽁꽁 호수, 용암 화산, 사탕 나라, 머나먼 우주, 안개 정글, 사막 유적, 벚꽃 정원.
 
 모든 모드를 무료로 즐길 수 있어요. 선택형 인앱 구매와 광고가 포함되어 있어요.
+
+이용 약관: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
 
 ## Google Play
 
@@ -261,6 +273,31 @@ Grátis para jogar: todos os modos são gratuitos. Contém compras opcionais no 
 | sb_pass | 消耗型 | Consumable | $4.99 | 高级通行证 | Premium Pass | 解锁当月赛季的高级奖励 / Unlocks this month's premium season rewards |
 
 金币数量在服务器的远程设置里（shop.coins），改了不用发新版本；但商品名里写了数量，改数量时把商品名也一起改了。
+
+## 会员月卡（自动续费订阅，v27）
+
+苹果在「订阅」里建（先建订阅群组「会员」），谷歌在「订阅」里建（基础方案 `monthly`，自动续订，每月）。价格是建议的，后台随时能改，游戏显示商店的价格。
+
+| 商品 ID | 苹果 | 安卓 | 价格 | 中文名 | English name |
+|---|---|---|---|---|---|
+| sb_vip | 自动续期订阅，1 个月 | 订阅，基础方案 monthly | $4.99/月 | 会员月卡 | Monthly Membership |
+
+订阅群组的显示名称：中文「蛇蛇乱斗会员」，英文「[英文名] Membership」。
+
+显示名称和描述（苹果的订阅描述最多 55 个字符，下面都在限制以内）：
+
+| 语言 | 显示名称 | 描述 |
+|---|---|---|
+| 中文 | 会员月卡 | 复活免广告、无插屏广告、每天多 100 金币、金币翻倍 |
+| English | Monthly Membership | Ad-free revives, no ads between games, double coins |
+| Español | Membresía mensual | Revive sin anuncios, sin pausas y con monedas dobles |
+| Português | Assinatura mensal | Reviva sem anúncios, sem pausas e com moedas em dobro |
+| 日本語 | 月額メンバーシップ | 広告なしで復活、試合間の広告なし、コイン2倍 |
+| 한국어 | 월간 멤버십 | 광고 없이 부활, 판 사이 광고 없음, 코인 2배 |
+
+谷歌的订阅说明可以长一点，用这句：复活不用看广告、对局之间没有广告、每天多领 100 金币、每局结算金币翻倍。每月自动续订，可随时在 Google Play 取消。
+
+会员每天多领的金币数在远程设置里（vip.daily），默认 100；改了的话，上面的描述也要跟着改。
 
 ## 苹果「App 隐私」怎么填
 
