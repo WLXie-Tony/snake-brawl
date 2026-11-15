@@ -536,6 +536,134 @@ a.linkbtn{text-decoration:none}
 @media (max-width:380px){.board{width:128px}.timer{width:128px}.stats{max-width:calc(100vw - 180px)}.len b{font-size:30px}}
 @media (max-width:400px){#mini{width:88px;height:88px}.stats{top:calc(106px + env(safe-area-inset-top,0px))}.bottomc{width:min(calc(100vw - 210px),340px)}}
 @media (max-width:340px){#hRoom{display:none}}
+/* ---------- v26: phones held sideways (short screens in landscape); upright phones, tablets and computers are unchanged ---------- */
+.lob-a,.lob-b{display:contents}
+@media (orientation:landscape) and (max-height:560px){
+  /* lobby: two columns, what to play on the right with the start button on top, so nothing needs scrolling to start */
+  #lobby{padding-block:calc(8px + env(safe-area-inset-top,0px)) calc(8px + env(safe-area-inset-bottom,0px))}
+  #lobby .card{box-sizing:border-box;max-width:min(940px,100%);grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);column-gap:20px;align-items:start;padding:12px 16px}
+  .lob-a,.lob-b{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;align-content:start;min-width:0}
+  #lobby .lobby-h .tag{display:none}
+  #lobby .brand{font-size:44px}
+  #lobby .brand.en{font-size:34px}
+  #lobby .showcase{padding:6px 10px 8px}
+  #lobby .showcase canvas{max-width:250px}
+  /* the left column is narrow: a long skin name, map name or shortcut label takes a second line instead of being cut short
+     (shortcut labels only break between words; one that still does not fit gets a smaller font, see fitModes) */
+  #lobby .sc-row b{white-space:normal;line-height:1.15;overflow-wrap:anywhere}
+  #lobby .sc-row .btn{flex:none;white-space:nowrap}
+  #lobby .maprow .mr-t b{white-space:normal;line-height:1.15}
+  #lobby .feat{padding:6px 4px 5px}
+  #lobby .feat span{white-space:normal;word-break:keep-all;line-height:1.1;text-align:center}
+  /* four shortcuts (the app once the server answers, or the website with store links) sit two by two, the icon beside the label */
+  #lobby .featrow[data-n="4"]{grid-auto-flow:row;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+  #lobby .featrow[data-n="4"] .feat{grid-auto-flow:column;grid-template-columns:auto minmax(0,max-content);justify-content:center;align-items:center;gap:6px;padding:7px 8px}
+  #lobby .featrow[data-n="4"] .feat i{font-size:17px}
+  #lobby .feat i{font-size:19px}
+  #lobby .namefield input{height:38px}
+  #lobby .btn.big{height:54px;font-size:24px}
+  #lobby .btn.online{height:46px;font-size:17px}
+  #lobby .qdur{margin-top:-2px}
+  #lobby .qdur button{height:30px}
+  #lobby .seg.modes button{height:34px;padding:0 3px;gap:4px}
+  #lobby #ruleTip{font-size:12.5px;line-height:1.35;margin:0}
+  #lobby .btn.friends{height:44px}
+  /* in a match: the score beside the minimap, the weapon beside boost; the middle of the screen stays clear */
+  #mini{width:84px;height:84px}
+  .stats{top:calc(10px + env(safe-area-inset-top,0px));left:calc(max(12px,env(safe-area-inset-left,0px)) + 92px);padding:4px 10px 5px;gap:2px;
+    max-width:calc(50vw - 66px - max(12px,env(safe-area-inset-left,0px)) - 92px)}
+  .len b{font-size:26px}
+  .sub{font-size:12px}
+  .board{padding:6px 9px}
+  .board li{line-height:1.38}
+  .fire{bottom:calc(24px + env(safe-area-inset-bottom,0px));right:calc(max(18px,calc(env(safe-area-inset-right,0px) + 10px)) + 94px)}
+  .bottomc{bottom:calc(12px + env(safe-area-inset-bottom,0px));width:min(calc(100vw - 400px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px)),340px)}
+  .spectator{bottom:calc(112px + env(safe-area-inset-bottom,0px))}
+  .tutbox{top:calc(100px + env(safe-area-inset-top,0px));width:min(calc(100vw - 400px),380px)}
+  /* the death screen: what happened on the left, rewards and the buttons on the right */
+  #over .card{box-sizing:border-box;max-width:min(820px,100%);grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);column-gap:18px;row-gap:10px;align-items:start;padding:16px 18px;
+    grid-template-areas:"who rew" "lost rew" "stats rew" "tip act"}
+  #overWho{grid-area:who}#oLost{grid-area:lost;margin:0}#over .over-stats{grid-area:stats}#oTip{grid-area:tip}#oRew{grid-area:rew}#over .actions{grid-area:act;align-self:start}
+  #over .over-k{font-size:26px}
+  #over .over-stats div{padding:7px 9px}
+  #over .over-stats b{font-size:24px}
+  /* the results: the ranking scrolls on the left, rewards and the buttons on the right, the scoring note under the buttons */
+  #results .card{box-sizing:border-box;max-width:min(860px,100%);grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);column-gap:18px;row-gap:10px;align-items:start;padding:16px 18px;
+    grid-template-areas:"who who" "list rew" "list act" "list note"}
+  #resWho{grid-area:who;font-size:26px}
+  #resList{grid-area:list;max-height:calc(100dvh - 120px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));overflow-y:auto;-webkit-overflow-scrolling:touch;touch-action:pan-y}
+  #resList li{padding:7px 10px}
+  #resRew{grid-area:rew}#resNote{grid-area:note;margin:0}#results .actions{grid-area:act}
+  /* rewards on both screens: a level-up with its unlocks plus the app's ad buttons can be taller than a short screen, so the box is
+     compact, and past a height it scrolls by itself with the ad buttons kept in view; the buttons under it always stay on screen */
+  #over .rew,#results .rew{gap:6px;padding:8px 10px}
+  #over .rew-up,#results .rew-up{font-size:12.5px;gap:2px 10px}
+  #over .rew .adrow .btn{height:36px;font-size:14px}
+  #over .rew .adrow .btn.primary{height:40px;font-size:16px}
+  #results .rew .adrow .btn{flex:1 1 0;height:36px;font-size:14px}
+  #oRew,#resRew{overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+  #oRew{max-height:max(150px,calc(100dvh - 124px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px)))}
+  #resRew{max-height:max(120px,calc(100dvh - 156px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px)))}
+  #oRew .adrow,#resRew .adrow{position:sticky;bottom:-8px;margin-bottom:-8px;padding-bottom:8px;
+    background:linear-gradient(rgba(62,224,143,.07),rgba(62,224,143,.07)),var(--panel)}
+}
+/* narrower phones sideways: the map row drops its "change" word (the arrow stays) so long map names fit */
+@media (orientation:landscape) and (max-height:560px) and (max-width:800px){#lobby .maprow{gap:8px}#lobby .maprow .mr-go span{display:none}}
+/* narrow phones sideways: the title stays on one line clear of the language button (日本語 is the widest at 80 px),
+   the missions chip keeps its icon and count */
+@media (orientation:landscape) and (max-height:560px) and (max-width:700px){#lobby .brand{font-size:40px}#lobby .brand.en{font-size:26px;gap:8px}#lobby .mbtn span[data-i]{display:none}}
+/* the smallest phones sideways (568 px wide): long mode names take two lines, smaller titles, a tighter level bar */
+@media (orientation:landscape) and (max-height:560px) and (max-width:600px){
+  #lobby .seg.modes button span{white-space:normal;word-break:keep-all;line-height:1.05;text-align:center}
+  #lobby .brand{font-size:32px}
+  #lobby .brand.en{font-size:20px}
+  #lobby .acct{gap:6px;padding:9px}
+  #lobby .sc-row .btn{padding:0 10px;font-size:14px}
+  #over .over-k,#resWho{font-size:22px}
+}
+/* ---------- v27: the match length row, revives, the membership, the staging page's fake ads ---------- */
+#rules{margin-top:0}
+.durrow{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:10px;min-height:44px;box-sizing:border-box;padding:5px 8px 5px 12px;
+  border-radius:12px;border:1.5px solid var(--line);background:var(--fill)}
+.durrow .lbl{white-space:nowrap}
+.durrow.room{grid-template-columns:minmax(0,1fr) auto;padding:5px 8px}
+.durctl{display:grid;grid-template-columns:30px minmax(0,1fr) 30px auto;align-items:center;gap:6px;min-width:0}
+.durctl button{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--line-strong);background:var(--panel);color:var(--ink);display:grid;place-items:center;padding:0;cursor:pointer}
+.durctl button svg{width:14px;height:14px}
+.durctl button:disabled{opacity:.35;cursor:default}
+.durctl input{width:100%;min-width:0;margin:0;height:28px;accent-color:#e0a10b;cursor:pointer}
+.durctl input:disabled{opacity:.4;cursor:default}
+.durctl b{min-width:4.2em;text-align:right;font:700 14px var(--f-body);font-variant-numeric:tabular-nums;white-space:nowrap}
+.durfix{font:600 14px var(--f-body);color:var(--ink);min-width:0}
+.durrow.room .durfix{grid-column:1/-1}
+.durinf{height:32px;padding:0 12px;border-radius:999px;border:1.5px solid var(--line);background:var(--panel);color:var(--ink);font:600 13px var(--f-body);cursor:pointer;white-space:nowrap}
+.durinf[aria-checked="true"]{border-color:var(--candy);background:rgba(255,201,60,.16)}
+.dcell.next{border-style:dashed;border-color:rgba(224,161,11,.75)}
+.dvip{justify-self:center;text-align:center;font-size:13px}
+.dvip:disabled{color:var(--good-ink);cursor:default;opacity:1}
+.rew .adrow .revnote{flex-basis:100%;text-align:center;color:var(--muted);font-size:12px;line-height:1.35}
+.rew .adrow .vipup{flex-basis:100%;text-align:center;padding:2px 0;font-size:13px}
+.vipbtn::before{content:"🌟 "}
+.offer.vip{border-color:rgba(224,161,11,.55);background:linear-gradient(90deg,rgba(255,201,60,.24),rgba(255,201,60,.05))}
+.vip-legal{grid-column:1/-1;margin:0;font-size:11px;line-height:1.45;color:var(--muted)}
+.vip-legal a{color:var(--accent);font-weight:700}
+.testad{position:fixed;inset:0;z-index:2147483000;display:grid;place-items:center;padding:24px;background:rgba(10,14,28,.88)}
+.testad-c{display:grid;gap:10px;justify-items:center;text-align:center;max-width:320px;padding:22px 20px;border-radius:18px;background:#fff;color:#1f2a44}
+.testad-c b{font:400 26px var(--f-display);color:#d6336c}
+.testad-c p{margin:0;font-size:13px;line-height:1.5;color:#66728c}
+.testad-n{font:400 44px var(--f-display);font-variant-numeric:tabular-nums}
+@media (orientation:landscape) and (max-height:560px){#lobby .durrow{min-height:38px;padding:3px 8px 3px 12px}#lobby .durctl button{width:28px;height:28px}
+  /* the death screen sideways: the left side stays packed at the top however tall the rewards on the right get (a run's revive
+     lines opened a gap between the title and the numbers); the tip's row takes the slack */
+  #over .card{grid-template-areas:"who rew" "lost rew" "stats rew" "tip rew" "tip act";grid-template-rows:auto auto auto minmax(0,1fr) auto}#oTip{align-self:start}}
+/* narrow rows (the smallest phones, upright or sideways): the slider keeps its room, the label goes, and in the room sheet
+   the no-limit switch takes its own line */
+@media (max-width:340px),(orientation:landscape) and (max-height:560px) and (max-width:600px){#lobby .durrow{grid-template-columns:minmax(0,1fr)}#lobby .durrow .lbl{display:none}}
+@media (max-width:360px){.durrow.room{grid-template-columns:minmax(0,1fr)}.durrow.room .durinf{justify-self:start}}
+/* short upright screens (568 to 640 tall): the death screen of a run is compact, so play again and the lobby fit under the revive */
+@media (orientation:portrait) and (max-height:640px){#over .card{gap:10px;padding:14px 14px 14px}#over .over-k{font-size:23px}
+  #over .over-stats div{padding:6px 8px;gap:2px}#over .over-stats b{font-size:21px}#over .tip{padding:6px 10px;font-size:12px;line-height:1.4}
+  #over .rew{gap:6px;padding:8px 10px}#over .rew .adrow .btn{height:36px;font-size:14px}#over .rew .adrow .btn.primary{height:42px;font-size:16px}#over .actions .btn{height:44px}}
 @media (prefers-reduced-motion:reduce){.tutpulse{animation:none}.xpbar i{transition:none}.brand span,.toast.show,.feed div,.spin,.timer.hot,.net[data-s="wait"] i,.fire.pop,.hurt.show{animation-duration:.01ms!important;animation-iteration-count:1!important}.toast.show{opacity:1}}
 </style>
 
@@ -579,6 +707,7 @@ a.linkbtn{text-decoration:none}
 
 <section id="lobby" class="screen">
   <div class="card">
+    <div class="lob-a">
     <header class="lobby-h">
       <h1 class="brand" id="brand"></h1>
       <button id="btnLang" class="langbtn" type="button" data-i-al="langAria" tabindex="-1">EN</button>
@@ -609,14 +738,11 @@ a.linkbtn{text-decoration:none}
       <input id="nick" maxlength="10" autocomplete="off" enterkeyhint="done" spellcheck="false">
     </div>
     <button id="mapRow" class="maprow" type="button" data-i-al="mapChangeAria"><canvas width="128" height="80" aria-hidden="true"></canvas><span class="mr-t"><small data-i="map"></small><b class="mr-n"></b></span><span class="mr-go"><span data-i="mapChange"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></span></button>
+    </div>
+    <div class="lob-b">
     <p id="lobbyMsg" class="msg" hidden></p>
     <button id="btnPlay" class="btn primary big" type="button"><span data-i="play"></span><small id="playSub"></small></button>
     <button id="btnOnline" class="btn ghost online" type="button" hidden><span data-i="qmBtn"></span><small id="qmSub" data-i="qmSub"></small></button>
-    <div id="qdurs" class="seg qdur" role="radiogroup" data-i-al="qdurAria">
-      <button type="button" role="radio" data-d="180000" data-i="dur3"></button>
-      <button type="button" role="radio" data-d="600000" data-i="dur10"></button>
-      <button type="button" role="radio" data-d="0" data-i="durInf"></button>
-    </div>
     <div id="rules" class="seg qdur modes" role="radiogroup" data-i-al="ruleAria">
       <button type="button" role="radio" data-rule="classic"><i>🐍</i><span data-i="mode.classic"></span></button>
       <button type="button" role="radio" data-rule="control"><i>🎯</i><span data-i="mode.control"></span></button>
@@ -627,8 +753,10 @@ a.linkbtn{text-decoration:none}
       <button type="button" role="radio" data-rule="escape" class="wide"><i>🏃</i><span data-i="mode.escape"></span><b class="mode-new" data-i="newBadge"></b></button>
     </div>
     <p id="ruleTip" class="help"></p>
+    <div id="durRow" class="durrow"><span class="lbl" data-i="durRowLbl"></span><div class="durctl"></div><span class="durfix" hidden></span></div>
     <button id="btnFriends" class="btn ghost friends" type="button"><span data-i="friendsBtn"></span><i id="roomBadge" class="badge" hidden></i></button>
     <button id="btnGuide" class="linkbtn" type="button" data-i="btnGuide"></button>
+    </div>
   </div>
 </section>
 
@@ -639,12 +767,7 @@ a.linkbtn{text-decoration:none}
     <button id="mapRow2" class="maprow" type="button" data-i-al="mapChangeAria"><canvas width="128" height="80" aria-hidden="true"></canvas><span class="mr-t"><small data-i="map"></small><b class="mr-n"></b></span><span class="mr-go"><span data-i="mapChange"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></span></button>
     <div class="field">
       <span class="lbl" id="durLbl" data-i="durLbl"></span>
-      <div id="durs" class="seg" role="radiogroup" aria-labelledby="durLbl">
-        <button type="button" role="radio" data-d="180000" data-i="dur3"></button>
-        <button type="button" role="radio" data-d="300000" data-i="dur5"></button>
-        <button type="button" role="radio" data-d="600000" data-i="dur10"></button>
-        <button type="button" role="radio" data-d="0" data-i="durInf"></button>
-      </div>
+      <div id="durs" class="durrow room"><div class="durctl" data-room="1"></div><button id="durInfBtn" class="durinf" type="button" role="switch" aria-checked="false" data-i="durInf"></button><span class="durfix" hidden></span></div>
     </div>
     <button id="btnHost" class="btn primary" type="button" disabled data-i="host"></button>
 
@@ -748,6 +871,7 @@ a.linkbtn{text-decoration:none}
     <div class="sheet-h"><h2 data-i="dTitle"></h2><button id="dailyDone" class="btn ghost small" type="button" data-i="close"></button></div>
     <p id="dSub" class="help"></p>
     <div id="dGrid" class="dgrid"></div>
+    <button id="dVip" class="linkbtn dvip" type="button" hidden></button>
     <div class="actions"><button id="dClaim" class="btn primary" type="button" data-i="dClaim"></button><button id="dClaim2" class="btn ghost adbtn" type="button" data-i="dClaim2"></button></div>
   </div>
 </section>
@@ -905,7 +1029,7 @@ en:{
   how3:'After grabbing a weapon, tap <b>Weapon</b> to fire. Arrows and freeze shots fly where your head points',
   how4:"If your head hits another snake's body you die and turn into energy orbs",how5:'Tap the <b>emote</b> button at the bottom left to taunt your rivals',
   how6:'On a computer: steer with the mouse, left click or Space to boost, right click or F to fire, 1 to 8 for emotes',
-  play:'Play',playSub:'{m}-min brawl vs bots',playSubInf:'No time limit · respawn any time',friends:'Play with friends',friendsBtn:'Play with friends',close:'Close',chipQuick:'{m} min',chipTut:'Tutorial',
+  play:'Play',playSub:'{m}-min brawl vs bots',playSubInf:"No time limit · one life",friends:'Play with friends',friendsBtn:'Play with friends',close:'Close',chipQuick:'{m} min',chipTut:'Tutorial',
   score:'Score',hudLen:'Length {n}',resScore:'Score ',youPlaced:'You placed #{r} of {n}',playAgain:'Play again',
   resNoteQuick:'Survivors rank first, then score and kills. Dying after the ring starts closing is final.',
   lostBy:'{k} took {n} of your points',lostPts:'You lost {n} points',killPts:'+{n} points',
@@ -915,12 +1039,12 @@ en:{
   zoneSoon:'Elimination starts in 10 s',zoneGo:'The ring is closing. Elimination begins!',zoneSub:'Get inside the ring: it closes on a random spot, the dashed circle on the map. No respawns; hearts and shields cannot save you from the ring.',
   eliminated:'You are eliminated. Watch the survivors or return to the lobby.',spectate:'Watch match',
   watching:'Watching · {n}',watchWaiting:'Waiting for a survivor…',watchPrev:'Watch previous snake',watchNext:'Watch next snake',
-  ruleAria:'Game rules',ruleClassic:'Classic brawl',ruleControl:'Energy control',ruleClassicTip:'Grow, outmaneuver rivals, and survive the closing ring.',ruleControlTip:"Hold the golden zone alone for +8 score/s. Contested zones pause scoring. A gold arrow shows the way; the zone moves every 45 s and the next spot shows first as a dashed ring. No time limit becomes 3 min.",
+  ruleAria:'Game rules',ruleClassic:'Classic brawl',ruleControl:'Energy control',ruleClassicTip:"Grow, then wrap rivals so they crash into you. Against bots there's no time limit and you get one life.",ruleControlTip:"Hold the golden zone alone for +8 score/s. Contested zones pause scoring. A gold arrow shows the way; the zone moves every 45 s and the next spot shows first as a dashed ring.",
   controlHeld:'Holding · +8 score/s',controlContested:'Contested · scoring paused',controlTaken:'Held by {n}',controlGo:"Follow the arrow to the zone",controlNext:"Moves in {n}s",controlChip:'Control',
   'mode.classic':'Classic','mode.control':'Control','mode.gold':'Gold Rush','mode.team':'Teams','mode.frenzy':'Frenzy','mode.duel':'Duel',
   ruleGold:'Gold Rush',ruleTeam:'Team Battle',ruleFrenzy:'Item Frenzy',ruleDuel:'Duel',
-  ruleGoldTip:"Gold veins keep appearing near you and a gold arrow points to the closest. Coins are your score, and when you die every coin you carry drops for others to grab. Most gold at the end wins; no time limit plays 3 minutes.",
-  ruleTeamTip:'Red against blue. You and your friends are red. Teammates pass through each other and weapons never hit them. The higher team total wins; no time limit plays 3 minutes.',
+  ruleGoldTip:"Gold veins keep appearing near you and a gold arrow points to the closest. Coins are your score, and when you die every coin you carry drops for others to grab. Most gold at the end wins.",
+  ruleTeamTip:"Red against blue. You and your friends are red. Teammates pass through each other and weapons never hit them. The higher team total wins.",
   ruleFrenzyTip:'Power-ups everywhere and everyone spawns with a weapon. Fast and chaotic.',
   ruleDuelTip:'A small ring and no computer snakes (one strong one when you play alone). No respawns within a round and the ring edge is deadly. First to two rounds wins.',
   goldLbl:'Gold',goldVein:"A gold vein appeared: follow the gold arrow",teamRed:'Red',teamBlue:'Blue',teamWins:'{t} team wins! {a} : {b}',teamDraw:'The teams are level',
@@ -1031,7 +1155,7 @@ zh:{
   how3:'捡到攻击道具后点<b>武器</b>按钮发射，弓箭和冰冻弹朝蛇头方向飞',
   how4:'蛇头撞上别的蛇的身体就会死，死后全身变成能量球',how5:'点左下角的<b>表情</b>按钮，给对手发表情',
   how6:'电脑上：鼠标控制方向，左键或空格加速，右键或 F 键发射，数字 1 到 8 发表情',
-  play:'开始乱斗',playSub:'{m} 分钟 · 和电脑混战',playSubInf:'不限时 · 随时复活',friends:'和朋友玩',friendsBtn:'和朋友玩',close:'关闭',chipQuick:'{m} 分钟',chipTut:'教学',
+  play:'开始乱斗',playSub:'{m} 分钟 · 和电脑混战',playSubInf:"不限时 · 一条命",friends:'和朋友玩',friendsBtn:'和朋友玩',close:'关闭',chipQuick:'{m} 分钟',chipTut:'教学',
   score:'得分',hudLen:'长度 {n}',resScore:'得分 ',youPlaced:'你是第 {r} 名（共 {n} 条蛇）',playAgain:'再来一局',
   resNoteQuick:'幸存者优先排名，再比较得分与击杀。缩圈后死亡直接淘汰，不能复活。',
   lostBy:'被 {k} 抢走了 {n} 分',lostPts:'丢了 {n} 分',killPts:'+{n} 分',
@@ -1041,12 +1165,12 @@ zh:{
   zoneSoon:'10 秒后进入缩圈淘汰阶段',zoneGo:'缩圈开始，进入淘汰阶段！',zoneSub:'往圈里走，圈会缩到一个随机的位置（小地图上的白色虚线圈）。死亡不能复活，爱心和护盾都不能抵挡缩圈。',
   eliminated:'你已被淘汰，可以观战或返回大厅。',spectate:'观战',
   watching:'观战 · {n}',watchWaiting:'等待存活的蛇…',watchPrev:'观战上一条蛇',watchNext:'观战下一条蛇',
-  ruleAria:'玩法',ruleClassic:'经典乱斗',ruleControl:'能量据点',ruleClassicTip:'吃能量成长，利用走位击败对手，在缩圈中生存。',ruleControlTip:"独占金色据点每秒 +8 分，多条蛇进入时停止计分。金色箭头会指路；据点每 45 秒转移一次，下一个位置会先用虚线圈标出来。不限时选项自动使用 3 分钟。",
+  ruleAria:'玩法',ruleClassic:'经典乱斗',ruleControl:'能量据点',ruleClassicTip:"吃能量长大，把对手绕住让他撞上你。和电脑玩不限时，只有一条命。",ruleControlTip:"独占金色据点每秒 +8 分，多条蛇进入时停止计分。金色箭头会指路；据点每 45 秒转移一次，下一个位置会先用虚线圈标出来。",
   controlHeld:'占领中 · 每秒 +8 分',controlContested:'争夺中 · 暂停计分',controlTaken:'{n} 占领中',controlGo:"跟着箭头去据点",controlNext:"{n} 秒后转移",controlChip:'据点',
   'mode.classic':'经典乱斗','mode.control':'能量据点','mode.gold':'金币狂潮','mode.team':'团队对抗','mode.frenzy':'道具狂欢','mode.duel':'双人决斗',
   ruleGold:'金币狂潮',ruleTeam:'团队对抗',ruleFrenzy:'道具狂欢',ruleDuel:'双人决斗',
-  ruleGoldTip:"你附近会不断冒出金矿，金色箭头指向最近的一个。金币就是分数，被淘汰会掉光身上的金币，别人可以捡走。结束时金币最多的赢，不限时选项自动用 3 分钟。",
-  ruleTeamTip:'红蓝两队对抗，你和朋友都在红队。队友之间不会互撞，武器也不会打到队友。全队得分加起来高的一方赢，不限时选项自动用 3 分钟。',
+  ruleGoldTip:"你附近会不断冒出金矿，金色箭头指向最近的一个。金币就是分数，被淘汰会掉光身上的金币，别人可以捡走。结束时金币最多的赢。",
+  ruleTeamTip:"红蓝两队对抗，你和朋友都在红队。队友之间不会互撞，武器也不会打到队友。全队得分加起来高的一方赢。",
   ruleFrenzyTip:'道具和武器多好几倍，出生就带一件武器，节奏很快很乱。',
   ruleDuelTip:'小圆形场地，没有电脑蛇（一个人玩时会有一条很强的电脑蛇当对手）。每局不能复活，碰到圈边就出局，先赢两局的获胜。',
   goldLbl:'金币',goldVein:"金矿出现了，跟着金色箭头去抢",teamRed:'红队',teamBlue:'蓝队',teamWins:'{t}获胜！{a} : {b}',teamDraw:'两队打平了',
@@ -1658,7 +1782,7 @@ es:{
   "how6":"En PC: dirige con el cursor, clic izquierdo o Espacio para acelerar, clic derecho o F para disparar, del 1 al 8 para emojis",
   "play":"Jugar",
   "playSub":"{m} min contra bots",
-  "playSubInf":"Sin límite · reaparece cuando quieras",
+  "playSubInf":"Sin límite · una vida",
   "friends":"Jugar con amigos",
   "friendsBtn":"Jugar con amigos",
   "close":"Cerrar",
@@ -1688,8 +1812,8 @@ es:{
   "ruleAria":"Modo de juego",
   "ruleClassic":"Batalla clásica",
   "ruleControl":"Control de energía",
-  "ruleClassicTip":"Crece, muévete mejor que tus rivales y sobrevive al círculo que se cierra.",
-  "ruleControlTip":"Controla la zona dorada sin rivales dentro para ganar +8 puntos/s. Si está en disputa, no suma puntos. Una flecha dorada te guía; la zona se mueve cada 45 s y la siguiente aparece antes como un círculo discontinuo. Con la opción sin límite, la partida dura 3 min.",
+  "ruleClassicTip":"Crece y rodea a tus rivales para que choquen contigo. Contra bots no hay límite de tiempo y solo tienes una vida.",
+  "ruleControlTip":"Controla la zona dorada sin rivales dentro para ganar +8 puntos/s. Si está en disputa, no suma puntos. Una flecha dorada te guía; la zona se mueve cada 45 s y la siguiente aparece antes como un círculo discontinuo.",
   "controlHeld":"Controlando · +8 puntos/s",
   "controlContested":"En disputa · puntos en pausa",
   "controlTaken":"En manos de {n}",
@@ -1706,8 +1830,8 @@ es:{
   "ruleTeam":"Batalla por equipos",
   "ruleFrenzy":"Frenesí de potenciadores",
   "ruleDuel":"Duelo",
-  "ruleGoldTip":"Siguen apareciendo vetas de oro cerca de ti y una flecha dorada señala la más cercana. Las monedas son tus puntos y, al morir, sueltas todas las que llevas para que otros las recojan. Gana quien tenga más oro al final; con la opción sin límite, se juegan 3 minutos.",
-  "ruleTeamTip":"Rojo contra azul. Juegas en rojo con tus amigos. Los compañeros de equipo se atraviesan y las armas nunca los dañan. Gana el equipo con más puntos en total; con la opción sin límite, se juegan 3 minutos.",
+  "ruleGoldTip":"Siguen apareciendo vetas de oro cerca de ti y una flecha dorada señala la más cercana. Las monedas son tus puntos y, al morir, sueltas todas las que llevas para que otros las recojan. Gana quien tenga más oro al final.",
+  "ruleTeamTip":"Rojo contra azul. Juegas en rojo con tus amigos. Los compañeros de equipo se atraviesan y las armas nunca los dañan. Gana el equipo con más puntos en total.",
   "ruleFrenzyTip":"Potenciadores por todas partes y todos aparecen con un arma. Rápido y caótico.",
   "ruleDuelTip":"Un círculo pequeño y sin bots (salvo uno fuerte si juegas en solitario). No se reaparece dentro de una ronda y el borde del círculo es mortal. Gana quien se lleve primero dos rondas.",
   "goldLbl":"Oro",
@@ -2435,7 +2559,7 @@ pt:{
   "how6":"No computador: vire com o mouse, clique esquerdo ou Espaço para acelerar, clique direito ou F para disparar, 1 a 8 para emotes",
   "play":"Jogar",
   "playSub":"{m} min contra bots",
-  "playSubInf":"Sem limite · renasça quando quiser",
+  "playSubInf":"Sem limite · uma vida",
   "friends":"Com amigos",
   "friendsBtn":"Jogar com amigos",
   "close":"Fechar",
@@ -2465,8 +2589,8 @@ pt:{
   "ruleAria":"Regras do jogo",
   "ruleClassic":"Batalha clássica",
   "ruleControl":"Domínio de energia",
-  "ruleClassicTip":"Cresça, engane os rivais e sobreviva ao círculo.",
-  "ruleControlTip":"Fique sozinho na zona dourada para ganhar +8 pontos/s. Zona disputada pausa a contagem. Uma seta dourada mostra o caminho; a zona muda a cada 45 s e a próxima aparece antes como um círculo tracejado. “Sem limite” vira 3 min.",
+  "ruleClassicTip":"Cresça e cerque os rivais para que batam em você. Contra bots não há limite de tempo e você tem só uma vida.",
+  "ruleControlTip":"Fique sozinho na zona dourada para ganhar +8 pontos/s. Zona disputada pausa a contagem. Uma seta dourada mostra o caminho; a zona muda a cada 45 s e a próxima aparece antes como um círculo tracejado.",
   "controlHeld":"Dominando · +8 pontos/s",
   "controlContested":"Disputada · contagem pausada",
   "controlTaken":"Dominada por {n}",
@@ -2483,8 +2607,8 @@ pt:{
   "ruleTeam":"Batalha de Times",
   "ruleFrenzy":"Frenesi de Itens",
   "ruleDuel":"Duelo",
-  "ruleGoldTip":"Veios de ouro não param de aparecer perto de você e uma seta dourada aponta o mais próximo. As moedas são seus pontos, e quando você morre todas as moedas que carrega caem para os outros pegarem. Quem tiver mais ouro no final vence; “Sem limite” vira 3 minutos.",
-  "ruleTeamTip":"Vermelho contra azul. Você e seus amigos são do vermelho. Colegas de time atravessam uns aos outros e as armas nunca os atingem. Vence o time com mais pontos somados; “Sem limite” vira 3 minutos.",
+  "ruleGoldTip":"Veios de ouro não param de aparecer perto de você e uma seta dourada aponta o mais próximo. As moedas são seus pontos, e quando você morre todas as moedas que carrega caem para os outros pegarem. Quem tiver mais ouro no final vence.",
+  "ruleTeamTip":"Vermelho contra azul. Você e seus amigos são do vermelho. Colegas de time atravessam uns aos outros e as armas nunca os atingem. Vence o time com mais pontos somados.",
   "ruleFrenzyTip":"Power-ups por todo lado e todo mundo nasce com uma arma. Rápido e caótico.",
   "ruleDuelTip":"Arena pequena e sem bots (um bot forte quando você joga sozinho). Sem renascer durante a rodada, e a borda do círculo é mortal. Quem vencer duas rodadas primeiro ganha.",
   "goldLbl":"Ouro",
@@ -3212,7 +3336,7 @@ ja:{
   "how6":"パソコンでは：マウスで操作、左クリックかスペースでブースト、右クリックかFで発射、1〜8でエモート",
   "play":"プレイ",
   "playSub":"CPU相手に{m}分バトル",
-  "playSubInf":"時間無制限 · いつでも復活",
+  "playSubInf":"時間無制限 · ライフ1つ",
   "friends":"友だちと遊ぶ",
   "friendsBtn":"友だちと遊ぶ",
   "close":"閉じる",
@@ -3242,8 +3366,8 @@ ja:{
   "ruleAria":"ゲームルール",
   "ruleClassic":"クラシックバトル",
   "ruleControl":"陣取りバトル",
-  "ruleClassicTip":"大きく育ってライバルを出し抜き、縮むリングの中で生き残ろう。",
-  "ruleControlTip":"金色のゾーンを1匹だけで占領すると毎秒+8スコア。取り合いになると加算ストップ。金色の矢印が道案内。ゾーンは45秒ごとに移動し、次の場所は先に点線の円で表示されます。時間無制限は3分になります。",
+  "ruleClassicTip":"エネルギーを食べて大きくなり、相手を囲んでぶつけよう。CPU戦は時間無制限、ライフは1つだけ。",
+  "ruleControlTip":"金色のゾーンを1匹だけで占領すると毎秒+8スコア。取り合いになると加算ストップ。金色の矢印が道案内。ゾーンは45秒ごとに移動し、次の場所は先に点線の円で表示されます。",
   "controlHeld":"占領中 · 毎秒+8スコア",
   "controlContested":"取り合い中 · 加算ストップ",
   "controlTaken":"{n}が占領中",
@@ -3260,8 +3384,8 @@ ja:{
   "ruleTeam":"チームバトル",
   "ruleFrenzy":"アイテムフィーバー",
   "ruleDuel":"タイマン勝負",
-  "ruleGoldTip":"近くに金鉱が次々に出現し、金色の矢印が一番近い金鉱を指します。集めたゴールドがスコアになり、やられると持っているゴールドをすべて落として、ほかのヘビに拾われます。最後に一番多く持っていた人の勝ち。時間無制限は3分になります。",
-  "ruleTeamTip":"赤チーム対青チーム。あなたと友だちは赤チームです。味方同士はすり抜けられ、武器も当たりません。チームの合計スコアが高い方の勝ち。時間無制限は3分になります。",
+  "ruleGoldTip":"近くに金鉱が次々に出現し、金色の矢印が一番近い金鉱を指します。集めたゴールドがスコアになり、やられると持っているゴールドをすべて落として、ほかのヘビに拾われます。最後に一番多く持っていた人の勝ち。",
+  "ruleTeamTip":"赤チーム対青チーム。あなたと友だちは赤チームです。味方同士はすり抜けられ、武器も当たりません。チームの合計スコアが高い方の勝ち。",
   "ruleFrenzyTip":"アイテムがそこらじゅうに出現し、全員が武器を持ってスタート。スピーディーで大混戦！",
   "ruleDuelTip":"小さなリングで、CPUのヘビはなし（1人で遊ぶときは強いCPUが1匹）。ラウンド中は復活できず、リングの端に触れるとアウト。2本先取で勝利。",
   "goldLbl":"ゴールド",
@@ -3989,7 +4113,7 @@ ko:{
   "how6":"PC에서는 마우스로 방향 조종, 왼쪽 클릭이나 스페이스로 부스트, 오른쪽 클릭이나 F로 발사, 숫자 1~8로 이모트",
   "play":"플레이",
   "playSub":"봇과 {m}분 난투",
-  "playSubInf":"시간 제한 없음 · 언제든 부활",
+  "playSubInf":"무제한 · 목숨 하나",
   "friends":"친구와 플레이",
   "friendsBtn":"친구와 플레이",
   "close":"닫기",
@@ -4019,8 +4143,8 @@ ko:{
   "ruleAria":"게임 규칙",
   "ruleClassic":"클래식 난투",
   "ruleControl":"에너지 점령전",
-  "ruleClassicTip":"몸을 키우고, 상대를 따돌리고, 좁혀 오는 자기장에서 살아남으세요.",
-  "ruleControlTip":"황금 구역을 혼자 차지하면 초당 +8점. 다른 뱀이 함께 있으면 점수가 멈춰요. 금색 화살표가 길을 알려 주고, 구역은 45초마다 옮겨 가며 다음 위치는 먼저 점선 원으로 보여요. ‘제한 없음’은 3분으로 진행돼요.",
+  "ruleClassicTip":"에너지를 먹고 커져서 상대를 감싸 부딪히게 하세요. 봇과 할 때는 시간 제한이 없고 목숨은 하나뿐이에요.",
+  "ruleControlTip":"황금 구역을 혼자 차지하면 초당 +8점. 다른 뱀이 함께 있으면 점수가 멈춰요. 금색 화살표가 길을 알려 주고, 구역은 45초마다 옮겨 가며 다음 위치는 먼저 점선 원으로 보여요.",
   "controlHeld":"점령 중 · 초당 +8점",
   "controlContested":"쟁탈 중 · 점수 정지",
   "controlTaken":"{n} 점령 중",
@@ -4037,8 +4161,8 @@ ko:{
   "ruleTeam":"팀 대전",
   "ruleFrenzy":"아이템 대잔치",
   "ruleDuel":"결투",
-  "ruleGoldTip":"근처에 금광이 계속 나타나고, 금색 화살표가 가장 가까운 금광을 가리켜요. 모은 골드가 곧 점수이고, 죽으면 가지고 있던 골드를 모두 떨어뜨려서 다른 뱀이 주워 갈 수 있어요. 끝날 때 골드가 가장 많은 뱀이 이겨요. ‘제한 없음’은 3분으로 진행돼요.",
-  "ruleTeamTip":"레드 팀 대 블루 팀! 나와 친구들은 레드 팀이에요. 팀원끼리는 서로 통과하고, 무기에도 맞지 않아요. 팀 점수 합계가 높은 쪽이 이겨요. ‘제한 없음’은 3분으로 진행돼요.",
+  "ruleGoldTip":"근처에 금광이 계속 나타나고, 금색 화살표가 가장 가까운 금광을 가리켜요. 모은 골드가 곧 점수이고, 죽으면 가지고 있던 골드를 모두 떨어뜨려서 다른 뱀이 주워 갈 수 있어요. 끝날 때 골드가 가장 많은 뱀이 이겨요.",
+  "ruleTeamTip":"레드 팀 대 블루 팀! 나와 친구들은 레드 팀이에요. 팀원끼리는 서로 통과하고, 무기에도 맞지 않아요. 팀 점수 합계가 높은 쪽이 이겨요.",
   "ruleFrenzyTip":"곳곳에 아이템이 가득하고, 모두 무기를 하나씩 들고 시작해요. 빠르고 정신없어요!",
   "ruleDuelTip":"작은 원형 경기장에 봇은 없어요(혼자 하면 강한 봇 하나가 상대해요). 라운드 중에는 부활할 수 없고, 가장자리에 닿으면 죽어요. 2라운드를 먼저 이기면 승리!",
   "goldLbl":"골드",
@@ -4590,6 +4714,13 @@ Object.assign(I18N.es,{"mode.escape":"Escapada","ruleEscapeTip":"Corre de un lad
 Object.assign(I18N.pt,{"mode.escape":"Fuga","ruleEscapeTip":"Corra de um lado do mapa até a saída do outro em até 3 minutos. Sozinho, cobras caçadoras te perseguem e não param de chegar; você tem 3 vidas e muitos itens. Com amigos, uns fogem e outros caçam; quem consegue sair troca de papel na rodada seguinte.","intro.escape.1":"Siga a seta verde até a saída. Chegue em até 3 minutos para vencer","intro.escape.2":"As caçadoras não param de te perseguir. Você tem 3 vidas e muitos itens para revidar","intro.escape.3":"Com amigos, uns fogem e outros caçam. Quem caça não entra na saída; quem sai troca de papel","escHunter":"Caçadora {n}","escGo":"Corra até a saída","escLeft":"Faltam {d}","escHuntersIn":"As caçadoras saem em {n} s","escChase":"Pegue quem foge","escWaitGo":"Sai em {n} s","escRunnerLeft":"Faltam {d} para a saída","escSafeHud":"Você saiu","escOutHud":"Você foi pego","escSafe":"Você escapou!","escSafeSub":"Sobraram {n} s","escSomeoneSafe":"{n} saiu!","escSomeoneOut":"{n} foi pego","escStartT":"Corra!","escStartSub":"As caçadoras saem em {n} s","escYouRun":"Você foge","escYouRunSub":"Siga a seta verde até a saída","escYouChase":"Você caça","escYouChaseSub":"Siga a seta vermelha e pegue quem foge","escWin":"Você escapou!","escStopped":"Você os parou! Ninguém saiu","escCaught":"Pego!","escTimeUp":"O tempo acabou, você não chegou","escLost":"Você não conseguiu sair","escGotAway":"Eles escaparam","resNoteEscape":"Onda de choque, fantasma, buraco negro e congelamento ajudam a despistar quem te persegue.","escRew":"Bônus de vitória"});
 Object.assign(I18N.ja,{"mode.escape":"逃げろ大作戦","ruleEscapeTip":"3分以内にマップの反対側にある出口まで逃げきろう。ひとりだと追っ手のヘビがどんどん増えて追ってくる。ライフは3つ、アイテムもたくさん。友だちとなら逃げる人と追う人に分かれ、逃げきった人は次のラウンドで役割交代。","intro.escape.1":"緑の矢印について出口へ。3分以内に着けば勝ち","intro.escape.2":"追っ手のヘビがずっと追ってくる。ライフは3つ、アイテムで反撃もできる","intro.escape.3":"友だちとなら逃げる人と追う人に分かれる。追う人は出口に入れない。逃げきったら役割交代","escHunter":"追っ手{n}","escGo":"出口まで逃げろ","escLeft":"あと{d}","escHuntersIn":"追っ手まであと{n}秒","escChase":"逃げる人をつかまえろ","escWaitGo":"あと{n}秒でスタート","escRunnerLeft":"出口まであと{d}","escSafeHud":"脱出成功","escOutHud":"つかまった","escSafe":"脱出成功！","escSafeSub":"残り{n}秒","escSomeoneSafe":"{n}が脱出！","escSomeoneOut":"{n}がつかまった","escStartT":"逃げろ！","escStartSub":"追っ手まであと{n}秒","escYouRun":"あなたは逃げる番","escYouRunSub":"緑の矢印について出口へ","escYouChase":"あなたは追う番","escYouChaseSub":"赤い矢印について逃げる人をつかまえろ","escWin":"脱出成功！","escStopped":"止めた！誰も逃げられなかった","escCaught":"つかまった！","escTimeUp":"時間切れ、逃げきれなかった","escLost":"逃げきれなかった","escGotAway":"逃げられた","resNoteEscape":"衝撃波、ゴースト、ブラックホール、フリーズで追っ手をふりきろう。","escRew":"勝利ボーナス"});
 Object.assign(I18N.ko,{"mode.escape":"탈출 대작전","ruleEscapeTip":"3분 안에 맵 반대편의 출구까지 도망치세요. 혼자 하면 추격 뱀이 계속 늘어나며 쫓아와요. 목숨은 3개, 아이템도 많아요. 친구와 하면 도망치는 쪽과 쫓는 쪽으로 나뉘고, 탈출한 사람은 다음 라운드에 역할을 바꿔요.","intro.escape.1":"초록 화살표를 따라 출구로 가세요. 3분 안에 도착하면 승리","intro.escape.2":"추격 뱀이 계속 쫓아와요. 목숨 3개와 많은 아이템으로 반격할 수 있어요","intro.escape.3":"친구와 하면 도망치는 쪽과 쫓는 쪽으로 나뉘어요. 쫓는 쪽은 출구에 못 들어가고, 탈출하면 역할을 바꿔요","escHunter":"추격자{n}","escGo":"출구로 도망쳐요","escLeft":"{d} 남음","escHuntersIn":"{n}초 후 추격 시작","escChase":"도망치는 뱀을 막아요","escWaitGo":"{n}초 후 출발","escRunnerLeft":"출구까지 {d}","escSafeHud":"탈출했어요","escOutHud":"잡혔어요","escSafe":"탈출 성공!","escSafeSub":"{n}초 남기고","escSomeoneSafe":"{n} 탈출!","escSomeoneOut":"{n} 잡힘","escStartT":"도망쳐요!","escStartSub":"{n}초 후 추격 시작","escYouRun":"이번엔 도망치는 쪽","escYouRunSub":"초록 화살표를 따라 출구로","escYouChase":"이번엔 쫓는 쪽","escYouChaseSub":"빨간 화살표를 따라가 도망치는 뱀을 막아요","escWin":"탈출 성공!","escStopped":"막았어요! 아무도 못 나갔어요","escCaught":"잡혔어요!","escTimeUp":"시간 끝, 탈출 실패","escLost":"탈출하지 못했어요","escGotAway":"놓쳤어요","resNoteEscape":"충격파, 유령, 블랙홀, 얼음탄으로 추격을 따돌릴 수 있어요.","escRew":"승리 보너스"});
+/* v27: match length, endless runs and revives, the membership, the staging page's test store */
+Object.assign(I18N.en,{"playSubLife":"Endless · one life · vs bots","durLife":"Endless · one life","durFixed":"Always {m} min","durRowLbl":"Length","durLess":"1 minute less","durMore":"1 minute more","vipRevive":"Member revive with {n}","reviveLeft":"Up to {m} revives a run, {n} left","reviveUsed":"No revives left this run","reviveWeb":"In the app you can watch an ad to revive","vipUpsell":"Members revive without ads","vipT":"Monthly membership","vipD":"Revive without ads · no ads between games · {n} extra coins a day · double coins after every game","vipPrice":"{p}/month","vipActiveBtn":"Active","vipLegal":"Renews monthly unless canceled at least 24 hours before the period ends; the renewal is charged in those last 24 hours. Cancel any time in your {s} subscription settings.","vipTerms":"Terms of use","vipManage":"Manage subscription","vipRenews":"Active · renews {d}","vipEnds":"Active until {d}","vipOnToast":"Membership is on","vipRestored":"Membership restored","vipDouble":"Member ×2","vipDailyGot":"Member bonus {n} coins","vipDailyLine":"As a member you get {n} extra coins with every daily gift","vipDailyAd":"Members get {n} extra coins a day","testAdT":"Test ad","testInterT":"Test ad between games","testAdD":"A fake ad on the staging page. The real app plays a real ad here.","testAdSkip":"Skip (no reward)","testAdDone":"Close and get the reward","testAdClose":"Close","testBuy":"Test purchase, nothing was charged","testShop":"Purchases on the staging page are fake. Nothing is charged."});
+Object.assign(I18N.zh,{"playSubLife":"不限时 · 一条命 · 和电脑混战","durLife":"不限时 · 一条命","durFixed":"固定 {m} 分钟","durRowLbl":"时长","durLess":"少 1 分钟","durMore":"多 1 分钟","vipRevive":"会员复活（长度 {n}）","reviveLeft":"每局最多复活 {m} 次，还剩 {n} 次","reviveUsed":"这一局的复活次数用完了","reviveWeb":"在 App 里死了可以看广告复活","vipUpsell":"开通会员，复活不用看广告","vipT":"会员月卡","vipD":"复活不用看广告 · 没有插屏广告 · 每天多领 {n} 金币 · 结算金币翻倍","vipPrice":"{p}/月","vipActiveBtn":"已开通","vipLegal":"按月自动续费，除非在本期结束前至少 24 小时取消；续费在本期最后 24 小时内扣款。随时可以在 {s} 的订阅设置里取消。","vipTerms":"使用条款","vipManage":"管理订阅","vipRenews":"会员有效，{d} 自动续费","vipEnds":"会员有效，到 {d} 结束","vipOnToast":"会员已开通","vipRestored":"会员已恢复","vipDouble":"会员双倍","vipDailyGot":"会员 {n} 金币","vipDailyLine":"会员每天多领 {n} 金币，领礼物时一起到账","vipDailyAd":"开通会员，每天多领 {n} 金币","testAdT":"测试广告","testInterT":"测试插屏广告","testAdD":"这是测试服的假广告。正式 App 里这里会播放真的广告。","testAdSkip":"跳过（没有奖励）","testAdDone":"关闭，领取奖励","testAdClose":"关闭","testBuy":"测试购买，没有真的扣钱","testShop":"测试服的购买都是假的，不会扣钱。"});
+Object.assign(I18N.es,{"playSubLife":"Sin límite · una vida · contra bots","durLife":"Sin límite · una vida","durFixed":"Siempre {m} min","durRowLbl":"Duración","durLess":"1 minuto menos","durMore":"1 minuto más","vipRevive":"Revivir como miembro con {n}","reviveLeft":"Hasta {m} revividas por partida, te quedan {n}","reviveUsed":"No te quedan revividas en esta partida","reviveWeb":"En la app puedes ver un anuncio para revivir","vipUpsell":"Los miembros reviven sin anuncios","vipT":"Membresía mensual","vipD":"Revive sin anuncios · sin anuncios entre partidas · {n} monedas extra al día · monedas dobles tras cada partida","vipPrice":"{p}/mes","vipActiveBtn":"Activa","vipLegal":"Se renueva cada mes salvo que la canceles al menos 24 horas antes de que termine el periodo; la renovación se cobra en esas últimas 24 horas. Cancela cuando quieras en los ajustes de suscripciones de {s}.","vipTerms":"Términos de uso","vipManage":"Gestionar suscripción","vipRenews":"Activa · se renueva el {d}","vipEnds":"Activa hasta el {d}","vipOnToast":"Membresía activada","vipRestored":"Membresía restaurada","vipDouble":"Miembro ×2","vipDailyGot":"Bono de miembro: {n} monedas","vipDailyLine":"Como miembro recibes {n} monedas extra con cada regalo diario","vipDailyAd":"Los miembros reciben {n} monedas extra al día","testAdT":"Anuncio de prueba","testInterT":"Anuncio de prueba entre partidas","testAdD":"Un anuncio falso de la página de pruebas. La app real muestra aquí un anuncio de verdad.","testAdSkip":"Saltar (sin premio)","testAdDone":"Cerrar y recibir el premio","testAdClose":"Cerrar","testBuy":"Compra de prueba, no se cobró nada","testShop":"Las compras de la página de pruebas son falsas. No se cobra nada."});
+Object.assign(I18N.pt,{"playSubLife":"Sem limite · uma vida · contra bots","durLife":"Sem limite · uma vida","durFixed":"Sempre {m} min","durRowLbl":"Duração","durLess":"1 minuto a menos","durMore":"1 minuto a mais","vipRevive":"Reviver como membro com {n}","reviveLeft":"Até {m} revividas por partida, restam {n}","reviveUsed":"Acabaram as revividas desta partida","reviveWeb":"No app você pode ver um anúncio para reviver","vipUpsell":"Membros revivem sem anúncios","vipT":"Assinatura mensal","vipD":"Reviva sem anúncios · sem anúncios entre partidas · {n} moedas extras por dia · moedas em dobro após cada partida","vipPrice":"{p}/mês","vipActiveBtn":"Ativa","vipLegal":"Renova todo mês, a menos que seja cancelada pelo menos 24 horas antes do fim do período; a renovação é cobrada nessas últimas 24 horas. Cancele quando quiser nas configurações de assinaturas da {s}.","vipTerms":"Termos de uso","vipManage":"Gerenciar assinatura","vipRenews":"Ativa · renova em {d}","vipEnds":"Ativa até {d}","vipOnToast":"Assinatura ativada","vipRestored":"Assinatura restaurada","vipDouble":"Membro ×2","vipDailyGot":"Bônus de membro: {n} moedas","vipDailyLine":"Como membro você ganha {n} moedas extras em cada presente diário","vipDailyAd":"Membros ganham {n} moedas extras por dia","testAdT":"Anúncio de teste","testInterT":"Anúncio de teste entre partidas","testAdD":"Um anúncio falso da página de testes. O app de verdade mostra um anúncio real aqui.","testAdSkip":"Pular (sem prêmio)","testAdDone":"Fechar e receber o prêmio","testAdClose":"Fechar","testBuy":"Compra de teste, nada foi cobrado","testShop":"As compras da página de testes são falsas. Nada é cobrado."});
+Object.assign(I18N.ja,{"playSubLife":"時間無制限 · ライフ1つ · CPU戦","durLife":"時間無制限 · ライフ1つ","durFixed":"{m}分固定","durRowLbl":"時間","durLess":"1分減らす","durMore":"1分増やす","vipRevive":"メンバー復活（長さ{n}）","reviveLeft":"1プレイで最大{m}回復活、残り{n}回","reviveUsed":"このプレイの復活回数を使いきりました","reviveWeb":"アプリなら広告を見て復活できます","vipUpsell":"メンバーなら広告なしで復活","vipT":"月額メンバーシップ","vipD":"広告なしで復活 · 試合間の広告なし · 毎日コイン+{n} · 毎回コイン2倍","vipPrice":"{p}/月","vipActiveBtn":"有効","vipLegal":"期間終了の24時間前までに解約しない限り毎月自動更新され、更新料金は最後の24時間以内に請求されます。{s}のサブスクリプション設定からいつでも解約できます。","vipTerms":"利用規約","vipManage":"サブスクリプションを管理","vipRenews":"有効 · {d}に自動更新","vipEnds":"{d}まで有効","vipOnToast":"メンバーシップが有効になりました","vipRestored":"メンバーシップを復元しました","vipDouble":"メンバー2倍","vipDailyGot":"メンバーボーナス {n}コイン","vipDailyLine":"メンバーは毎日のプレゼントでコイン+{n}","vipDailyAd":"メンバーなら毎日コイン+{n}","testAdT":"テスト広告","testInterT":"試合間のテスト広告","testAdD":"テスト用ページの偽の広告です。本物のアプリではここで実際の広告が流れます。","testAdSkip":"スキップ（報酬なし）","testAdDone":"閉じて報酬を受け取る","testAdClose":"閉じる","testBuy":"テスト購入です。料金はかかっていません","testShop":"テスト用ページの購入はすべて偽物で、料金はかかりません。"});
+Object.assign(I18N.ko,{"playSubLife":"무제한 · 목숨 하나 · 봇과 대결","durLife":"무제한 · 목숨 하나","durFixed":"{m}분 고정","durRowLbl":"시간","durLess":"1분 줄이기","durMore":"1분 늘리기","vipRevive":"멤버 부활 (길이 {n})","reviveLeft":"한 판에 최대 {m}번 부활, {n}번 남음","reviveUsed":"이번 판의 부활 횟수를 다 썼어요","reviveWeb":"앱에서는 광고를 보고 부활할 수 있어요","vipUpsell":"멤버는 광고 없이 부활","vipT":"월간 멤버십","vipD":"광고 없이 부활 · 판 사이 광고 없음 · 매일 코인 {n}개 추가 · 매 판 코인 2배","vipPrice":"{p}/월","vipActiveBtn":"이용 중","vipLegal":"기간이 끝나기 최소 24시간 전에 취소하지 않으면 매달 자동 갱신되며, 갱신 요금은 마지막 24시간 안에 청구돼요. {s} 구독 설정에서 언제든 취소할 수 있어요.","vipTerms":"이용 약관","vipManage":"구독 관리","vipRenews":"이용 중 · {d} 자동 갱신","vipEnds":"{d}까지 이용 가능","vipOnToast":"멤버십이 시작됐어요","vipRestored":"멤버십을 복원했어요","vipDouble":"멤버 2배","vipDailyGot":"멤버 보너스 코인 {n}개","vipDailyLine":"멤버는 매일 선물과 함께 코인 {n}개를 더 받아요","vipDailyAd":"멤버는 매일 코인 {n}개 추가","testAdT":"테스트 광고","testInterT":"판 사이 테스트 광고","testAdD":"테스트 페이지의 가짜 광고예요. 실제 앱에서는 여기서 진짜 광고가 나와요.","testAdSkip":"건너뛰기 (보상 없음)","testAdDone":"닫고 보상 받기","testAdClose":"닫기","testBuy":"테스트 구매예요. 결제되지 않았어요","testShop":"테스트 페이지의 구매는 모두 가짜라 결제되지 않아요."});
 const LANGS=['en','zh','es','pt','ja','ko'],LANG_NAMES={en:'English',zh:'中文',es:'Español',pt:'Português',ja:'日本語',ko:'한국어'},LANG_SHORT={en:'EN',zh:'中文',es:'ES',pt:'PT',ja:'日本語',ko:'한국어'};
 const LOCALES={en:'en-US',zh:'zh-CN',es:'es-ES',pt:'pt-BR',ja:'ja-JP',ko:'ko-KR'};
 /* numbers and dates the way the phone writes them when it speaks the game's language (es-MX, pt-PT, en-GB), else the usual one */
@@ -4616,6 +4747,11 @@ const STANDALONE=/*@STANDALONE*/true;
    web version sells cost coins there, and invites point at the web version so friends without the app can join */
 const NATIVE=(()=>{try{const C=window.Capacitor;return !!(C&&typeof C.isNativePlatform==='function'&&C.isNativePlatform());}catch(e){return false;}})();
 const WEB_URL='https://wlxie-tony.github.io/snake-brawl/',PRIVACY_URL=WEB_URL+'privacy.html';
+/* Apple's standard licence agreement, linked next to the membership as the subscription's terms of use */
+const TERMS_URL='https://www.apple.com/legal/internet-services/itunes/dev/stdeula/';
+/* v27: the staging page (测试服) carries <meta name="snake-test-store" content="1">. On the web the game then shows labelled
+   fake ads and fake purchases, so the apps' revive, ad and membership flows can be tried in a phone's browser. Never in the apps */
+const TESTSTORE=!NATIVE&&(()=>{try{const m=document.querySelector('meta[name="snake-test-store"]');return !!m&&m.content.trim()==='1';}catch(e){return false;}})();
 /* the apps' settings (server address, ad units, purchase keys), written by app/scripts/configure.mjs into app-config.js */
 const APPCFG=(()=>{try{const c=window.APP_CFG;return c&&typeof c==='object'?c:{};}catch(e){return {};}})();
 const TAU=Math.PI*2;
@@ -4631,7 +4767,7 @@ const ZONE_MIN=1800,ZONE_K=1.15,ZONE_DRIFT=4590;
 /* bumped whenever two builds can no longer play together; rooms from other versions are not joinable
    (11: v22 moved rooms to the game's own signalling server and added skins; 13: v23 bigger arena, new power-ups;
    14: v24 control zones in a chain, gold veins near players; 15: v25 escape mode) */
-const NET_VER=15;
+const NET_VER=16;
 const B64='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
 const B64I=new Int16Array(128).fill(-1);for(let i=0;i<64;i++)B64I[B64.charCodeAt(i)]=i;
 /* fixed-width base64 numbers for the compact network strings */
@@ -6245,6 +6381,10 @@ const prof=(()=>{let p=store.get(PROF_KEY,null);
   if(![0,180000,300000,600000].includes(p.dur))p.dur=300000;
   /* match length for Play: 3 or 10 minutes, or 0 for no time limit */
   if(![180000,600000,0].includes(p.qdur))p.qdur=180000;
+  /* v27: one match length in whole minutes (1 to 30) for the timed modes and rooms, taken from the old pickers once;
+     a room can also have no limit (rinf). dur and qdur stay as they were for older builds sharing the cloud save */
+  if(!(+p.dmin>=1&&+p.dmin<=30))p.dmin=Math.round(Math.min(30,Math.max(1,(p.qdur||p.dur||180000)/60000)));p.dmin=Math.round(+p.dmin);
+  p.rinf=p.rinf===undefined?(p.dur===0?1:0):(p.rinf?1:0);
   p.rule=ruleOf(p.rule);
   /* daily missions (checked in detail when first read) */
   if(!p.dm||typeof p.dm!=='object'||typeof p.dm.day!=='string'||!Array.isArray(p.dm.list))p.dm=null;
@@ -6256,7 +6396,7 @@ const prof=(()=>{let p=store.get(PROF_KEY,null);
   for(const c of ['s','a','k','e','d','p','t'])p.tst[c]=Array.isArray(tst[c])?tst[c].filter(id=>itemOf(c,id)):[];
   p.newIds=Array.isArray(p.newIds)?p.newIds.filter(x=>typeof x==='string').slice(-40):[];
   if(Array.isArray(p.emoBar))p.emoBar=[...new Set(p.emoBar.filter(id=>typeof id==='string'&&itemOf('e',id)))].slice(0,8);else delete p.emoBar;
-  const st=p.st&&typeof p.st==='object'?p.st:{};p.st={};for(const k of ['games','kills','pk','deaths','best','wins','ms','qm'])p.st[k]=Math.max(0,+st[k]||0);
+  const st=p.st&&typeof p.st==='object'?p.st:{};p.st={};for(const k of ['games','kills','pk','deaths','best','wins','ms','qm','runs'])p.st[k]=Math.max(0,+st[k]||0);
   if(!itemOf('k',p.kfx))p.kfx='pop';
   if(!itemOf('a',p.accessory))p.accessory='none';
   if(!itemOf('t',p.trail))p.trail='none';
@@ -6322,10 +6462,13 @@ function emoBarGain(e){if(!Array.isArray(prof.emoBar))return;const p=e.cat==='p'
 /* per-life numbers that turn into xp and coins */
 function lifeXp(L,now){const ms=Math.max(0,now-L.t0);
   return 5+Math.min(150,Math.floor(Math.max(0,L.peak-(L.base||0))/8))+L.kills*10+L.pk*20+Math.min(60,Math.floor(ms/8000));}
-function finishLife(died,bonus,now){const L=G.life;if(!L||L.done)return bonus?awardXp(bonus,Math.round(bonus*0.5)):null;L.done=true;
+/* v27: members get the coins of every life and match twice, without an ad */
+function vipDouble(aw){if(!aw||!(aw.earned>0)||!vipOn()||G.mode==='tut'||G.mode==='demo')return aw;
+  prof.coins+=aw.earned;aw.coins+=aw.earned;aw.earned*=2;aw.doubled=1;aw.vip=1;saveProf();return aw;}
+function finishLife(died,bonus,now){const L=G.life;if(!L||L.done)return bonus?vipDouble(awardXp(bonus,Math.round(bonus*0.5))):null;L.done=true;
   const xp=lifeXp(L,now)+(bonus|0),coins=Math.round(xp*0.5);passAddXp(xp);lbSubmit(L.peak,L.kills);
   prof.st.games++;prof.st.kills+=L.kills;prof.st.pk+=L.pk;if(died)prof.st.deaths++;prof.st.best=Math.max(prof.st.best,Math.floor(L.peak));prof.st.ms+=Math.max(0,now-L.t0);
-  return awardXp(xp,coins);}
+  return vipDouble(awardXp(xp,coins));}
 
 /* ================= daily missions: three a day, counted in real matches, claimed in the lobby ================= */
 /* goals by player level: under Lv 4, Lv 4 to 9, Lv 10 and up */
@@ -7611,7 +7754,9 @@ function updateCamera(dt,now){let tx=cam.x,ty=cam.y,r=12;const me=G.me,subject=v
     tx=me.x+cam.lx;ty=me.y+cam.ly;r=radiusOf(me.mass)+(me.gs-1)*7;}
   else if(subject){tx=subject.x;ty=subject.y;r=subject.r;}
   const aspect=VW/Math.max(1,VH),zoom=1+(r-10)/52;
-  let dist=aspect<1?510*zoom/(2*TAN_HALF*aspect):640*zoom*Math.sin(PITCH)/(2*TAN_HALF);if(G.mode==='demo')dist*=1.2;dist=clamp(dist,500,7000);
+  /* upright: the screen's width spans 510; a phone on its side: its height spans the same 510, so turning the phone never shows
+     more or less of the arena (in the app the two views are the same picture turned); computers and tablets keep their view */
+  let dist=aspect<1?510*zoom/(2*TAN_HALF*aspect):VH<=560?510*zoom/(2*TAN_HALF):640*zoom*Math.sin(PITCH)/(2*TAN_HALF);if(G.mode==='demo')dist*=1.2;dist=clamp(dist,500,7000);
   const k=1-Math.exp(-dt*(following?cam.kp:7)),kz=1-Math.exp(-dt*2.2);
   if(Math.hypot(tx-cam.x,ty-cam.y)>1500){cam.x=tx;cam.y=ty;}else{cam.x+=(tx-cam.x)*k;cam.y+=(ty-cam.y)*k;}cam.dist+=(dist-cam.dist)*kz;
   /* boosting pulls the camera back a touch so speed reads on screen */
@@ -8307,24 +8452,41 @@ $('#mapDone').addEventListener('click',()=>{mapSheet.hidden=true;});
 mapSheet.addEventListener('click',e=>{if(e.target===mapSheet)mapSheet.hidden=true;});
 buildMaps();markMap();
 
-/* round length */
-const dursEl=$('#durs');
-function markDur(){[...dursEl.children].forEach(b=>b.setAttribute('aria-checked',String(+b.dataset.d===prof.dur)));}
-[...dursEl.children].forEach(b=>b.addEventListener('click',()=>{prof.dur=+b.dataset.d;saveProf();markDur();}));
-markDur();
-/* quick match length, picked right under the Play button */
-const qdursEl=$('#qdurs');
-function markQdur(){[...qdursEl.children].forEach(b=>b.setAttribute('aria-checked',String(+b.dataset.d===prof.qdur)));qdursEl.hidden=prof.rule==='duel'||prof.rule==='escape';
-  const r=prof.rule,m=r==='escape'?Math.round(ESC_ROUND/60000):Math.round((prof.qdur||180000)/60000);
-  $('#playSub').textContent=r==='duel'?t('mode.duel')+' · '+t('duelBest'):r!=='classic'&&(CLOCKED.has(r)||prof.qdur)?t('mode.'+r)+' · '+t('durMin',{m}):r==='frenzy'?t('mode.frenzy')+' · '+t('playSubInf'):prof.qdur?t('playSub',{m}):t('playSubInf');}
-[...qdursEl.children].forEach(b=>b.addEventListener('click',()=>{prof.qdur=+b.dataset.d;saveProf();markQdur();}));
-markQdur();
+/* v27: the match length in whole minutes, one setting for the timed modes against bots and for rooms with friends. Classic and
+   frenzy against bots are endless runs with one life; escape keeps its 3 minutes and a duel is best of three. Public quick
+   match stays at 3 minutes so strangers land in the same rooms */
+const DUR_MIN=1,DUR_MAX=30,ENDLESS=new Set(['classic','frenzy']);
+const durMs=()=>clamp(Math.round(prof.dmin)||3,DUR_MIN,DUR_MAX)*60000;
+const SVG_MINUS='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M6 12h12"/></svg>',
+  SVG_PLUS='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M6 12h12M12 6v12"/></svg>';
+const durCtls=[...document.querySelectorAll('.durctl')].map(box=>{
+  box.innerHTML='<button type="button" class="dm">'+SVG_MINUS+'</button><input type="range" min="'+DUR_MIN+'" max="'+DUR_MAX+'" step="1"><button type="button" class="dp">'+SVG_PLUS+'</button><b></b>';
+  const c={box,room:box.dataset.room==='1',mi:box.querySelector('.dm'),rg:box.querySelector('input'),pl:box.querySelector('.dp'),val:box.querySelector('b')};
+  const set=v=>{v=clamp(Math.round(+v)||DUR_MIN,DUR_MIN,DUR_MAX);if(v!==prof.dmin){prof.dmin=v;paintDur();}};
+  c.rg.addEventListener('input',()=>set(c.rg.value));c.rg.addEventListener('change',()=>saveProf());
+  c.mi.addEventListener('click',()=>{set(prof.dmin-1);saveProf();});c.pl.addEventListener('click',()=>{set(prof.dmin+1);saveProf();});
+  return c;});
+function paintDur(){const r=prof.rule,m=clamp(Math.round(prof.dmin)||3,DUR_MIN,DUR_MAX),inf=!CLOCKED.has(r)&&!!prof.rinf,em=Math.round(ESC_ROUND/60000);
+  for(const c of durCtls){const off=c.room&&inf;c.rg.value=String(m);c.val.textContent=off?t('durInf'):t('chipQuick',{m});
+    c.rg.disabled=off;c.mi.disabled=off||m<=DUR_MIN;c.pl.disabled=off||m>=DUR_MAX;
+    c.rg.setAttribute('aria-label',t('qdurAria'));c.rg.setAttribute('aria-valuetext',c.val.textContent);c.mi.setAttribute('aria-label',t('durLess'));c.pl.setAttribute('aria-label',t('durMore'));}
+  /* the lobby row: the slider for the timed modes, one fixed line for the others */
+  const row=$('#durRow'),fix=ENDLESS.has(r)?t('durLife'):r==='escape'?t('durFixed',{m:em}):r==='duel'?t('duelBest'):'';
+  row.querySelector('.durctl').hidden=!!fix;const lf=row.querySelector('.durfix');lf.hidden=!fix;lf.textContent=fix;
+  /* the room sheet: the same minutes, or no limit where the mode has no clock of its own */
+  const rr=$('#durs'),rfix=r==='escape'?t('durFixed',{m:em}):r==='duel'?t('duelBest'):'',ib=$('#durInfBtn'),rf=rr.querySelector('.durfix');
+  rr.querySelector('.durctl').hidden=!!rfix;rf.hidden=!rfix;rf.textContent=rfix;ib.hidden=!!rfix||CLOCKED.has(r);ib.setAttribute('aria-checked',String(inf));
+  $('#playSub').textContent=r==='duel'?t('mode.duel')+' · '+t('duelBest'):r==='escape'?t('mode.escape')+' · '+t('durMin',{m:em}):
+    r==='classic'?t('playSubLife'):r==='frenzy'?t('mode.frenzy')+' · '+t('durLife'):t('mode.'+r)+' · '+t('durMin',{m});}
+$('#durInfBtn').addEventListener('click',()=>{prof.rinf=prof.rinf?0:1;saveProf();paintDur();});
+const markQdur=paintDur;
+paintDur();
 const RULE_TIP={classic:'ruleClassicTip',control:'ruleControlTip',gold:'ruleGoldTip',team:'ruleTeamTip',frenzy:'ruleFrenzyTip',duel:'ruleDuelTip',escape:'ruleEscapeTip'};
 function markRule(){for(const b of $('#rules').children)b.setAttribute('aria-checked',String(b.dataset.rule===prof.rule));{const nb=$('#rules .mode-new');if(nb)nb.hidden=!!(prof.intro&&prof.intro.escape);}$('#ruleTip').textContent=t(RULE_TIP[prof.rule]||'ruleClassicTip');markQdur();}
 for(const b of $('#rules').children)b.addEventListener('click',()=>{prof.rule=ruleOf(b.dataset.rule);saveProf();markRule();});
 langHooks.push(markRule);markRule();
 /* long mode names shrink a little instead of being cut (Portuguese "Mina de Ouro" on a 390 px phone) */
-function fitModes(){if(!lobby.hidden)fitFonts(document.querySelectorAll('#rules button span'),10);}
+function fitModes(){if(!lobby.hidden){fitFonts(document.querySelectorAll('#rules button span'),10);fitFonts(document.querySelectorAll('#featRow .feat span'),9);}}
 langHooks.push(fitModes);addEventListener('resize',fitModes);try{document.fonts.ready.then(fitModes);}catch(e){}
 
 /* daily missions: the chip shows how many are done, the sheet lists them with their rewards */
@@ -8419,7 +8581,7 @@ async function hostRoom(pub){pub=pub===true;if((!STANDALONE&&!ROOM)||busy)return
   if(prof.rule==='duel'){duelReset();G.duel.warm=true;}
   resetWorld(true,newSeed(),pickMap(),{rule:prof.rule,bots:1});G.mode='host';G.code=code;
   /* a public room plays 3-minute rounds, like a quick match */
-  G.roomDur=G.rule==='duel'?DUEL_ROUND:G.rule==='escape'?ESC_ROUND:pub?180000:CLOCKED.has(G.rule)?(prof.dur||180000):prof.dur;beginRound(1,performance.now());
+  G.roomDur=G.rule==='duel'?DUEL_ROUND:G.rule==='escape'?ESC_ROUND:pub?180000:CLOCKED.has(G.rule)||!prof.rinf?durMs():0;beginRound(1,performance.now());
   try{await enterRooms(code);}catch(e){busy=false;goLobby(t('createFail',{e:errText(e)}));return;}
   busy=false;if(G.mode!=='host')return;startGame('host');lobbyPresence();QM.pub=pub;if(pub)qmReport();}
 /* qm: a quick-match try. It reports failure (false) instead of going back to the lobby, so the next room can be tried */
@@ -8433,16 +8595,20 @@ async function joinRoom(code,name,again,qm){if((!STANDALONE&&!ROOM)||busy)return
   const ok=await waitFor(()=>hostPeer&&(G.round.over||(G.worldReady&&G.worldRound===G.round.id&&G.adoptKey!=='none')),9000,()=>G.mode!=='guest');busy=false;
   if(G.mode!=='guest')return false;if(!ok){if(qm){leaveRooms();P2P.close();ROOM=null;G.mode='demo';return false;}goLobby(t('noRoom',{c:code}));return false;}
   startGame('guest');lobbyPresence();return true;}
-/* Play with no time limit: endless, ranked by length, respawn any time (this used to be the separate Practice button) */
-function startSolo(){showLobbyMsg('');const gentle=!prof.vet&&(prof.st.qm|0)<4;resetWorld(true,newSeed(),pickMap(),{gentle,rule:prof.rule==='frenzy'?'frenzy':'classic'});G.roomDur=0;beginRound(0,performance.now());G.mode='solo';G.code=null;startGame('solo');lobbyPresence();}
+/* v27: classic and frenzy against bots are endless runs with one life. A death ends the run unless the player revives (see
+   reviveWay); the very first run is the gentle one on the plain arena, like the first timed match used to be */
+function startSolo(){showLobbyMsg('');const runs=(prof.st.runs|0)+(prof.st.qm|0),easy=!runs&&!prof.vet&&prof.st.games<5,gentle=!easy&&!prof.vet&&runs<4;
+  const map=prof.map>=0?prof.map:(easy?0:(Math.random()*MAPS.length)|0);
+  resetWorld(true,newSeed(),map,{easy,gentle,rule:prof.rule==='frenzy'?'frenzy':'classic'});G.roomDur=0;beginRound(0,performance.now());G.mode='solo';G.code=null;
+  G.run={rev:0,t0:performance.now(),best:Infinity,peak:0,ended:false};startGame('solo');lobbyPresence();}
 /* the main entry: a 3 or 10 minute brawl against bots. The very first one is gentler and always on the plain arena,
    unless this player already has plenty of games behind them */
-function startQuick(){if(!prof.qdur&&!CLOCKED.has(prof.rule)){startSolo();return;}showLobbyMsg('');const easy=!prof.st.qm&&!prof.vet&&prof.st.games<5,gentle=!easy&&!prof.vet&&(prof.st.qm|0)<4;
+function startQuick(){if(ENDLESS.has(prof.rule)){startSolo();return;}showLobbyMsg('');const easy=!prof.st.qm&&!prof.vet&&prof.st.games<5,gentle=!easy&&!prof.vet&&(prof.st.qm|0)<4;
   /* the map the player picked; on Random the gentle first match uses the plain arena */
   const map=prof.map>=0?prof.map:(easy?0:(Math.random()*MAPS.length)|0);
   if(prof.rule==='duel')duelReset();
   resetWorld(true,newSeed(),map,{easy:easy&&prof.rule!=='duel'&&prof.rule!=='escape',gentle,rule:prof.rule,bots:1});
-  G.mode='quick';G.code=null;G.roomDur=prof.rule==='duel'?DUEL_ROUND:prof.rule==='escape'?ESC_ROUND:(prof.qdur||180000);beginRound(1,performance.now());startGame('quick');lobbyPresence();}
+  G.mode='quick';G.code=null;G.roomDur=prof.rule==='duel'?DUEL_ROUND:prof.rule==='escape'?ESC_ROUND:durMs();beginRound(1,performance.now());startGame('quick');lobbyPresence();}
 /* brand-new players get the tutorial first; anyone who already played a match goes straight in (the guide can replay it) */
 function playMain(){if(!prof.tut&&!prof.st.games&&!prof.vet)startTutorial();else startQuick();}
 function showConnecting(msg){closeSheets();$('#connMsg').textContent=msg;lobby.hidden=true;over.hidden=true;connecting.hidden=false;}
@@ -8493,7 +8659,8 @@ function goLobby(msg){if(G.mode!=='demo')track('leave',{m:G.mode,e:msg?1:0});hid
 let overTimer=0;
 function uiMeDied(kn){const me=G.me;G.rs.deaths++;sfx('die');G.last={kn:cleanName(kn),len:Math.floor(me.mass),kills:G.kills,rank:G.bestRank,cause:G.deathCause||(kn?'body':'#edge'),lost:G.lastLost|0};
   track('death',{m:G.mode,c:G.last.cause,len:G.last.len,k:G.last.kills,s:G.life?Math.round((performance.now()-G.life.t0)/1000):0});
-  G.life.peak=Math.max(G.life.peak,G.last.len);G.lastAward=finishLife(true,0,performance.now());if(G.mode==='solo')Ads.matchDone();
+  G.life.peak=Math.max(G.life.peak,G.last.len);G.lastAward=finishLife(true,0,performance.now());
+  if(G.mode==='solo'&&G.run){G.run.peak=Math.max(G.run.peak,G.last.len);if(Number.isFinite(G.last.rank)&&G.last.rank>0)G.run.best=Math.min(G.run.best,G.last.rank);}
   resetInput();R3.shake(26);clearTimeout(overTimer);overTimer=setTimeout(showOver,1000);}
 const TIP_KEYS=new Set(['body','#edge','#zone','#lava','#spike','#tree','#pillar','#planet','wa','wz','wm','wg','wh']);
 function showOver(){if(!G.me||G.me.alive||G.round.over||G.mode==='demo')return;const L=G.last||{},who=$('#overWho');who.textContent='';
@@ -8502,9 +8669,11 @@ function showOver(){if(!G.me||G.me.alive||G.round.over||G.mode==='demo')return;c
   const lostEl=$('#oLost');lostEl.hidden=!(L.lost>0);if(L.lost>0)lostEl.textContent=L.kn&&L.kn[0]!=='#'?t('lostBy',{k:L.kn,n:L.lost}):t('lostPts',{n:L.lost});
   const tipEl=$('#oTip'),ck=L.cause||'';tipEl.hidden=!TIP_KEYS.has(ck);if(!tipEl.hidden)tipEl.textContent='💡 '+t('tip.'+ck.replace('#',''));
   $('#oLen').textContent=L.len||0;$('#oKills').textContent=L.kills||0;$('#oRank').textContent=Number.isFinite(L.rank)&&L.rank>0?t('rankN',{n:L.rank}):'-';
+  if(G.mode==='solo'&&G.run&&Number.isFinite(G.run.best))$('#oRank').textContent=t('rankN',{n:G.run.best});
   renderRewards($('#oRew'),G.lastAward);
-  if(!canRespawn(undefined,true)){tipEl.hidden=false;tipEl.textContent=t(G.rule==='escape'?'escOutHud':'eliminated');}
-  $('#btnAgain').textContent=t(canRespawn(undefined,true)?'respawn':'spectate');over.hidden=false;overExtras();boostBtn.hidden=true;fireBtn.hidden=true;emoBtn.hidden=true;emoBar.hidden=true;}
+  if(G.mode!=='solo'&&!canRespawn(undefined,true)){tipEl.hidden=false;tipEl.textContent=t(G.rule==='escape'?'escOutHud':'eliminated');}
+  /* an endless run has one life: the button starts a new run */
+  $('#btnAgain').textContent=t(G.mode==='solo'?'again':canRespawn(undefined,true)?'respawn':'spectate');over.hidden=false;overExtras();boostBtn.hidden=true;fireBtn.hidden=true;emoBtn.hidden=true;emoBar.hidden=true;}
 
 /* ================= timed rounds ================= */
 const resultsEl=$('#results'),resList=$('#resList'),btnNext=$('#btnNext');let lastTickSec=-1,resT=0;
@@ -8512,7 +8681,7 @@ function beginRound(id,now){G.round={id,end:id&&G.roomDur?now+G.roomDur:0,over:f
 function showPlayUI(){resultsEl.hidden=true;over.hidden=true;boostBtn.hidden=false;fireBtn.hidden=false;emoBtn.hidden=false;}
 function syncRound(rd,now){const id=rd[0]|0,left=+rd[1],isOver=!!rd[2];if(!id||id<G.round.id)return;
   /* the room's round length, so this phone can work out the closing ring itself */
-  const du=rd[3]|0;G.roomDur=[180000,300000,600000,DUEL_ROUND].includes(du)?du:0;
+  const du=rd[3]|0;G.roomDur=du===DUEL_ROUND||(du>=60000&&du<=1800000&&du%60000===0)?du:0;
   if(id!==G.round.id){const first=G.round.id===0;beginRound(id,now);G.lastEv=0;G.evInit=!first;
     G.dd=null;G.outHits=[];G.outFx=[];G.outDl=[];G.clones=[];G.projs=[];G.mines=[];myEats=[];pendFood.clear();pendDrop.clear();pendItem.clear();
     streams.clear();remote.length=0;G.worldReady=false;G.worldRound=0;G.adoptKey='none';G.lastWorldT=-1;
@@ -8609,8 +8778,15 @@ if(joinForm)joinForm.addEventListener('submit',e=>{e.preventDefault();const inp2
 $('#btnPlay').addEventListener('click',playMain);
 $('#btnCancel').addEventListener('click',()=>goLobby(''));
 $('#btnExit').addEventListener('click',()=>goLobby(''));
-$('#btnLobby').addEventListener('click',()=>{if(G.mode==='solo'||G.mode==='quick')Ads.between().then(()=>goLobby(''));else goLobby('');});
-$('#btnAgain').addEventListener('click',()=>{over.hidden=true;const go=()=>{if(canRespawn(undefined,true)&&spawnMe(performance.now()))showPlayUI();};if(G.mode==='solo')Ads.between().then(go);else go();});
+/* the end of an endless run: one game for the missions, the ad pacing and the statistics */
+function runEnd(){const R=G.run;if(G.mode!=='solo'||!R||R.ended)return;R.ended=true;prof.st.runs=(prof.st.runs|0)+1;
+  missionAdd('games',1);if(Number.isFinite(R.best)&&R.best<=3){missionAdd('top3',1);Review.maybe('top3');}
+  track('end',{m:'solo',d:0,r:Number.isFinite(R.best)?R.best:0,n:BOT_COUNT+1,sc:Math.floor(R.peak),k:G.kills|0,rv:R.rev|0,s:Math.round((performance.now()-R.t0)/1000)});
+  Ads.matchDone();saveProf();}
+$('#btnLobby').addEventListener('click',()=>{runEnd();if(G.mode==='solo'||G.mode==='quick')Ads.between().then(()=>goLobby(''));else goLobby('');});
+$('#btnAgain').addEventListener('click',()=>{over.hidden=true;
+  if(G.mode==='solo'){runEnd();Ads.between().then(()=>{if(G.mode==='solo')startSolo();});return;}
+  if(canRespawn(undefined,true)&&spawnMe(performance.now()))showPlayUI();});
 
 /* ================= invite links (standalone build) ================= */
 const inviteUrl=code=>(NATIVE?WEB_URL:location.origin+location.pathname)+'?room='+code;
@@ -9147,7 +9323,8 @@ function renderRewards(el,aw){el.textContent='';if(!aw){el.hidden=true;return;}e
   const top=document.createElement('div');top.className='rew-l';const b1=document.createElement('b');b1.textContent='+'+aw.xp;
   const b2=document.createElement('b');b2.textContent='+'+aw.coins;const ci=document.createElement('i');ci.className='coin';
   const sep=document.createElement('span');sep.className='sep';sep.textContent='·';top.append(b1,' XP ',sep,ci,b2);
-  if(aw.tag||aw.place){const pl=document.createElement('small');pl.textContent=aw.tag?t(aw.tag):t('place',{r:aw.place});top.append(pl);}
+  {const tx=[aw.tag?t(aw.tag):aw.place?t('place',{r:aw.place}):'',aw.vip?t('vipDouble'):''].filter(Boolean).join(' · ');
+    if(tx){const pl=document.createElement('small');pl.textContent=tx;top.append(pl);}}
   const bar=document.createElement('div');bar.className='rew-bar';const lv=document.createElement('span');lv.className='lvb';lv.textContent=t('lv',{n:aw.lvTo});
   const xb=document.createElement('span');xb.className='xpbar';const fill=document.createElement('i');xb.append(fill);const sm=document.createElement('small');sm.textContent=t('xpOf',{a:aw.to.into,b:aw.to.need});
   bar.append(lv,xb,sm);el.append(top,bar);
@@ -9299,7 +9476,7 @@ paintCloud();
 /* ================= anonymous play statistics =================
    Only sent when the page has an account server, and players can turn it off in the account sheet.
    A random device id (not the account token), a session id, and small events like "match started" or "died to lava". */
-const GAME_VER='25';
+const GAME_VER='27';
 const PLATFORM=/iPhone|iPad|iPod/.test(navigator.userAgent)||(navigator.maxTouchPoints>1&&/Mac/.test(navigator.platform||''))?'ios':/Android/.test(navigator.userAgent)?'android':'desktop';
 const STATS=(()=>{let dev=store.get('ssld-dev','');if(typeof dev!=='string'||!/^[a-z0-9]{12,24}$/.test(dev)){dev=(Math.random().toString(36).slice(2,10)+Math.random().toString(36).slice(2,10)).replace(/[^a-z0-9]/g,'').slice(0,16).padEnd(12,'0');store.set('ssld-dev',dev);}
   return {dev,sid:(Math.random().toString(36).slice(2,12)+'000000').slice(0,10),q:[],on:CLOUD&&store.get('ssld-stats',true)!==false,perf:null};})();
@@ -9331,7 +9508,8 @@ const NPLAT=NATIVE?(()=>{try{const p=window.Capacitor.getPlatform();return p==='
 const num=(v,d)=>{const n=+v;return Number.isFinite(n)?n:d;};
 
 /* ---- remote settings: defaults here, the server's /v1/config over them (remembered for the next start) ---- */
-const RCFG_DEF={ads:{on:true,inter:{afterMatches:3,every:3,gapSec:90,maxDay:10,minLevel:2},reward:{maxDay:25,double:true,chest:true,revive:true,daily:true},chest:{coins:150,hours:4}},
+const RCFG_DEF={ads:{on:true,inter:{afterMatches:3,every:3,gapSec:90,maxDay:10,minLevel:2},reward:{maxDay:25,double:true,chest:true,revive:true,daily:true},chest:{coins:150,hours:4},revive:{max:2,keep:1}},
+  vip:{daily:100},
   shop:{coins:{sb_coins_1:1200,sb_coins_2:7000,sb_coins_3:15000,sb_coins_4:32000},starter:{coins:2500}},links:{ios:'',android:''},season:null,news:null,qm:{maxBand:3}};
 function cfgMerge(a,b){if(!b||typeof b!=='object'||Array.isArray(b))return b===undefined?a:b;
   const o=Object.assign({},a&&typeof a==='object'&&!Array.isArray(a)?a:{});for(const k of Object.keys(b))o[k]=cfgMerge(o[k],b[k]);return o;}
@@ -9347,11 +9525,14 @@ async function loadRemoteConfig(){if(!API_BASE)return;rcfgAt=Date.now();
   const i=P.iap&&typeof P.iap==='object'?P.iap:{};P.iap={since:num(i.since,0)||Date.now(),done:Array.isArray(i.done)?i.done.filter(x=>typeof x==='string').slice(-200):[],noads:i.noads?1:0,starter:i.starter?1:0,n:i.n|0};
   const ps=P.pass&&typeof P.pass==='object'?P.pass:{};P.pass={id:typeof ps.id==='string'?ps.id.slice(0,7):'',xp:Math.max(0,ps.xp|0),f:ps.f>>>0,p:ps.p>>>0,prem:ps.prem?1:0};
   const d=P.dl&&typeof P.dl==='object'?P.dl:{};P.dl={last:typeof d.last==='string'?d.last.slice(0,10):'',n:Math.max(0,d.n|0)};
+  /* the membership's end (ms); src 'test' only ever comes from the staging page's fake store */
+  const v=P.vip&&typeof P.vip==='object'?P.vip:{};P.vip={until:Math.max(0,num(v.until,0)),will:v.will?1:0,src:v.src==='test'?'test':'rc',
+    url:typeof v.url==='string'&&/^https:\/\//.test(v.url)?v.url.slice(0,300):'',chk:Math.max(0,num(v.chk,0))};
   P.notif=P.notif?1:0;P.rvAsk=num(P.rvAsk,0);
   /* v22 sells nothing for money on the web: paid items claimed in the old test mode stay owned for good */
   if(!WEBPAY){let moved=0;for(const c of Object.keys(P.tst||{}))for(const id of P.tst[c]){if(!P.own[c].includes(id)){P.own[c].push(id);moved++;}}
     P.tst={s:[],a:[],k:[],e:[],d:[],p:[],t:[]};if(moved)saveProf();}})();
-const isPayer=()=>prof.iap.n>0||!!prof.iap.noads;
+const isPayer=()=>prof.iap.n>0||!!prof.iap.noads||vipOn();
 /* the store's own rating card, at a good moment and at most every 60 days (the phone itself also limits how often it shows) */
 const Review={maybe(why){try{const R=NK&&NK.InAppReview;if(!NATIVE||!R||typeof R.requestReview!=='function')return false;
   if((prof.st.games|0)<6||Date.now()-num(prof.rvAsk,0)<60*864e5)return false;
@@ -9368,7 +9549,7 @@ const Ads=(()=>{
   const cfg=()=>(APPCFG.admob&&APPCFG.admob[NPLAT])||null;
   const testing=()=>!cfg()||!cfg().rewarded||!!(APPCFG.admob&&APPCFG.admob.test);
   const unit=k=>testing()?(AD_TEST[NPLAT]||{})[k]:cfg()[k];
-  const on=()=>NATIVE&&!!A()&&RCFG.ads&&RCFG.ads.on!==false&&!!unit('rewarded');
+  const on=()=>!!RCFG.ads&&RCFG.ads.on!==false&&(TESTSTORE||NATIVE&&!!A()&&!!unit('rewarded'));
   function today(){const a=prof.ads,d=curDay();if(a.day!==d){a.day=d;a.rv=0;a.it=0;}return a;}
   function mute(v){S.muted=v;try{if(SFX.ctx){if(v&&SFX.ctx.state==='running')SFX.ctx.suspend();else if(!v&&SFX.ctx.state==='suspended')SFX.ctx.resume();}}catch(e){}}
   function listen(){const ad=A(),L=(ev,fn)=>{try{ad.addListener(ev,fn);}catch(e){}};
@@ -9384,7 +9565,7 @@ const Ads=(()=>{
     L('interstitialAdFailedToShow',()=>{S.it='';if(S.itEnd)S.itEnd();});
     L('interstitialAdImpression',d=>{track('ad',{p:'inter',r:'imp',v:num(d&&d.valueMicros,0),cu:String(d&&d.currencyCode||'')});});}
   /* Google's consent form where the law needs one (EEA, UK), then Apple's tracking question, then the SDK */
-  function init(){if(S.init)return S.init;S.init=(async()=>{const ad=A();
+  function init(){if(TESTSTORE)return Promise.resolve(true);if(S.init)return S.init;S.init=(async()=>{const ad=A();
     try{const ci=await ad.requestConsentInfo({});S.consent=ci;
       if(ci&&ci.isConsentFormAvailable&&ci.status==='REQUIRED'){const r=await ad.showConsentForm();S.consent=Object.assign({},ci,r||{});}}catch(e){}
     if(S.consent&&S.consent.canRequestAds===false){track('ad',{p:'init',r:'fail'});return false;}
@@ -9398,6 +9579,8 @@ const Ads=(()=>{
   async function rewarded(place){if(!can(place)||S.busy)return false;const a=today();
     if(a.rv>=num(RCFG.ads.reward&&RCFG.ads.reward.maxDay,25)){toast(t('adLimit'));return false;}
     S.busy=true;track('ad',{p:place,r:'req'});
+    if(TESTSTORE){try{track('ad',{p:place,r:'show'});const ok=await testAd(true);if(ok){a.rv++;saveProf();track('ad',{p:place,r:'reward'});}else track('ad',{p:place,r:'fail'});return ok;}
+      finally{S.busy=false;}}
     try{if(!(await init())){toast(t('adNone'));return false;}
       if(S.rv!=='ready'){if(!S.rv)loadRv();toast(t('adLoading'));if(!(await wait(()=>S.rv==='ready'||!S.rv,9000))||S.rv!=='ready'){track('ad',{p:place,r:'skip'});toast(t('adNone'));return false;}}
       S.place=place;S.got=false;mute(true);
@@ -9410,9 +9593,10 @@ const Ads=(()=>{
   /* rewarded placements the settings allow; none on the web */
   function can(place){if(!on())return false;const R=RCFG.ads.reward||{};return R[place]!==false;}
   /* one finished match: maybe a full-screen ad before the next screen. Never for anyone who paid, never early on */
-  function matchDone(){if(!on())return;const a=today();a.m++;a.tot++;saveProf();if(a.m>=1)init().then(ok=>{if(ok)loadIt();});}
+  function matchDone(){if(!on())return;const a=today();a.m++;a.tot++;saveProf();if(a.m>=1&&!TESTSTORE)init().then(ok=>{if(ok)loadIt();});}
   async function between(){if(!on()||S.busy)return;const I=RCFG.ads.inter||{},a=today();
     if(isPayer()||a.tot<num(I.afterMatches,3)||a.m<num(I.every,3)||Date.now()-a.last<num(I.gapSec,90)*1000||a.it>=num(I.maxDay,10)||lvNow().lv<num(I.minLevel,2))return;
+    if(TESTSTORE){S.busy=true;track('ad',{p:'inter',r:'show'});try{await testAd(false);a.m=0;a.it++;a.last=Date.now();saveProf();}finally{S.busy=false;}return;}
     if(S.it!=='ready'){loadIt();track('ad',{p:'inter',r:'skip'});return;}
     S.busy=true;mute(true);track('ad',{p:'inter',r:'show'});
     try{const ended=new Promise(res=>{S.itEnd=res;});A().showInterstitial().catch(()=>{if(S.itEnd)S.itEnd();});
@@ -9423,20 +9607,53 @@ const Ads=(()=>{
   async function privacy(){try{await init();await A().showPrivacyOptionsForm();}catch(e){}}
   return {on,can,rewarded,matchDone,between,init,privacyNeeded,privacy,get busy(){return S.busy;}};})();
 
+/* the staging page's fake ad: a labelled card with a countdown. A rewarded one pays only when it ran to the end */
+function testAd(rew){return new Promise(res=>{const d=document.createElement('div');d.className='testad';d.setAttribute('role','dialog');
+  d.innerHTML='<div class="testad-c"><b></b><p></p><span class="testad-n"></span><button type="button" class="btn ghost small"></button></div>';
+  d.querySelector('b').textContent=t(rew?'testAdT':'testInterT');d.querySelector('p').textContent=t('testAdD');
+  const n=d.querySelector('.testad-n'),btn=d.querySelector('button');let left=rew?3:2;
+  const paint=()=>{n.textContent=left>0?String(left):'✓';btn.textContent=left>0?(rew?t('testAdSkip'):'…'):t(rew?'testAdDone':'testAdClose');btn.disabled=!rew&&left>0;};
+  const iv=setInterval(()=>{left--;paint();if(left<=0)clearInterval(iv);},1000);
+  btn.addEventListener('click',()=>{clearInterval(iv);d.remove();res(left<=0);});document.body.append(d);paint();});}
+
 /* ================= store purchases (RevenueCat in the apps) ================= */
 const IAP_COINS=['sb_coins_1','sb_coins_2','sb_coins_3','sb_coins_4'];
 const IAP_ALL=[...IAP_COINS,'sb_starter','sb_noads','sb_pass'];
 /* the starter pack: coins once, plus a skin and a trail sold nowhere else */
 const STARTER_ITEMS={s:'goldscale',t:'stardust'};
+/* v27: the membership, an auto-renewing monthly subscription (sb_vip; RevenueCat entitlement "vip"). Its end is kept in the save
+   so the perks work offline; RevenueCat's customer info sets it at start, after a purchase or a restore, and whenever it changes */
+const VIP_ID='sb_vip',VIP_ENT='vip';
+const TEST_PRICES={sb_coins_1:'$0.99',sb_coins_2:'$4.99',sb_coins_3:'$9.99',sb_coins_4:'$19.99',sb_starter:'$1.99',sb_noads:'$3.99',sb_pass:'$4.99',sb_vip:'$4.99'};
+function vipOn(){const v=prof.vip;if(!v||!(v.until>Date.now()))return false;return NATIVE?v.src!=='test':TESTSTORE;}
+function vipFrom(ci){if(!ci||typeof ci!=='object'||TESTSTORE)return false;const isVip=id=>id===VIP_ID||String(id).startsWith(VIP_ID+':');
+  const e=ci.entitlements&&ci.entitlements.active&&ci.entitlements.active[VIP_ENT],subs=Array.isArray(ci.activeSubscriptions)?ci.activeSubscriptions:[];
+  const ad=ci.allExpirationDates&&typeof ci.allExpirationDates==='object'?ci.allExpirationDates:{},dates=Object.keys(ad).filter(isVip).map(k=>Date.parse(ad[k])||0);
+  /* per subscription: whether it renews, also without an entitlement set up in RevenueCat */
+  const sp=ci.subscriptionsByProductIdentifier&&typeof ci.subscriptionsByProductIdentifier==='object'?ci.subscriptionsByProductIdentifier:{};
+  const live=Object.keys(sp).filter(isVip).map(k=>sp[k]).filter(x=>x&&typeof x==='object'&&x.isActive);
+  const active=!!e||subs.some(isVip)||live.length>0,was=vipOn();
+  const until=active?(Math.max(num(e&&e.expirationDateMillis,0),...dates,...live.map(x=>Date.parse(x.expiresDate)||0),0)||Date.now()+31*864e5):0;
+  const will=active&&!(e&&e.willRenew===false)&&!(live.length&&live.every(x=>x.willRenew===false));
+  prof.vip={until,will:will?1:0,src:'rc',url:typeof ci.managementURL==='string'&&/^https:\/\//.test(ci.managementURL)?ci.managementURL.slice(0,300):'',chk:Date.now()};saveProf();
+  if(was!==vipOn())vipChanged();return active;}
+/* the perks show at once: the shop, the daily gift, an open death screen */
+function vipChanged(){paintAcct();paintGrowth();paintShop();if(!$('#dailySheet').hidden)renderDaily();if(!over.hidden&&G.me&&!G.me.alive)showOver();}
 const IAP=(()=>{
   const S={ready:false,starting:null,products:new Map(),busy:false};
   const P=()=>NK&&NK.Purchases;
   const key=()=>{const k=APPCFG.revenuecat&&APPCFG.revenuecat[NPLAT];return typeof k==='string'&&k.length>8?k:'';};
-  const on=()=>NATIVE&&!!P()&&!!key();
-  function start(){if(!on())return Promise.resolve(false);if(S.starting)return S.starting;S.starting=(async()=>{
+  const on=()=>TESTSTORE||NATIVE&&!!P()&&!!key();
+  function start(){if(!on())return Promise.resolve(false);
+    if(TESTSTORE){if(!S.ready){for(const [id,pr] of Object.entries(TEST_PRICES))S.products.set(id,{identifier:id,priceString:pr,price:parseFloat(pr.slice(1)),currencyCode:'USD'});S.ready=true;paintShop();}return Promise.resolve(true);}
+    if(S.starting)return S.starting;S.starting=(async()=>{
     try{await P().configure({apiKey:key(),appUserID:CL.id||undefined});
+      try{P().addCustomerInfoUpdateListener(ci=>{vipFrom(ci);});}catch(e){}
       const r=await P().getProducts({productIdentifiers:IAP_ALL,type:'NON_SUBSCRIPTION'});
       for(const p of (r&&r.products)||[])S.products.set(p.identifier,p);
+      /* the membership is a subscription: Android lists it as sb_vip:<base plan> */
+      try{const r2=await P().getProducts({productIdentifiers:[VIP_ID],type:'SUBSCRIPTION'});
+        for(const p of (r2&&r2.products)||[])if(p&&(p.identifier===VIP_ID||String(p.identifier).startsWith(VIP_ID+':'))&&!S.products.has(VIP_ID))S.products.set(VIP_ID,p);}catch(e){}
       S.ready=true;reconcile((await P().getCustomerInfo()).customerInfo);paintShop();return true;}
     catch(e){S.starting=null;return false;}})();return S.starting;}
   /* what one purchase gives; a transaction is only ever paid out once */
@@ -9446,11 +9663,13 @@ const IAP=(()=>{
       prof.iap.starter=1;for(const c of ['s','t'])if(unlock(c,STARTER_ITEMS[c]))out.push(itemName(c,STARTER_ITEMS[c]));}
     else if(pid==='sb_noads'){prof.iap.noads=1;out.push(t('noAdsOn'));}
     else if(pid==='sb_pass'){if(old)return null;passCheck();if(prof.pass.prem)return null;prof.pass.prem=1;out.push(t('passPremOn'));}
+    /* until the store's customer info says otherwise, a fresh membership runs a month (and a few days of slack) */
+    else if(pid===VIP_ID){if(old)return null;if(!vipOn())prof.vip={until:Date.now()+(TESTSTORE?30:32)*864e5,will:1,src:TESTSTORE?'test':'rc',url:prof.vip.url||'',chk:Date.now()};out.push(t('vipOnToast'));}
     else return null;
     if(tx){done.push(tx);if(done.length>200)done.splice(0,done.length-200);}if(!old)prof.iap.n++;saveProf();paintAcct();paintGrowth();return out;}
   /* purchases the store knows about that this save has not paid out (the app closed mid-purchase, or restoring after a reinstall):
      items bought for good come back; coins and passes only for purchases made since this save began */
-  function reconcile(ci){const list=(ci&&ci.nonSubscriptionTransactions)||[];let got=[];
+  function reconcile(ci){vipFrom(ci);const list=(ci&&ci.nonSubscriptionTransactions)||[];let got=[];
     for(const tx of list){if(!tx||!IAP_ALL.includes(tx.productIdentifier))continue;const when=Date.parse(tx.purchaseDate)||0,old=when<prof.iap.since-60000;
       if(prof.iap.done.includes(tx.transactionIdentifier))continue;
       if(old&&(IAP_COINS.includes(tx.productIdentifier)||tx.productIdentifier==='sb_pass'))continue;
@@ -9460,21 +9679,27 @@ const IAP=(()=>{
   async function buy(pid){if(!on()){toast(t('iapApp'));return false;}if(S.busy)return false;
     if(!S.ready&&!(await start())){toast(t('iapOff'));return false;}
     const prod=S.products.get(pid);if(!prod){toast(t('iapOff'));return false;}
+    /* the staging page: a fake purchase, paid out like a real one */
+    if(TESTSTORE){track('iap',{id:pid,r:'test'});const was=vipOn(),g=grant(pid,'test-'+Date.now(),false);sfx('levelup',1,true);
+      toast(t('testBuy'),(g||[]).join(t('listSep')));if(was!==vipOn())vipChanged();paintShop();return true;}
     S.busy=true;track('iap',{id:pid,r:'tap'});paintShop();
     try{const r=await P().purchaseStoreProduct({product:prod});const tx=r&&r.transaction&&r.transaction.transactionIdentifier||'';
       const g=grant(pid,tx||('local-'+Date.now()),false);
       track('iap',{id:pid,r:'ok',pr:num(prod.price,0),cu:String(prod.currencyCode||'')});
       sfx('levelup',1,true);if(g&&g.length)toast(t('iapThanks'),g.join(t('listSep')));
-      if(r&&r.customerInfo)reconcile(r.customerInfo);return true;}
+      if(r&&r.customerInfo)reconcile(r.customerInfo);if(pid===VIP_ID)vipChanged();return true;}
     catch(e){const code=String(e&&e.code||'');
       if(e&&e.userCancelled||code==='1'){track('iap',{id:pid,r:'cancel'});return false;}
       if(code==='20'){track('iap',{id:pid,r:'pending'});toast(t('iapPending'));return false;}
       track('iap',{id:pid,r:'fail',e:code});toast(t('iapFail'));return false;}
     finally{S.busy=false;paintShop();}}
   async function restore(){if(!on()){toast(t('iapApp'));return;}if(!S.ready&&!(await start())){toast(t('iapOff'));return;}
-    try{const r=await P().restorePurchases();if(!reconcile(r&&r.customerInfo))toast(t('iapNothing'));}catch(e){toast(t('iapFail'));}}
+    if(TESTSTORE){toast(t('iapNothing'));return;}
+    try{const was=vipOn(),r=await P().restorePurchases();const got=reconcile(r&&r.customerInfo);if(vipOn()&&!was)toast(t('vipRestored'));else if(!got)toast(t('iapNothing'));}catch(e){toast(t('iapFail'));}}
+  /* the membership's state again (coming back to the app after a while) */
+  async function refresh(){if(TESTSTORE||!on()||!S.ready)return;try{vipFrom((await P().getCustomerInfo()).customerInfo);}catch(e){}}
   const price=pid=>{const p=S.products.get(pid);return p?p.priceString:'';};
-  return {on,start,buy,restore,price,ready:()=>S.ready,busy:()=>S.busy};})();
+  return {on,start,buy,restore,refresh,price,ready:()=>S.ready,busy:()=>S.busy};})();
 
 /* ================= season pass: one season a calendar month (UTC), 30 tiers, a free and a premium track ================= */
 const PASS_TIERS=30,PASS_XP=400;
@@ -9518,7 +9743,7 @@ const dailyReady=()=>prof.dl.last!==curDay();
 const dailyIndex=()=>prof.dl.n%7;
 function dailyClaim(double){if(!dailyReady())return null;const i=dailyIndex(),d=DAILY[i],out=[];let c=d.c*(double?2:1);
   if(d.item){const pick=DAILY_ITEMS.find(([cat,id])=>!owns(cat,id));if(pick){unlock(pick[0],pick[1]);out.push(itemName(pick[0],pick[1]));}else c+=500;}
-  prof.coins+=c;out.unshift(t('coinsN',{n:c}));prof.dl.last=curDay();prof.dl.n++;passAddXp(100);saveProf();track('daily',{n:prof.dl.n,x2:double?1:0});return out;}
+  prof.coins+=c;out.unshift(t('coinsN',{n:c}));{const v=vipOn()?num(RCFG.vip&&RCFG.vip.daily,100)|0:0;if(v>0){prof.coins+=v;out.push(t('vipDailyGot',{n:v}));}}prof.dl.last=curDay();prof.dl.n++;passAddXp(100);saveProf();track('daily',{n:prof.dl.n,x2:double?1:0});return out;}
 
 /* ================= local reminders (the apps): the daily gift, and a nudge after a few quiet days ================= */
 async function scheduleReminders(ask){const LN=NK&&NK.LocalNotifications;if(!NATIVE||!LN)return;
@@ -9595,19 +9820,26 @@ function shareCard(rank,score,kills){const W=1080,H=1350,c=document.createElemen
 /* ================= the lobby buttons, sheets and their paint ================= */
 function paintGrowth(){const fd=$('#featDaily'),fp=$('#featPass'),fs=$('#featShop'),fr=$('#featRank'),fa=$('#featApp');if(!fd)return;
   fd.querySelector('.dot').hidden=!dailyReady();fp.querySelector('.dot').hidden=!passClaimable();
-  fs.hidden=!NATIVE;fs.querySelector('.dot').hidden=!(Ads.can('chest')&&chestReady());
+  fs.hidden=!(NATIVE||TESTSTORE);fs.querySelector('.dot').hidden=!(Ads.can('chest')&&chestReady());
   fr.hidden=!CLOUD;
   const link=!NATIVE&&RCFG.links&&RCFG.links[PLATFORM==='android'?'android':'ios'];fa.hidden=!link;if(link)fa.dataset.href=link;
   $('#btnOnline').hidden=!NET_SERVER||!P2P.supported();
-  const nw=RCFG.news&&(RCFG.news[LANG]||RCFG.news.en);const ne=$('#newsLine');ne.hidden=!nw;if(nw)ne.textContent=String(nw).slice(0,140);}
+  const nw=RCFG.news&&(RCFG.news[LANG]||RCFG.news.en);const ne=$('#newsLine');ne.hidden=!nw;if(nw)ne.textContent=String(nw).slice(0,140);
+  $('#featRow').dataset.n=[fd,fp,fs,fr,fa].filter(x=>!x.hidden).length;fitModes();}
 const chestReady=()=>Date.now()-prof.ads.chest>=num(RCFG.ads.chest&&RCFG.ads.chest.hours,4)*3600e3;
 function openDaily(auto){closeSheets();const sh=$('#dailySheet');sh.hidden=false;renderDaily(auto);}
-function renderDaily(){const box=$('#dGrid');box.textContent='';const i0=dailyIndex(),ready=dailyReady();
-  DAILY.forEach((d,i)=>{const c=document.createElement('div');c.className='dcell'+(i<i0||(i===i0&&!ready)?' got':'')+(i===i0&&ready?' now':'')+(d.item?' big':'');
+/* the week on show: before today's claim, the days already claimed (day n%7 is today's); after it, the week that holds today's
+   claim, so claiming day 1 ticks day 1 only (day 2 is tomorrow's, marked next) and claiming day 7 ticks all seven until tomorrow */
+function dailyShown(){const n=prof.dl.n,ready=dailyReady();return {ready,got:ready?n%7:(n>0?(n-1)%7+1:0)};}
+function renderDaily(){const box=$('#dGrid');box.textContent='';const {ready,got}=dailyShown();
+  DAILY.forEach((d,i)=>{const c=document.createElement('div');c.className='dcell'+(i<got?' got':'')+(i===got&&ready?' now':'')+(i===got&&!ready?' next':'')+(d.item?' big':'');
     const h=document.createElement('small');h.textContent=t('dDay',{n:i+1});const ic=document.createElement('i');ic.textContent=d.item?'🎁':'🪙';
     const v=document.createElement('b');v.textContent=d.item?t('dItem'):'+'+d.c;c.append(h,ic,v);box.append(c);});
   $('#dSub').textContent=ready?t('dReady'):t('dTomorrow');
-  const b1=$('#dClaim'),b2=$('#dClaim2');b1.disabled=!ready;b2.hidden=!ready||!Ads.can('daily');b2.disabled=Ads.busy;}
+  const b1=$('#dClaim'),b2=$('#dClaim2');b1.disabled=!ready;b2.hidden=!ready||!Ads.can('daily');b2.disabled=Ads.busy;
+  /* members: the extra coins; others in the app: what the membership would add */
+  const dv=$('#dVip'),vn=num(RCFG.vip&&RCFG.vip.daily,100)|0,on=vipOn();dv.hidden=!(vn>0&&(on||IAP.on()));dv.disabled=on;
+  if(!dv.hidden)dv.textContent=t(on?'vipDailyLine':'vipDailyAd',{n:vn});}
 async function claimDaily(double){if(!dailyReady())return;if(double){if(!(await Ads.rewarded('daily')))return;}
   const day7=dailyIndex()===6,got=dailyClaim(double);if(!got)return;if(day7)Review.maybe('day7');sfx('coin',1,true);toast(t('dGot'),got.join(t('listSep')));renderDaily();paintAcct();paintGrowth();
   if(NATIVE)setTimeout(()=>scheduleReminders(true),900);}
@@ -9617,7 +9849,7 @@ function renderPass(){const p=passCheck(),def=seasonDef(p.id),T=passTiers(def),n
   $('#pTitle').textContent=t('passTitle',{n:def.n});const into=p.xp-n*PASS_XP;
   $('#pTier').textContent=t('passTierN',{n});$('#pBar').style.width=(n>=PASS_TIERS?100:into/PASS_XP*100).toFixed(1)+'%';$('#pXp').textContent=n>=PASS_TIERS?t('passMax'):into+' / '+PASS_XP;
   const days=Math.max(0,Math.ceil((seasonEnd()-Date.now())/86400e3));$('#pEnds').textContent=t('passEnds',{d:days});
-  const buy=$('#pBuy');buy.hidden=!!p.prem;if(!p.prem){const pr=IAP.price('sb_pass');buy.querySelector('b').textContent=NATIVE?t('passBuy',{p:pr||'…'}):t('passBuyApp');buy.disabled=!NATIVE||IAP.busy();}
+  const buy=$('#pBuy');buy.hidden=!!p.prem;if(!p.prem){const pr=IAP.price('sb_pass');buy.querySelector('b').textContent=IAP.on()?t('passBuy',{p:pr||'…'}):t('passBuyApp');buy.disabled=!IAP.on()||IAP.busy();}
   const list=$('#pList');list.textContent='';
   T.forEach((tr,k)=>{const i=k+1,row=document.createElement('div');row.className='prow'+(i<=n?' done':'');
     const no=document.createElement('span');no.className='pno';no.textContent=i;row.append(no);
@@ -9630,9 +9862,21 @@ function renderPass(){const p=passCheck(),def=seasonDef(p.id),T=passTiers(def),n
   const first=list.children[Math.max(0,Math.min(n,PASS_TIERS)-2)];if(first&&!renderPass.scrolled){renderPass.scrolled=1;list.scrollTop=first.offsetTop-list.offsetTop;}}
 function passClaimAll(){const p=passCheck(),n=passTier(),got=[];for(let i=1;i<=n;i++)for(const k of ['f','p'])if(passCan(i,k)){const g=passClaim(i,k);if(g)got.push(g);}
   if(got.length){sfx('levelup',1,true);toast(t('passGot'),got.slice(0,6).join(t('listSep'))+(got.length>6?' …':''));}renderPass();paintAcct();paintGrowth();}
-function openShop(){closeSheets();$('#shopSheet').hidden=false;track('shop',{});IAP.start();renderShop();}
+function openShop(f){closeSheets();$('#shopSheet').hidden=false;track('shop',{f:typeof f==='string'?f:''});IAP.start();renderShop();
+  if(f==='vip'){const v=$('#vipOffer');if(v)v.scrollIntoView({block:'nearest'});}}
+function vipCard(off){const c=document.createElement('div');c.className='offer vip';c.id='vipOffer';const on=vipOn(),pr=IAP.price(VIP_ID);
+  const ic=document.createElement('i');ic.textContent='🌟';const tx=document.createElement('div');const h=document.createElement('b');h.textContent=t('vipT');
+  const sm=document.createElement('small');sm.textContent=t('vipD',{n:num(RCFG.vip&&RCFG.vip.daily,100)|0});tx.append(h,sm);
+  const b=document.createElement('button');b.type='button';b.className='btn primary small';b.textContent=on?t('vipActiveBtn'):pr?t('vipPrice',{p:pr}):'…';
+  b.disabled=on||!pr||IAP.busy();b.addEventListener('click',()=>IAP.buy(VIP_ID));
+  const lg=document.createElement('p');lg.className='vip-legal';const link=(u,l)=>{const a=document.createElement('a');a.href=u;a.target='_blank';a.rel='noopener';a.textContent=l;return a;};
+  if(on){const d=new Date(prof.vip.until).toLocaleDateString(LOCALES[LANG]||LANG,{month:'short',day:'numeric'});lg.append(t(prof.vip.will?'vipRenews':'vipEnds',{d}));
+    if(prof.vip.url)lg.append(' · ',link(prof.vip.url,t('vipManage')));}
+  else{const android=NATIVE?NPLAT==='android':PLATFORM==='android';lg.append(t('vipLegal',{s:android?'Google Play':'App Store'}),' ');
+    if(!android)lg.append(link(TERMS_URL,t('vipTerms')),' · ');lg.append(link(PRIVACY_URL,t('privacyLink')));}
+  c.append(ic,tx,b,lg);off.append(c);}
 function paintShop(){if(!$('#shopSheet').hidden)renderShop();if(!$('#passSheet').hidden)renderPass();}
-function renderShop(){const off=$('#shopOffers');off.textContent='';
+function renderShop(){const off=$('#shopOffers');off.textContent='';vipCard(off);
   const card=(cls,icon,title,sub,pid,owned)=>{const c=document.createElement('div');c.className='offer '+cls;const ic=document.createElement('i');ic.textContent=icon;
     const tx=document.createElement('div');const h=document.createElement('b');h.textContent=title;const s=document.createElement('small');s.textContent=sub;tx.append(h,s);
     const b=document.createElement('button');b.type='button';b.className='btn primary small';b.textContent=owned?t('stOwned'):(IAP.price(pid)||'…');b.disabled=!!owned||IAP.busy();
@@ -9651,7 +9895,7 @@ function renderShop(){const off=$('#shopOffers');off.textContent='';
     c.innerHTML='<i></i><b></b><small></small>';c.querySelector('i').textContent=['🪙','💰','💎','👑'][i];c.querySelector('b').textContent=n.toLocaleString(numLocale());
     c.querySelector('small').textContent=IAP.price(pid)||'…';if(i>=1){const tag=document.createElement('em');tag.textContent=t('packBonus',{p:[0,17,25,33][i]});c.append(tag);}
     c.disabled=IAP.busy();c.addEventListener('click',()=>IAP.buy(pid));grid.append(c);});
-  $('#shopNote').textContent=IAP.on()?t('shopNote'):t('iapOff');}
+  $('#shopNote').textContent=TESTSTORE?t('testShop'):IAP.on()?t('shopNote'):t('iapOff');}
 function openRank(){closeSheets();$('#lbSheet').hidden=false;track('lb',{});renderRank();}
 async function renderRank(){const board=LB.board,list=$('#lbList');for(const b of $('#lbTabs').children)b.setAttribute('aria-pressed',String(b.dataset.b===board));
   list.textContent='';$('#lbMe').textContent='';$('#lbSub').textContent=t('lbLoading');
@@ -9673,16 +9917,35 @@ function rewardExtras(el,aw){if(!el||!aw)return;const row=document.createElement
   if(el.id==='resRew'&&G.round.over){const rows=G.round.rows||[],mine=rows.find(r=>r.me);const b=document.createElement('button');b.type='button';b.className='btn ghost';b.textContent=t('shareBtn');
     b.addEventListener('click',()=>shareResult(mine?mine.rank:0,mine?mine.score:myScore(),G.rs.kills|0));row.append(b);}
   if(row.children.length)el.append(row);}
-/* a revive for an ad: once a match (quick), once in five minutes (endless); never in rooms with friends */
-function reviveOk(){if(!Ads.can('revive')||!G.last||(G.last.len|0)<60||!canRespawn(undefined,true))return false;
-  if(G.mode==='quick')return !G.round.revived;if(G.mode==='solo')return Date.now()-prof.ads.rev>300000;return false;}
-function overExtras(){const box=$('#oRew');let row=box.querySelector('.adrow');
-  if(!reviveOk())return;if(box.hidden){box.hidden=false;box.textContent='';}
+/* v27 revives. An endless run (classic and frenzy against bots): up to ads.revive.max a run, keeping ads.revive.keep of the
+   length. A timed match against bots: once, half the length. Members revive without the ad; the web has no ads, so a run
+   there just ends, with a pointer to the app. Never in rooms with friends */
+const reviveMax=()=>Math.max(0,num(RCFG.ads.revive&&RCFG.ads.revive.max,2)|0);
+const reviveKeep=()=>G.mode==='solo'?clamp(num(RCFG.ads.revive&&RCFG.ads.revive.keep,1),0.1,1):0.5;
+function reviveLeft(){return G.mode==='solo'?Math.max(0,reviveMax()-(G.run?G.run.rev|0:0)):G.mode==='quick'?(G.round.revived?0:1):0;}
+/* how this death can be revived: 'vip', 'ad', or '' */
+function reviveWay(){if(!G.last||(G.last.len|0)<60||!canRespawn(undefined,true)||(RCFG.ads.reward&&RCFG.ads.reward.revive===false))return '';
+  if(reviveLeft()<=0)return '';if(vipOn())return 'vip';return Ads.can('revive')?'ad':'';}
+function overExtras(){const box=$('#oRew');let row=box.querySelector('.adrow');const way=reviveWay(),solo=G.mode==='solo',big=!!G.last&&(G.last.len|0)>=60;
+  /* the line under the button: revives left, or why there is none */
+  const used=solo&&!!G.run&&reviveMax()>0&&G.run.rev>=reviveMax(),web=solo&&!way&&!used&&!Ads.on()&&!vipOn();
+  const note=!solo||!big?'':way?t('reviveLeft',{n:reviveLeft(),m:reviveMax()}):used?t('reviveUsed'):web?t('reviveWeb'):'';
+  if(!way&&!note)return;
+  if(box.hidden){box.hidden=false;box.textContent='';}
   if(!row){row=document.createElement('div');row.className='adrow';box.append(row);}
-  const b=document.createElement('button');b.type='button';b.className='btn primary adbtn';b.textContent=t('adRevive',{n:Math.round(G.last.len*0.5)});
-  b.addEventListener('click',async()=>{b.disabled=true;if(!(await Ads.rewarded('revive'))){b.disabled=false;return;}
-    if(G.mode==='quick')G.round.revived=true;prof.ads.rev=Date.now();saveProf();over.hidden=true;
-    if(canRespawn(undefined,true)&&spawnMe(performance.now(),Math.max(10,Math.round(G.last.len*0.5)))){showPlayUI();toast(t('revived'));}});
+  if(note){const p=document.createElement('small');p.className='revnote';p.textContent=note;row.prepend(p);}
+  /* the web: the store link once the apps are out */
+  const link=web&&big&&RCFG.links&&RCFG.links[PLATFORM==='android'?'android':'ios'];
+  if(link){const a=document.createElement('button');a.type='button';a.className='btn ghost';a.textContent=t('fApp');a.addEventListener('click',()=>window.open(link,'_blank','noopener'));row.append(a);}
+  if(way==='ad'&&IAP.on()){const u=document.createElement('button');u.type='button';u.className='linkbtn vipup';u.textContent=t('vipUpsell');u.addEventListener('click',()=>openShop('vip'));row.append(u);}
+  if(!way)return;
+  const n=Math.max(10,Math.round(G.last.len*reviveKeep()));
+  const b=document.createElement('button');b.type='button';b.className='btn primary '+(way==='ad'?'adbtn':'vipbtn');b.textContent=t(way==='vip'?'vipRevive':'adRevive',{n});
+  b.addEventListener('click',async()=>{b.disabled=true;if(way==='ad'&&!(await Ads.rewarded('revive'))){b.disabled=false;return;}
+    if(!G.me||G.me.alive||G.round.over)return;
+    if(G.mode==='quick')G.round.revived=true;if(solo&&G.run)G.run.rev++;prof.ads.rev=Date.now();saveProf();over.hidden=true;
+    track('revive',{m:G.mode,n:solo&&G.run?G.run.rev:1,v:way==='vip'?1:0});
+    if(canRespawn(undefined,true)&&spawnMe(performance.now(),n)){showPlayUI();toast(t('revived'));}});
   row.prepend(b);}
 /* back in the lobby: the daily gift opens by itself once a day for players who already know the game */
 let nudgeDay='';
@@ -9701,8 +9964,9 @@ $('#btnOnline').addEventListener('click',quickMatch);
 $('#dailyDone').addEventListener('click',()=>{$('#dailySheet').hidden=true;});
 $('#dClaim').addEventListener('click',()=>claimDaily(false));
 $('#dClaim2').addEventListener('click',()=>claimDaily(true));
+$('#dVip').addEventListener('click',()=>{if(!vipOn())openShop('vip');});
 $('#passDone').addEventListener('click',()=>{$('#passSheet').hidden=true;paintGrowth();});
-$('#pBuy').addEventListener('click',()=>{if(NATIVE)IAP.buy('sb_pass').then(()=>renderPass());else toast(t('iapApp'));});
+$('#pBuy').addEventListener('click',()=>{if(IAP.on())IAP.buy('sb_pass').then(()=>renderPass());else toast(t('iapApp'));});
 $('#pClaimAll').addEventListener('click',passClaimAll);
 $('#shopDone').addEventListener('click',()=>{$('#shopSheet').hidden=true;paintGrowth();});
 $('#shopRestore').addEventListener('click',()=>IAP.restore());
@@ -9711,8 +9975,9 @@ $('#lbDone').addEventListener('click',()=>{$('#lbSheet').hidden=true;});
 for(const b of $('#lbTabs').children)b.addEventListener('click',()=>{LB.board=b.dataset.b;renderRank();});
 langHooks.push(()=>{paintGrowth();if(!$('#dailySheet').hidden)renderDaily();if(!$('#passSheet').hidden)renderPass();if(!$('#shopSheet').hidden)renderShop();if(!$('#lbSheet').hidden)renderRank();qmPaint();});
 /* a phone keeps the app open for days: coming back after half an hour picks up new settings and a new season */
-document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&rcfgAt&&Date.now()-rcfgAt>30*60e3){loadRemoteConfig();passCheck();}});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&rcfgAt&&Date.now()-rcfgAt>30*60e3){loadRemoteConfig();passCheck();IAP.refresh();}});
 function growthStart(){passCheck();paintGrowth();loadRemoteConfig();qmPaint();
+  if(TESTSTORE)IAP.start();
   if(NATIVE){setTimeout(()=>IAP.start(),1500);setTimeout(()=>{if(prof.ads.tot>=1)Ads.init();$('#shopAdPriv').hidden=!Ads.privacyNeeded();},4000);scheduleReminders(false);}
   setTimeout(lobbyNudge,1500);}
 
