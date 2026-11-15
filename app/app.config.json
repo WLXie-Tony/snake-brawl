@@ -1,6 +1,6 @@
 {
   "_readme": "Settings for the store apps. Change them here, commit, and run the build workflows again (they run scripts/configure.mjs). Until real AdMob ids are filled in, the apps show Google's test ads, which earn nothing. RevenueCat keys are the public SDK keys (appl_... and goog_...), not secret.",
-  "api": "",
+  "api": "https://snake-brawl-api-staging.wenlanxie.workers.dev",
   "admob": {
     "test": true,
     "ios": {
