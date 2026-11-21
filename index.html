@@ -446,7 +446,7 @@ a.linkbtn{text-decoration:none}
 .emo-i:active{transform:scale(.9);background:rgba(255,201,60,.2)}
 .showcase{display:grid;gap:4px;padding:8px 12px 10px;border-radius:16px;border:1px solid var(--line);
   background:radial-gradient(120% 100% at 50% 0%,rgba(255,201,60,.14),transparent 65%),var(--fill)}
-.showcase canvas{width:100%;max-width:330px;height:auto;aspect-ratio:360/110;justify-self:center;display:block}
+.showcase canvas{width:100%;max-width:330px;height:auto;aspect-ratio:720/290;justify-self:center;display:block}
 .sc-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .sc-row b{font-size:16px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .namefield{grid-template-columns:auto minmax(0,1fr);align-items:center;gap:12px}
@@ -664,6 +664,41 @@ a.linkbtn{text-decoration:none}
 @media (orientation:portrait) and (max-height:640px){#over .card{gap:10px;padding:14px 14px 14px}#over .over-k{font-size:23px}
   #over .over-stats div{padding:6px 8px;gap:2px}#over .over-stats b{font-size:21px}#over .tip{padding:6px 10px;font-size:12px;line-height:1.4}
   #over .rew{gap:6px;padding:8px 10px}#over .rew .adrow .btn{height:36px;font-size:14px}#over .rew .adrow .btn.primary{height:42px;font-size:16px}#over .actions .btn{height:44px}}
+/* ---------- v28: a calmer lobby. Upright phones, tablets and computers (phones held sideways keep the v26 two-column layout):
+   no tagline, softer surfaces without outlines, the snake bigger with the player's name on the same card, and the match set up
+   top to bottom (mode, its note, length, map) before the start button, which stays at the bottom of the screen while scrolling ---------- */
+/* surfaces without outlines, in both layouts */
+#lobby .acct,#lobby .feat,#lobby .maprow,#lobby .durrow,#lobby .showcase,#lobby .seg.modes button,#lobby .btn.ghost{border-color:transparent}
+#lobby .mbtn{border-color:transparent;background:rgba(255,201,60,.14);color:var(--gold-ink)}
+#lobby .seg.modes button[aria-checked="true"]{border-color:var(--candy);background:rgba(255,201,60,.16);box-shadow:0 2px 8px rgba(196,133,12,.16)}
+#lobby #btnPlay{background:linear-gradient(#ffd75a,#ffc22e);box-shadow:0 4px 0 var(--candy-deep),0 10px 24px rgba(196,133,12,.28)}
+#lobby #btnPlay:active{box-shadow:0 1px 0 var(--candy-deep),0 6px 16px rgba(196,133,12,.24)}
+@media not all and (orientation:landscape) and (max-height:560px){
+  #lobby .showcase canvas{max-width:none}
+  #lobby .card{gap:12px;padding:18px 16px 16px}
+  #lobby .lobby-h .tag{display:none}
+  #lobby .brand{font-size:clamp(40px,12vw,54px)}
+  #lobby .brand.en{font-size:clamp(30px,9.6vw,48px)}
+  #lobby .acct{padding:8px 12px}
+  /* two or three shortcuts: one row of pills, the icon beside the label; four (the apps) stay small tiles */
+  #lobby .featrow:not([data-n="4"]) .feat{grid-auto-flow:column;grid-template-columns:auto minmax(0,max-content);justify-content:center;align-items:center;gap:7px;padding:9px 10px;font-size:14px}
+  #lobby .featrow:not([data-n="4"]) .feat i{font-size:19px}
+  #lobby .featrow:not([data-n="4"]) .feat .dot{top:50%;margin-top:-5px;right:10px}
+  /* the snake and the name it plays under, on one card */
+  #lobby .showcase{order:5;padding:6px 12px 8px;border-radius:18px 18px 0 0;background:radial-gradient(90% 85% at 50% 38%,rgba(255,201,60,.22),transparent 70%),var(--fill)}
+  #lobby .namefield{order:6;margin-top:-12px;padding:2px 12px 12px;border-radius:0 0 18px 18px;background:var(--fill);gap:10px}
+  #lobby .namefield input{height:40px;background:var(--panel);border-color:var(--line)}
+  #lobby .lobby-h{order:1}#lobby .acctrow{order:2}#lobby .featrow{order:3}#lobby .news{order:4}
+  #lobby #lobbyMsg{order:7}#lobby #rules{order:8}#lobby #ruleTip{order:9;margin:-4px 2px 0;font-size:12.5px;line-height:1.45}
+  #lobby #durRow{order:10}#lobby #mapRow{order:11}
+  #lobby #btnPlay{order:12;position:sticky;z-index:2;bottom:calc(8px + env(safe-area-inset-bottom,0px));margin-top:4px}
+  #lobby #btnOnline{order:13}#lobby #btnFriends{order:14}#lobby #btnGuide{order:15;justify-self:center}
+  #lobby .seg.modes{gap:8px}
+  #lobby .seg.modes button{height:46px;border-radius:14px}
+  #lobby .maprow{padding:6px 10px 6px 6px}
+}
+/* the narrowest upright phones: the missions chip keeps its icon and count, so the level bar beside it stays a bar */
+@media (max-width:360px) and (orientation:portrait){#lobby .mbtn span[data-i]{display:none}#lobby .mbtn{padding:0 10px}}
 @media (prefers-reduced-motion:reduce){.tutpulse{animation:none}.xpbar i{transition:none}.brand span,.toast.show,.feed div,.spin,.timer.hot,.net[data-s="wait"] i,.fire.pop,.hurt.show{animation-duration:.01ms!important;animation-iteration-count:1!important}.toast.show{opacity:1}}
 </style>
 
@@ -730,7 +765,7 @@ a.linkbtn{text-decoration:none}
     </div>
     <p id="newsLine" class="news" hidden></p>
     <div class="showcase">
-      <canvas id="skinPrev" width="360" height="110" aria-hidden="true"></canvas>
+      <canvas id="skinPrev" width="720" height="290" aria-hidden="true"></canvas>
       <div class="sc-row"><b id="skinName"></b><button id="btnSkins" class="btn ghost small" type="button" data-i="btnLocker"></button></div>
     </div>
     <div class="field namefield">
@@ -1572,12 +1607,20 @@ Object.assign(I18N.zh,{
 Object.assign(I18N.en,{"skin.inferno":"Inferno","skin.frost":"Frost","skin.kitty":"Kitty","skin.puppy":"Puppy","skin.cookie":"Cookie","skin.milk":"Milk","skin.angel":"Angel","skin.devil":"Devil","skin.cyberpink":"Cyber Pink","skin.cyberblue":"Cyber Blue","skin.cyclo":"Cyclops","skin.slime":"Slime","skin.player1":"Player 1","skin.player2":"Player 2","duo.firefrost":"Fire & Ice","duo.catdog":"Cat & Dog","duo.snacks":"Cookies & Milk","duo.angeldevil":"Angel & Devil","duo.cyber":"Cyber Twins","duo.monsters":"Little Monsters","duo.arcade":"Arcade Duo","emo.ok":"OK","emo.sorry":"Sorry","emo.clap":"Clap","emo.think":"Hmm","emo.sweat":"Phew","emo.scream":"Yikes","emo.angry":"Grr","emo.sleep":"Zzz","emo.love":"In love","emo.party":"Party","emo.devil":"Mischief","emo.crown":"King","emo.snake":"Sss","pack.party":"Party Time","accessory.flower":"Flower","accessory.bow":"Ribbon bow","accessory.chef":"Chef hat","accessory.tophat":"Top hat","accessory.devilhorns":"Devil horns","accessory.cowboy":"Cowboy hat","accessory.antlers":"Antlers","accessory.propeller":"Propeller cap","accessory.witch":"Witch hat","accessory.headphones":"Neon headphones","diy.eyes.sharp":"Sharp","diy.eyes.sleepy":"Sleepy","diy.eyes.slit":"Snake eyes","diy.eyes.dot":"Dots","diy.eyes.glow":"Glowing","diy.eyes.cyclops":"Cyclops","emoBarIn":"Put on emote bar","emoBarOut":"Take off emote bar","emoBarFull":"The emote bar holds 8. Take one off first.","emoBarNote":"Your emote bar holds 8 emotes. Pick the ones you like."});
 Object.assign(I18N.zh,{"skin.inferno":"炽焰","skin.frost":"寒霜","skin.kitty":"喵喵","skin.puppy":"汪汪","skin.cookie":"曲奇","skin.milk":"牛奶","skin.angel":"天使","skin.devil":"恶魔","skin.cyberpink":"赛博粉","skin.cyberblue":"赛博蓝","skin.cyclo":"独眼怪","skin.slime":"史莱姆","skin.player1":"1P","skin.player2":"2P","duo.firefrost":"冰火两重天","duo.catdog":"喵汪组合","duo.snacks":"饼干配牛奶","duo.angeldevil":"天使与恶魔","duo.cyber":"赛博双子","duo.monsters":"小怪兽","duo.arcade":"街机双打","emo.ok":"OK","emo.sorry":"抱歉","emo.clap":"鼓掌","emo.think":"思考","emo.sweat":"尴尬","emo.scream":"惊呆","emo.angry":"生气","emo.sleep":"困了","emo.love":"爱了","emo.party":"庆祝","emo.devil":"坏笑","emo.crown":"王者","emo.snake":"嘶嘶","pack.party":"狂欢","accessory.flower":"小花","accessory.bow":"蝴蝶结","accessory.chef":"厨师帽","accessory.tophat":"绅士礼帽","accessory.devilhorns":"恶魔角","accessory.cowboy":"牛仔帽","accessory.antlers":"鹿角","accessory.propeller":"竹蜻蜓帽","accessory.witch":"巫师帽","accessory.headphones":"霓虹耳机","diy.eyes.sharp":"锐利眼","diy.eyes.sleepy":"半眯眼","diy.eyes.slit":"蛇瞳","diy.eyes.dot":"豆豆眼","diy.eyes.glow":"发光眼","diy.eyes.cyclops":"独眼","emoBarIn":"放进表情栏","emoBarOut":"移出表情栏","emoBarFull":"表情栏最多放 8 个，先移出一个。","emoBarNote":"表情栏能放 8 个表情，挑你喜欢的。"});
 const BOT_NAMES_L={
+  /* v28: 120 names or more each (there are 100 computer snakes, and 45 names made the same name show up twice on the leaderboard) */
   zh:['小红','阿呆','闪电','大胃王','蛇蛇侠','咕噜','糯米','跑跑','铁头','泡泡','阿飞','奶糖','小黑','旋风','毛豆','布丁','土豆','花卷','可乐','汤圆',
     '饭团','芝麻','麻薯','小虎','豆包','年糕','果冻','辣条','奶盖','雪糕','锅巴','米粒','蛋挞','烧卖','包子','柚子','番茄','西瓜','大鹅','跳跳糖',
-    '小蘑菇','橙子','酸奶','煎饼','虾饺'],
+    '小蘑菇','橙子','酸奶','煎饼','虾饺','糖葫芦','棉花糖','小笼包','馄饨','春卷','油条','豆花','冰粉','烤红薯','栗子','核桃','花生','葡萄','草莓','蓝莓',
+    '樱桃','荔枝','芒果','菠萝','椰子','柠檬','桃子','山竹','奶茶','可可','拿铁','抹茶','红豆','绿豆','玉米','南瓜','茄子','青椒','萝卜','香菇',
+    '海苔','饺子','面条','粽子','月饼','麻花','曲奇','甜甜圈','千层','慕斯','松饼','小熊','小兔','小猫','小狗','小鹿','小鸭','企鹅','考拉','熊猫',
+    '仓鼠','松鼠','刺猬','海豹','水獭','浣熊','小羊','小牛','团子','丸子','酥饼','蛋卷','薯条','爆米花','棒棒糖','冰淇淋','跳跳虎','小火龙','小闪电','胖胖'],
   en:['Noodle','Biscuit','Zippy','Slinky','Mochi','Pickle','Waffles','Bolt','Gizmo','Chomp','Pebble','Rocket','Sprout','Taco','Bubbles','Ziggy','Nugget','Pretzel','Jelly','Dash',
     'Pudding','Muffin','Sushi','Comet','Pixel','Turbo','Mango','Peanut','Wiggles','Nacho','Scooter','Cupcake','Rascal','Fizz','Domino','Marble','Popcorn','Squiggle','Tofu','Zigzag',
-    'Churro','Bean','Jinx','Sparky','Wobble']};
+    'Churro','Bean','Jinx','Sparky','Wobble','Pancake','Bagel','Dumpling','Ramen','Kiwi','Peaches','Cocoa','Latte','Mocha','Toffee','Fudge','Caramel','Sprinkles','Gumdrop','Lollipop',
+    'Truffle','Brownie','Cookie','Donut','Bonbon','Jellybean','Licorice','Pumpkin','Acorn','Clover','Maple','Hazel','Olive','Pepper','Ginger','Basil','Cinnamon','Nutmeg','Paprika','Wasabi',
+    'Kimchi','Bao','Gyoza','Udon','Soba','Tempura','Falafel','Pesto','Ravioli','Gnocchi','Burrito','Tamale','Empanada','Brioche','Croissant','Crumpet','Scone','Sundae','Sorbet','Gelato',
+    'Smoothie','Milkshake','Boba','Matcha','Chai','Fig','Plum','Cherry','Lime','Melon','Papaya','Guava','Coconut','Panda','Koala','Otter','Hammy','Fuzzy','Doodle','Snappy',
+    'Bouncy']};
 /* v22: more languages (each one complete; t() falls back to English for anything added later) */
 Object.assign(I18N,{
 es:{
@@ -4766,8 +4809,9 @@ const AREA_K=(R*R)/(2600*2600);
 const ZONE_MIN=1800,ZONE_K=1.15,ZONE_DRIFT=4590;
 /* bumped whenever two builds can no longer play together; rooms from other versions are not joinable
    (11: v22 moved rooms to the game's own signalling server and added skins; 13: v23 bigger arena, new power-ups;
-   14: v24 control zones in a chain, gold veins near players; 15: v25 escape mode) */
-const NET_VER=16;
+   14: v24 control zones in a chain, gold veins near players; 15: v25 escape mode; 16: v27 rounds of any whole minute;
+   17: v28 the closing ring of a 1-minute round starts later) */
+const NET_VER=17;
 const B64='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
 const B64I=new Int16Array(128).fill(-1);for(let i=0;i<64;i++)B64I[B64.charCodeAt(i)]=i;
 /* fixed-width base64 numbers for the compact network strings */
@@ -5806,9 +5850,12 @@ function escTitle(){const o=escOutcome(),run=escSideKey(myKey)==='r';
   return t(o==='win'?(run?'escWin':'escStopped'):o==='caught'?'escCaught':o==='time'?'escTimeUp':(run?'escLost':'escGotAway'));}
 /* the closing ring of a timed match: it starts moving in a while before the end (35% of the match, 50 s to 150 s)
    and reaches ZONE_MIN 15 s before the end, so the last seconds are a showdown in the middle.
+   v28: never more than the last 60% of the round. A 1-minute round (v27) had its ring, and with it the end of respawns, start
+   2.5 s in, so a first look at the how-to card or a friend joining a little late meant being out before playing (rounds of
+   2 minutes and more are unchanged; every phone works the ring out itself, hence network version 17).
    In a duel the ring is small from the first second and nobody comes back within the round */
 function zoneSpan(){const D=G.roomDur||0;if(!D)return null;if(G.rule==='duel')return {start:G.round.end-D,stop:G.round.end-D};
-  return ringRule()?{start:G.round.end-clamp(D*0.35*ZONE_K,50000*ZONE_K,150000*ZONE_K),stop:G.round.end-15000}:null;}
+  return ringRule()?{start:G.round.end-Math.min(D*0.6,clamp(D*0.35*ZONE_K,50000*ZONE_K,150000*ZONE_K)),stop:G.round.end-15000}:null;}
 function eliminationPhase(now=performance.now()){if(!G.round.end||!G.roomDur||G.tutWorld)return false;const z=zoneSpan();return !!z&&now>=z.start;}
 /* me: asking for the player, for whom a death before the ring started is never an elimination,
    even if the death panel (or the respawn button) only comes up after the start */
@@ -6861,14 +6908,15 @@ function p2pErr(e){const ty=e&&e.type;
 /* ================= 3D: themes and ground textures ================= */
 const THEMES={
   /* v22 (Nov 7): brighter arenas; space and lava stay the darkest two */
-  hive:  {bg:0x6f7cbc,fog:0x9eaadf,sky:0xf2f5ff,gnd:0x8692c6,hi:0.9,si:0.8,border:'#ff4d6a',rough:0.7,tile:512,gc:0xc9d1f0,glow:0.15,rim:0.35},
-  ice:   {bg:0x7fa6cc,fog:0xa8c8e6,sky:0xeaf6ff,gnd:0x5d7a9a,hi:0.85,si:0.75,border:'#2fb8ff',rough:0.22,tile:640,gc:0x9fb6cc,glow:0,rim:0.3},
-  lava:  {bg:0x2c130b,fog:0x4a2214,sky:0xffc29a,gnd:0x5c2c18,hi:0.85,si:0.85,border:'#ff6a1f',rough:0.9,tile:560,glow:0.55,rim:0.45},
-  candy: {bg:0xd29ac0,fog:0xeab8d6,sky:0xfff0fb,gnd:0x9a6b9e,hi:0.9,si:0.7,border:'#ff6fcf',rough:0.55,tile:520,gc:0xc9a9be,glow:0,rim:0.3},
-  space: {bg:0x0d1034,fog:0x171b4a,sky:0xd4d8ff,gnd:0x2a2a70,hi:0.8,si:1.0,border:'#8a7dff',rough:0.6,tile:700,glow:0.75,rim:0.55},
-  jungle:{bg:0x3c6a30,fog:0x5e8e4f,sky:0xf0ffe6,gnd:0x3d6630,hi:0.9,si:0.9,border:'#ffd23f',rough:0.95,tile:560,glow:0.1,rim:0.38},
-  ruins: {bg:0x9a7d55,fog:0xbfa67d,sky:0xfff4de,gnd:0x9c8058,hi:0.85,si:0.8,border:'#ff8a3d',rough:0.95,tile:680,gc:0xd6c6a8,glow:0,rim:0.35},
-  sakura:{bg:0xae968c,fog:0xd0bdb5,sky:0xfff1f4,gnd:0xa8958c,hi:0.85,si:0.8,border:'#ff6fa8',rough:0.9,tile:600,gc:0xd9cbc5,glow:0,rim:0.35},
+  /* edge (v28): how much the snakes' silhouettes darken, strongest on the palest floors */
+  hive:  {bg:0x6f7cbc,fog:0x9eaadf,sky:0xf2f5ff,gnd:0x8692c6,hi:0.9,si:0.8,border:'#ff4d6a',rough:0.7,tile:512,gc:0xc9d1f0,glow:0.15,rim:0.35,edge:0.5},
+  ice:   {bg:0x7fa6cc,fog:0xa8c8e6,sky:0xeaf6ff,gnd:0x5d7a9a,hi:0.85,si:0.75,border:'#2fb8ff',rough:0.22,tile:640,gc:0x9fb6cc,glow:0,rim:0.3,edge:0.5},
+  lava:  {bg:0x2c130b,fog:0x4a2214,sky:0xffc29a,gnd:0x5c2c18,hi:0.85,si:0.85,border:'#ff6a1f',rough:0.9,tile:560,glow:0.55,rim:0.45,edge:0.15},
+  candy: {bg:0xd29ac0,fog:0xeab8d6,sky:0xfff0fb,gnd:0x9a6b9e,hi:0.9,si:0.7,border:'#ff6fcf',rough:0.55,tile:520,gc:0xc9a9be,glow:0,rim:0.3,edge:0.5},
+  space: {bg:0x0d1034,fog:0x171b4a,sky:0xd4d8ff,gnd:0x2a2a70,hi:0.8,si:1.0,border:'#8a7dff',rough:0.6,tile:700,glow:0.75,rim:0.55,edge:0.1},
+  jungle:{bg:0x3c6a30,fog:0x5e8e4f,sky:0xf0ffe6,gnd:0x3d6630,hi:0.9,si:0.9,border:'#ffd23f',rough:0.95,tile:560,glow:0.1,rim:0.38,edge:0.35},
+  ruins: {bg:0x9a7d55,fog:0xbfa67d,sky:0xfff4de,gnd:0x9c8058,hi:0.85,si:0.8,border:'#ff8a3d',rough:0.95,tile:680,gc:0xd6c6a8,glow:0,rim:0.35,edge:0.45},
+  sakura:{bg:0xae968c,fog:0xd0bdb5,sky:0xfff1f4,gnd:0xa8958c,hi:0.85,si:0.8,border:'#ff6fa8',rough:0.9,tile:600,gc:0xd9cbc5,glow:0,rim:0.35,edge:0.45},
 };
 function wrapDraw(sz,fn){for(const ox of [-sz,0,sz])for(const oy of [-sz,0,sz])fn(ox,oy);}
 function noiseDots(g,sz,n,cols,r0,r1,a0,a1,rng){for(let i=0;i<n;i++){const x=rng()*sz,y=rng()*sz,r=r0+(r1-r0)*rng();g.globalAlpha=a0+(a1-a0)*rng();g.fillStyle=cols[(rng()*cols.length)|0];
@@ -6943,7 +6991,11 @@ R3.init=function(canvas){if(typeof THREE==='undefined')return false;
   const et=new THREE.CanvasTexture(ec);et.mapping=THREE.EquirectangularReflectionMapping;
   let pm;try{pm=new THREE.PMREMGenerator(renderer);R3.env=pm.fromEquirectangular(et).texture;}catch(e){R3.env=null;}finally{if(pm)pm.dispose();et.dispose();}
   GEO.sphere=new THREE.SphereGeometry(1,12,9);GEO.sphereHi=new THREE.SphereGeometry(1,28,20);GEO.cube=new THREE.BoxGeometry(1.7,1.7,1.7);
-  GEO.snakeLink=new THREE.CylinderGeometry(1,1,1,8,1);GEO.snakeLink.rotateZ(-Math.PI/2);
+  /* v28: the link between two body points is an open 16-sided tube (no hidden end caps, so the same triangle count as the old
+     capped 8-sided one): round bodies read as one smooth tube instead of a string of beads */
+  GEO.snakeLink=new THREE.CylinderGeometry(1,1,1,16,1,true);GEO.snakeLink.rotateZ(-Math.PI/2);
+  /* the close-up previews pair the fine sphere with a finer tube, so the balls never peek out of its flat sides as rings */
+  GEO.snakeLinkHi=new THREE.CylinderGeometry(1,1,1,32,1,true);GEO.snakeLinkHi.rotateZ(-Math.PI/2);
   GEO.torus=new THREE.TorusGeometry(0.72,0.36,10,20);GEO.torus.rotateY(Math.PI/2);
   GEO.gem=new THREE.IcosahedronGeometry(1.12,0);GEO.cyl=new THREE.CylinderGeometry(0.92,0.92,1.25,16);GEO.cyl.rotateZ(Math.PI/2);
   GEO.box=new THREE.BoxGeometry(1,1,1);GEO.halo=new THREE.TorusGeometry(0.55,0.07,8,28);GEO.halo.rotateX(Math.PI/2);GEO.crownBand=new THREE.CylinderGeometry(0.55,0.5,0.4,12,1,true);
@@ -6997,7 +7049,7 @@ function disposeGroup(g){const shared=Object.values(GEO),disposed=new Set();g.tr
 /* ================= 3D: arena + obstacles for a map ================= */
 R3.setMap=function(mi,obs){const th=THEMES[MAPS[mi].id];
   /* food orbs glow more on dark arenas and get a darker rim on bright ones */
-  if(foodMat)foodMat.uniforms.uGlow.value=th.glow||0;RIM.value=th.rim||0.4;
+  if(foodMat)foodMat.uniforms.uGlow.value=th.glow||0;RIM.value=th.rim||0.4;EDGE.value=th.edge!=null?th.edge:0.4;
   scene.background=new THREE.Color(th.bg);scene.fog=new THREE.Fog(th.fog,2600,6200);
   hemi.color.setHex(th.sky);hemi.groundColor.setHex(th.gnd);hemi.intensity=th.hi*0.62;sun.intensity=th.si*1.4;
   while(worldGroup.children.length){const c=worldGroup.children.pop();disposeGroup(c);}
@@ -7126,17 +7178,21 @@ function sampleSnakeBody(b,step,r,view,cap,out,joins,runs){const n=b.length>>1,t
   if(!typed){out.length=no;joins.length=no;runs.length=nr;}
   return no;}
 /* The low-poly core joins LOD samples end to end; sparse samples must not become disconnected beads. */
-function writeSnakeLink(a,o,x0,y0,z0,x1,y1,z1,r){const dx=x1-x0,dy=y1-y0,dz=z1-z0,h=Math.hypot(dx,dz),d=Math.hypot(h,dy);if(d<0.001)return false;
-  const c=h?dx/h:1,s=h?dz/h:0,u=dy/d,k=1+r*0.4/d;
+/* ext: how far the link reaches past both points in all (0 for round bodies: a tube from centre to centre is closed off exactly by the
+   balls of the same radius at each end, a capsule chain with no seam) */
+function writeSnakeLink(a,o,x0,y0,z0,x1,y1,z1,r,ext=0.4){const dx=x1-x0,dy=y1-y0,dz=z1-z0,h=Math.hypot(dx,dz),d=Math.hypot(h,dy);if(d<0.001)return false;
+  const c=h?dx/h:1,s=h?dz/h:0,u=dy/d,k=1+r*ext/d;
   a[o]=dx*k;a[o+1]=dy*k;a[o+2]=dz*k;a[o+3]=0;
   a[o+4]=-u*c*r;a[o+5]=h/d*r;a[o+6]=-u*s*r;a[o+7]=0;
   a[o+8]=-s*r;a[o+9]=0;a[o+10]=c*r;a[o+11]=0;
   a[o+12]=(x0+x1)/2;a[o+13]=(y0+y1)/2;a[o+14]=(z0+z1)/2;a[o+15]=1;return true;}
 /* rim light: snake edges catch a soft glow in their own colour so they read against any ground. One shared
    compile hook so every snake material uses the same shader program */
-const RIM={value:0.5};
-function rimCompile(sh){sh.uniforms.uRim=RIM;sh.fragmentShader='uniform float uRim;\n'+sh.fragmentShader.replace('#include <emissivemap_fragment>',
-  '#include <emissivemap_fragment>\nfloat rimF=1.0-clamp(dot(normal,normalize(vViewPosition)),0.0,1.0);rimF=rimF*rimF;totalEmissiveRadiance+=(diffuseColor.rgb*0.7+vec3(0.3))*rimF*uRim;');}
+/* v28: uEdge darkens the outermost band of the silhouette, a soft cartoon outline, so light snakes stand out on the light arenas
+   (the glow alone made pale bodies melt into a pale floor). Dark arenas keep mostly the glow */
+const RIM={value:0.5},EDGE={value:0.4};
+function rimCompile(sh){sh.uniforms.uRim=RIM;sh.uniforms.uEdge=EDGE;sh.fragmentShader='uniform float uRim;\nuniform float uEdge;\n'+sh.fragmentShader.replace('#include <emissivemap_fragment>',
+  '#include <emissivemap_fragment>\nfloat rimR=1.0-clamp(dot(normal,normalize(vViewPosition)),0.0,1.0),rimF=rimR*rimR,edgeF=smoothstep(0.6,1.0,rimR)*uEdge;diffuseColor.rgb*=1.0-edgeF;totalEmissiveRadiance+=(diffuseColor.rgb*0.7+vec3(0.3))*rimF*uRim*(1.0-edgeF);');}
 function withRim(m){m.onBeforeCompile=rimCompile;return m;}
 function setSeeThrough(m,op){if(m.blending!==THREE.NormalBlending||m.map||m.alphaMap)return;const t=op<0.995;if(m.transparent!==t)m.transparent=t;}
 /* the leader's crown: gold band, five points and a gem, floating above the head */
@@ -7459,8 +7515,9 @@ class SnakeMesh{
   dispose(){this.setAccessory('none');scene.remove(this.root);disposeGroup(this.root);this.mat.dispose();for(const m of this.ownMats)m.dispose();if(this.body.dispose)this.body.dispose();if(this.links.dispose)this.links.dispose();if(this.deco&&this.deco.dispose)this.deco.dispose();}
   update(s,now,dt,alpha,isMe){const sk=SKINS[this.skin],b=s.body,n=b.length>>1;if(!n){this.root.visible=false;return;}this.root.visible=true;
     this.setAccessory(s.accessory||'none');if(this.accessoryGroup)animateAccessory(this.accessoryGroup,this.accessory,now);
-    const step=sk.step,r=s.r,hyF=HY[sk.geo]||0.85,arr=this.body.instanceMatrix.array,carr=this.body.instanceColor.array,tmp=this.rgb;
-    const samples=this.samples,N=Math.ceil(n/step),hr=r*1.2,moving=1,links=this.links.instanceMatrix.array,lcol=this.links.instanceColor.array;
+    const step=sk.step,r=s.r,hyF=HY[sk.geo]||0.85,arr=this.body.instanceMatrix.array,carr=this.body.instanceColor.array,tmp=this.rgb,round=!sk.geo||sk.geo==='s';
+    /* the little up-and-down bob of a moving body; the close-up previews leave it out (it creased the smooth body there) */
+    const samples=this.samples,N=Math.ceil(n/step),hr=r*1.2,moving=s.pv?0:1,links=this.links.instanceMatrix.array,lcol=this.links.instanceColor.array;
     const ns=sampleSnakeBody(b,step,r,V,SEG_CAP,samples,this.joins,this.runs);let cnt=0,lc=0,px=0,py=0,pz=0,ps=0,pr=0,pg=0,pb=0;
     const dm=this.deco,dk=dm?sk.deco.k:'',da=dm?dm.instanceMatrix.array:null,dca=dm?dm.instanceColor.array:null,dgap=(DECO_GAP[dk]||1)*step,dwin=Math.max(0.08,3*step/n);
     let dn=0,dLast=-1,dDone=0,tc=1,tsn=0,tsc=0,tx=0,ty=0,tz=0;
@@ -7473,7 +7530,7 @@ class SnakeMesh{
       for(let k=0;k<gs.length;k++){const age=now-gs[k],dj=j-age*gsp;if(dj>-3&&dj<3)sc*=1+0.17*Math.exp(-age/650)*Math.exp(-dj*dj*0.4);}
       if(j===0&&sk.headRgb){tmp[0]=sk.headRgb[0];tmp[1]=sk.headRgb[1];tmp[2]=sk.headRgb[2];}else sc*=skinColor(sk,j,N,now,tmp);
       const y=sc*hyF+Math.sin(j*0.55-now*0.011)*r*0.07*moving,c=Math.cos(ang),sn=Math.sin(ang),o=cnt*16;
-      if(this.joins[q]&&writeSnakeLink(links,lc*16,px,py,pz,x,y,z,Math.min(ps,sc)*0.78)){lcol[lc*3]=(pr+tmp[0])*0.5;lcol[lc*3+1]=(pg+tmp[1])*0.5;lcol[lc*3+2]=(pb+tmp[2])*0.5;lc++;}
+      if(this.joins[q]&&writeSnakeLink(links,lc*16,px,py,pz,x,y,z,Math.min(ps,sc)*(round?1:0.78),round?0:0.4)){lcol[lc*3]=(pr+tmp[0])*0.5;lcol[lc*3+1]=(pg+tmp[1])*0.5;lcol[lc*3+2]=(pb+tmp[2])*0.5;lc++;}
       px=x;py=y;pz=z;ps=sc;pr=tmp[0];pg=tmp[1];pb=tmp[2];
       if(dm&&i>0&&dn<DECO_CAP-2){tc=c;tsn=sn;tsc=sc;tx=x;ty=y;tz=z;const o=dn*16,dc=this.decoRgb;let col=dc[0],put=0;
         if(DECO_GAP[dk]){const bk=(i/dgap)|0;if(bk!==dLast&&f<0.94){dLast=bk;
@@ -8171,7 +8228,7 @@ function drawDeco2D(g,sk,j,n,x,y,rr,t,front){const d=sk.deco,k0=d.k,f=n>1?j/(n-1
 const PV={ok:null,rt:null,scene:null,cam:null,S:null,buf:null,tmp:null,tg:null,imgs:new Map(),q:[],cache:new Map(),fit:new Map(),dms:new Map(),pre:null,still:false,cc:null,dir:null,v1:null,v2:null,
   pose:{n:14,k:0.026,amp:0.7,curl:1.5,cn:4,turn:0.7},view:[0.3,0.45,0.84]};
 function pvReady(){if(PV.ok!==null)return PV.ok;if(!warmDone)return false;PV.ok=false;if(typeof THREE==='undefined'||!renderer)return false;
-  try{const W=720,H=264,ms=renderer.capabilities.isWebGL2&&THREE.WebGLMultisampleRenderTarget;
+  try{const W=720,H=300,ms=renderer.capabilities.isWebGL2&&THREE.WebGLMultisampleRenderTarget;
     PV.rt=ms?new THREE.WebGLMultisampleRenderTarget(W,H,{format:THREE.RGBAFormat}):new THREE.WebGLRenderTarget(W,H,{format:THREE.RGBAFormat});
     PV.rt.scissorTest=true;const sc=new THREE.Scene();sc.fog=new THREE.Fog(0x000000,1e6,2e6);
     sc.add(new THREE.HemisphereLight(0xffffff,0x3a4766,0.8));const key=new THREE.DirectionalLight(0xffffff,0.95);key.position.set(-0.55,1,0.8);sc.add(key);
@@ -8218,10 +8275,12 @@ function pvDesignMesh(sk){let m=PV.dms.get(sk);if(m){PV.dms.delete(sk);PV.dms.se
   if(PV.dms.size>6){const [k0,m0]=PV.dms.entries().next().value;PV.dms.delete(k0);m0.dispose();}return m;}
 function pvRender(cv,si,t,flip,accessory,trail){const design=si&&typeof si==='object'&&si.diy?si:null;
   if(PV.ok===false||(!design&&(typeof si!=='number'||!SKINS[si]))||!pvReady())return false;
-  const W=cv.width|0,H=cv.height|0;if(!W||!H||W>PV.tmp.width||H>PV.tmp.height)return false;const sk=design||SKINS[si],R=renderer;let m=null,moved=false,pushed=false;
+  const W=cv.width|0,H=cv.height|0;if(!W||!H||W>PV.tmp.width||H>PV.tmp.height)return false;const sk=design||SKINS[si],R=renderer;let m=null,moved=false,pushed=false,hi=false;
   const prevRT=R.getRenderTarget(),prevAlpha=R.getClearAlpha();R.getClearColor(PV.cc);
   try{if(design){SKINS.push(design);pushed=true;m=pvDesignMesh(design);}
     else{const pool=MESH_POOL.get(si);m=pool&&pool.length?pool.pop():new SnakeMesh(si);m.bake();}
+    /* v28: close up, the body's balls are the finer sphere (in a match the snake is small and the coarse one is plenty) */
+    if(m.body.geometry===GEO.sphere){m.body.geometry=GEO.sphereHi;m.links.geometry=GEO.snakeLinkHi;hi=true;}
     const S=PV.S,r=S.r,acc=accessory||'none',wear=acc!=='none';S.accessory=acc;
     const place=tt=>{const n=pvPose(S,sk,tt,W/H),v=[V.x0,V.x1,V.y0,V.y1];V.x0=-1e9;V.x1=1e9;V.y0=-1e9;V.y1=1e9;
       try{m.update(S,tt,1/60,1,true);}finally{V.x0=v[0];V.x1=v[1];V.y0=v[2];V.y1=v[3];}return n;};
@@ -8245,6 +8304,7 @@ function pvRender(cv,si,t,flip,accessory,trail){const design=si&&typeof si==='ob
     previewFx(g,W,H,sk,design?3:si,t,tr,9,rr,(ph[0]-pt[0])/8,pm[1],ph[0]);g.drawImage(PV.tmp,0,0,W,H,0,0,W,H);g.restore();return true;}
   catch(e){console.warn('3D preview',e);PV.ok=false;return false;}
   finally{R.setRenderTarget(prevRT);R.setClearColor(PV.cc,prevAlpha);
+    if(hi){m.body.geometry=GEO.sphere;m.links.geometry=GEO.snakeLink;}
     if(m){if(design){PV.scene.remove(m.root);m.root.visible=false;}else{if(moved)scene.add(m.root);releaseMesh(m);}}
     if(pushed)SKINS.pop();}}
 function pvKeep(k,c){if(PV.cache.size>=160)PV.cache.delete(PV.cache.keys().next().value);PV.cache.set(k,c);}
@@ -8279,12 +8339,27 @@ function previewFx(g,W,H,sk,si,t,tr,n,r,sp,y0,hx){
       else if(tr.k==='petal'){g.save();g.translate(x,y);g.rotate(ph*5+sd*6);g.beginPath();g.ellipse(0,0,rad*1.8,rad*1.0,0,0,TAU);g.fill();g.restore();}
       else if(tr.k==='gold'&&k%4===0){g.fillStyle=rgbCss([1,0.8,0.25],1-ph);g.beginPath();g.ellipse(x,y,rad*1.2*Math.abs(Math.cos(t*0.01+k)),rad*2.2,0,0,TAU);g.fill();}
       else{g.beginPath();if(tr.k==='pixel')g.rect(x-rad,y-rad,rad*2,rad*2);else g.arc(x,y,rad,0,TAU);g.fill();}}}}
-function drawSkinPreview2D(cv,si,t,flip,accessory=prof.accessory,trail){const g=cv.getContext('2d'),W=cv.width,H=cv.height,sk=typeof si==='object'?si:SKINS[si],tr=trail===0?null:(trail||sk.trail),wear=accessory&&accessory!=='none',n=9,r=H*(wear?0.2:0.27),sp=(W-2.6*r)/(n-1),y0=H*(wear?0.63:0.56),tmp=[0,0,0];
+const BEAD_PATS=new Set(['beads','beads2','boba','yin']);
+/* the flat picture's round body: short pieces from the tail forward, each a round-capped stroke shaded light on top and dark
+   underneath, over a faint darker rim; fins and plates behind it, string lights in front, as with the beads */
+function drawTube2D(g,sk,n,r,sp,y0,W,t,op){const X=u=>W-r*1.3-u*sp,Y=u=>y0+Math.sin(u*0.9-t*0.004)*r*0.22,
+    R=u=>{const f=u/(n-1);return r*(f>0.7?lerp(1,0.6,(f-0.7)/0.3):1);},K=6,tmp=[0,0,0],main=sk.rgb[0];
+  if(sk.deco){g.globalAlpha=1;for(let j=n-1;j>0;j--)drawDeco2D(g,sk,j,n,X(j),Y(j),R(j),t,false);g.globalAlpha=op;}
+  g.lineCap='round';g.strokeStyle=rgbCss(shadeRgb(main,-0.55),0.35);
+  for(let q=(n-1)*K;q>0;q--){const u0=q/K,u1=(q-1)/K;g.lineWidth=R((u0+u1)/2)*2+r*0.14;g.beginPath();g.moveTo(X(u0),Y(u0));g.lineTo(X(u1),Y(u1));g.stroke();}
+  for(let q=(n-1)*K;q>0;q--){const u0=q/K,u1=(q-1)/K,um=(u0+u1)/2,rr=R(um),ym=Y(um);skinColor(sk,Math.max(1,Math.round(um)),n,t,tmp);
+    const gr=g.createLinearGradient(0,ym-rr,0,ym+rr);gr.addColorStop(0,rgbCss(shadeRgb(tmp,0.5)));gr.addColorStop(0.3,rgbCss(shadeRgb(tmp,0.15)));
+    gr.addColorStop(0.65,rgbCss(tmp));gr.addColorStop(1,rgbCss(shadeRgb(tmp,-0.38)));g.strokeStyle=gr;g.lineWidth=rr*2;
+    g.beginPath();g.moveTo(X(u0),Y(u0));g.lineTo(X(u1),Y(u1));g.stroke();}
+  if(sk.deco){g.globalAlpha=1;for(let j=n-1;j>0;j--)drawDeco2D(g,sk,j,n,X(j),Y(j),R(j),t,true);g.globalAlpha=op;}}
+function drawSkinPreview2D(cv,si,t,flip,accessory=prof.accessory,trail){const g=cv.getContext('2d'),W=cv.width,H=cv.height,sk=typeof si==='object'?si:SKINS[si],tr=trail===0?null:(trail||sk.trail),wear=accessory&&accessory!=='none',n=9,r=Math.min(H*(wear?0.2:0.27),W*0.085),sp=(W-2.6*r)/(n-1),y0=H*(wear?0.63:0.56),tmp=[0,0,0];
   g.clearRect(0,0,W,H);g.save();if(flip){g.translate(W,0);g.scale(-1,1);}
   const op=sk.m.op&&sk.m.op<1?Math.max(0.55,sk.m.op):1;
   previewFx(g,W,H,sk,si,t,tr,n,r,sp,y0,W-r*1.3);
   g.globalAlpha=op;
-  for(let j=n-1;j>=0;j--){const x=W-r*1.3-j*sp,y=y0+Math.sin(j*0.9-t*0.004)*r*0.22;let col,sc=1;
+  /* v28: round bodies are one smooth tube, as in 3D; beaded patterns and the cube, ring, gem and drum bodies keep their beads */
+  const tube=(!sk.geo||sk.geo==='s')&&!BEAD_PATS.has(sk.pat);if(tube)drawTube2D(g,sk,n,r,sp,y0,W,t,op);
+  for(let j=n-1;j>=0;j--){if(tube&&j>0)continue;const x=W-r*1.3-j*sp,y=y0+Math.sin(j*0.9-t*0.004)*r*0.22;let col,sc=1;
     if(j===0&&sk.headRgb)col=sk.headRgb;else{sc=skinColor(sk,j,n,t,tmp);col=tmp.slice();}
     const f=j/(n-1),rr=r*(j===0?1.15:1)*(f>0.7?lerp(1,0.6,(f-0.7)/0.3):1)*sc;
     if(j===0&&sk.headType){const hx=x-rr*.6,hr=rr*.95;g.globalAlpha=1;drawHeadModel2D(g,sk,hx,y,hr);drawAccessory2D(g,accessory,hx,y,hr,t,sk.wearY||1.1);g.globalAlpha=op;continue;}
@@ -8378,7 +8453,12 @@ function drawHeadAcc2D(g,sk,x,y,rr,t){const a=sk.acc;g.save();
         g.strokeStyle='#121218';g.lineWidth=Math.max(1,rr*0.05);g.beginPath();g.ellipse(0,0,rr*0.24,rr*0.11,0,Math.PI*1.05,Math.PI*1.95);g.stroke();}
       g.restore();}}
   else{const big=sk.eyes==='cute'?0.3:0.24,offs=sk.eyes==='three'?[-0.34,0,0.3]:[-0.26,0.24];
-    for(const s of offs){g.fillStyle='#ffffff';g.beginPath();g.arc(ex+s*rr,ey,rr*big,0,TAU);g.fill();g.fillStyle='#121218';g.beginPath();g.arc(ex+s*rr+rr*0.08,ey,rr*big*0.58,0,TAU);g.fill();}}
+    for(const s of offs){g.fillStyle='#ffffff';g.beginPath();g.arc(ex+s*rr,ey,rr*big,0,TAU);g.fill();g.fillStyle='#121218';g.beginPath();g.arc(ex+s*rr+rr*0.08,ey,rr*big*0.58,0,TAU);g.fill();
+      g.fillStyle='#ffffff';g.beginPath();g.arc(ex+s*rr+rr*0.13,ey-rr*big*0.3,rr*big*0.2,0,TAU);g.fill();}
+    /* v28: the flat face matches the 3D one: a shine in each eye, rosy cheeks and a small smile */
+    if(!sk.eyes||sk.eyes==='normal'||sk.eyes==='cute'){g.fillStyle='rgba(255,143,180,.6)';
+      for(const s of offs){g.beginPath();g.ellipse(ex+s*rr-rr*0.02,ey+rr*0.36,rr*0.13,rr*0.07,0,0,TAU);g.fill();}
+      g.strokeStyle='#3d2029';g.lineWidth=Math.max(1,rr*0.06);g.lineCap='round';g.beginPath();g.arc(ex,ey+rr*0.27,rr*0.11,0.15*Math.PI,0.85*Math.PI);g.stroke();}}
   g.restore();}
 function drawMapPreview(cv,mi){const g=cv.getContext('2d'),W=cv.width,H=cv.height;g.clearRect(0,0,W,H);
   if(mi<0){const gr=g.createLinearGradient(0,0,W,H);gr.addColorStop(0,'#b6a6f2');gr.addColorStop(1,'#86b4ee');g.fillStyle=gr;g.fillRect(0,0,W,H);
@@ -8413,7 +8493,7 @@ function renderLobbyPeers(peers){lastPeers=peers;const rooms=[],idle=[];
   for(const p of peers){if(p.sameTab||p.kind!=='viewer')continue;const pr=p.presence||{};const nm=cleanName(pr.nm);if(!nm)continue;
     /* a friend on another version (page not refreshed) shows as online but their room cannot be joined */
     if(typeof pr.h==='string'&&/^\d{4}$/.test(pr.h)&&(pr.v|0)!==NET_VER){idle.push(nm+t('stOldVer'));continue;}
-    if(typeof pr.h==='string'&&/^\d{4}$/.test(pr.h))rooms.push({code:pr.h,name:nm,skin:clamp(pr.sk|0,0,SKINS.length-1),n:clamp(pr.n|0,1,9),mp:clamp(pr.mp|0,0,MAPS.length-1),du:clamp(pr.du|0,0,600000)});
+    if(typeof pr.h==='string'&&/^\d{4}$/.test(pr.h))rooms.push({code:pr.h,name:nm,skin:clamp(pr.sk|0,0,SKINS.length-1),n:clamp(pr.n|0,1,9),mp:clamp(pr.mp|0,0,MAPS.length-1),du:clamp(pr.du|0,0,1800000)});
     else idle.push(nm+(pr.pl==='solo'||pr.pl==='quick'?t('stSolo'):pr.pl==='guest'?t('stGuest'):''));}
   lobbyRooms=rooms;if(!roomList||!roomEmpty||!idleEl){const badge=$('#roomBadge');if(badge){badge.hidden=!rooms.length;badge.textContent=rooms.length;}return;}roomList.textContent='';
   for(const r of rooms){const li=document.createElement('li');li.className='room';
@@ -8652,7 +8732,9 @@ function spawnMe(now,mass0){if(!canRespawn(now,true)){boostBtn.hidden=true;fireB
   G.life={t0:now,peak:mass0||10,base:mass0||0,kills:0,pk:0,done:false};return true;}
 /* leaving mid-life still banks the xp earned so far */
 function bankLife(){if(G.me&&G.me.alive&&G.mode!=='demo'&&G.mode!=='tut'&&G.life&&!G.life.done)finishLife(false,0,performance.now());}
-function goLobby(msg){if(G.mode!=='demo')track('leave',{m:G.mode,e:msg?1:0});hideModeIntro();QM.pub=false;clearTimeout(QM.timer);bankLife();leaveRooms();flowTok++;if(STANDALONE){P2P.close();ROOM=null;}clearTimeout(overTimer);G.me=null;resultsEl.hidden=true;G.roomDur=0;beginRound(0,performance.now());resetWorld(true,newSeed(),demoMap());G.mode='demo';G.code=null;busy=false;
+/* v28: leaving an endless run by Exit or the back button ends the run too (it never counted: no game for the missions, the first
+   easy run again next time); a run already ended from its death screen is not counted twice */
+function goLobby(msg){runEnd();if(G.mode!=='demo')track('leave',{m:G.mode,e:msg?1:0});hideModeIntro();QM.pub=false;clearTimeout(QM.timer);bankLife();leaveRooms();flowTok++;if(STANDALONE){P2P.close();ROOM=null;}clearTimeout(overTimer);G.me=null;resultsEl.hidden=true;G.roomDur=0;beginRound(0,performance.now());resetWorld(true,newSeed(),demoMap());G.mode='demo';G.code=null;busy=false;
   hud.hidden=true;$('#spectatorBar').hidden=true;boostBtn.hidden=true;fireBtn.hidden=true;emoBtn.hidden=true;emoBar.hidden=true;over.hidden=true;connecting.hidden=true;lobby.hidden=false;joyHide();inp.boost=false;boostBtn.classList.remove('on');
   tutBox.hidden=true;hud.classList.remove('tutmode');boostBtn.classList.remove('tutpulse');fireBtn.classList.remove('tutpulse');
   showLobbyMsg(msg||'');if(msg)friendsSheet.hidden=false;lobbyPresence();releaseWake();paintAcct();paintMissions();paintGrowth();if(!msg)setTimeout(lobbyNudge,700);}
@@ -8726,7 +8808,8 @@ function roundOver(now){if(G.round.over)return;if(G.me&&G.me.alive){G.rs.best=Ma
   if(G.rule==='escape'&&G.auth&&G.mode==='host')escPlan();
   clearTimeout(overTimer);over.hidden=true;$('#spectatorBar').hidden=true;$('#controlHud').hidden=true;hideModeIntro();boostBtn.hidden=true;fireBtn.hidden=true;emoBtn.hidden=true;emoBar.hidden=true;resetInput();toast(G.rule==='escape'?escTitle():t('roundOverTitle'));
   const id=G.round.id;
-  if(G.rule==='duel'&&G.duel&&!G.duel.over){setTimeout(()=>{if(G.round.id===id&&G.round.over)duelBanner();},300);
+  /* v28: a duel round won by surviving pays that life now (the next round's spawn used to drop it unpaid) */
+  if(G.rule==='duel'&&G.duel&&!G.duel.over){bankLife();setTimeout(()=>{if(G.round.id===id&&G.round.over)duelBanner();},300);
     if(G.auth)setTimeout(()=>{if(G.round.id===id&&G.round.over&&G.duel&&!G.duel.over)duelNext();},3600);return;}
   setTimeout(()=>{if(G.round.id===id&&G.round.over)showResults();},800);}
 /* between duel rounds: who took it and the running score */
@@ -8744,17 +8827,23 @@ function showResults(){if(!G.round.over||G.mode==='demo')return;const quick=G.mo
   rows.filter(r=>r.rank<=5).forEach(r=>resList.append(resRow(r,r.rank)));
   if(rank>5){const g=document.createElement('li');g.className='gap';g.textContent='⋯';resList.append(g,resRow(mine,rank));}
   /* finishing places pay a bonus once per round */
-  if(!G.round.awarded){if(rank){missionAdd('games',1);if(total>=4&&rank<=3)missionAdd('top3',1);}
+  /* v28: in escape the ranking holds only the runner and the hunters, so a caught runner often came first: a top place only
+     counts as one (missions, wins, the review prompt) when the round was won. Public rooms count for the ad pacing like a
+     quick match against bots (v22: interstitials after solo play and online matches, never in rooms with friends) */
+  const escWon=G.rule!=='escape'||escOutcome()==='win';
+  if(!G.round.awarded){if(rank){missionAdd('games',1);if(total>=4&&rank<=3&&escWon)missionAdd('top3',1);}
     track('end',{m:G.mode,d:G.roomDur||0,r:rank,n:total,sc:myScore(),k:G.rs.kills});
-    G.round.awarded=true;if(G.mode==='quick')Ads.matchDone();const tw=teamWinner();let bonus=quick?([60,35,20][rank-1]||0):(total>=2?(rank===1?50:rank===2?20:0):0);
+    G.round.awarded=true;if(G.mode==='quick'||publicRoom())Ads.matchDone();const tw=teamWinner();let bonus=quick?([60,35,20][rank-1]||0):(total>=2?(rank===1?50:rank===2?20:0):0);
     /* team battle pays the whole winning side (players are always red) */
     if(G.rule==='team')bonus=tw===0?(quick?60:50):tw<0?20:0;
     if(G.rule==='escape')bonus=escOutcome()==='win'?(quick?80:50):10;
-    if(rank===1&&total>=2)prof.st.wins=(prof.st.wins|0)+1;if(quick)prof.st.qm=(prof.st.qm|0)+1;
-    if(rank&&rank<=3&&total>=4)Review.maybe('top3');
+    if(rank===1&&total>=2&&escWon)prof.st.wins=(prof.st.wins|0)+1;if(quick)prof.st.qm=(prof.st.qm|0)+1;
+    if(rank&&rank<=3&&total>=4&&escWon)Review.maybe('top3');
     G.round.award=finishLife(false,bonus,performance.now());
     if(G.round.award&&bonus){if(G.rule!=='escape')G.round.award.place=rank;else if(escOutcome()==='win')G.round.award.tag='escRew';}}
-  renderRewards($('#resRew'),G.round.award);
+  /* v28: this runs every 0.6 s while the results are up (for the ranking); the reward panel is built once per award and
+     language, or its XP bar restarted before it could fill and its buttons were swapped out under the finger */
+  if(G.round.rewFor!==G.round.award||G.round.rewLang!==LANG){G.round.rewFor=G.round.award;G.round.rewLang=LANG;renderRewards($('#resRew'),G.round.award);}
   const tw=teamWinner(),ts=G.teamSc||[0,0];
   $('#resWho').textContent=G.rule==='escape'?escTitle():G.rule==='team'?(tw<0?t('teamDraw'):t('teamWins',{t:t(tw?'teamBlue':'teamRed'),a:Math.round(ts[0]),b:Math.round(ts[1])})):
     total<2||!rows.length?t('roundOverTitle'):(rank===1?t('youWin'):quick?t('youPlaced',{r:rank,n:total}):t('xWins',{n:rows[0].name}));
@@ -8770,7 +8859,9 @@ function hostNextRound(){if(G.mode!=='host')return;const now=performance.now(),i
   if(duel){if(!G.duel||G.duel.over){const warm=!guests.size;duelReset();G.duel.warm=warm;}else if(!G.duel.warm){G.duel.n++;G.duel.shown=0;}else G.duel.shown=0;}
   resetWorld(true,newSeed(),G.map,duel?{rule:'duel',bots:guests.size?0:1}:{rule:G.rule});beginRound(id,now);spawnMe(now);showPlayUI();toast(duel?t('duelRound',{n:G.duel.n}):t('newRound'));}
 btnNext.addEventListener('click',()=>{if(G.mode==='quick'){resultsEl.hidden=true;Ads.between().then(()=>{if(G.mode==='quick')startQuick();});}else hostNextRound();});
-$('#btnResLobby').addEventListener('click',()=>{if(G.mode==='quick')Ads.between().then(()=>goLobby(''));else goLobby('');});
+$('#btnResLobby').addEventListener('click',()=>{if(G.mode==='quick'||publicRoom())Ads.between().then(()=>goLobby(''));else goLobby('');});
+/* a public room (online matching with strangers) rather than a room with friends */
+function publicRoom(){return (G.mode==='host'||G.mode==='guest')&&/^q/.test(G.code||'');}
 btnHost.addEventListener('click',hostRoom);
 const joinForm=$('#joinForm');
 if(joinForm)joinForm.addEventListener('submit',e=>{e.preventDefault();const inp2=$('#joinCode'),code=inp2.value.replace(/\D/g,'');
@@ -8780,6 +8871,8 @@ $('#btnCancel').addEventListener('click',()=>goLobby(''));
 $('#btnExit').addEventListener('click',()=>goLobby(''));
 /* the end of an endless run: one game for the missions, the ad pacing and the statistics */
 function runEnd(){const R=G.run;if(G.mode!=='solo'||!R||R.ended)return;R.ended=true;prof.st.runs=(prof.st.runs|0)+1;
+  /* left while still alive (v28: Exit and back end the run): the life so far counts for the run's peak and best place */
+  if(G.me&&G.me.alive){R.peak=Math.max(R.peak,G.me.mass);if(Number.isFinite(G.bestRank)&&G.bestRank>0)R.best=Math.min(R.best,G.bestRank);}
   missionAdd('games',1);if(Number.isFinite(R.best)&&R.best<=3){missionAdd('top3',1);Review.maybe('top3');}
   track('end',{m:'solo',d:0,r:Number.isFinite(R.best)?R.best:0,n:BOT_COUNT+1,sc:Math.floor(R.peak),k:G.kills|0,rv:R.rev|0,s:Math.round((performance.now()-R.t0)/1000)});
   Ads.matchDone();saveProf();}
@@ -8896,11 +8989,13 @@ function updateHud(){if(hud.hidden)return;const me=G.me,now=performance.now(),ti
     controlHud.textContent=(state&&state.count>1?t('controlContested'):holder?(focus&&holder.key===focus.key?t('controlHeld'):t('controlTaken',{n:holder.name})):(me&&me.alive&&(objTarget(me,now)||{}).kind==='next'?t('controlGoNext'):t('controlGo')))+(zone?'\n'+t(nx?'controlSoon':'controlNext',{n:Math.ceil(Math.max(0,zone.end-now)/1000)}):'');}
   const val=s=>timed?scoreOf(s):Math.floor(s.mass);
   const ranked=all.filter(s=>s.alive&&s.kind!=='c'&&(G.rule!=='escape'||!s.isBot||escSideKey(s.key)==='c')).sort((a,b)=>val(b)-val(a)||b.mass-a.mass);
-  $('#spectatorBar').hidden=!watching||G.round.over||!over.hidden||!resultsEl.hidden||introOpen;
+  /* v28: not in the second between a death and its panel either (it flashed up and went again) */
+  $('#spectatorBar').hidden=!watching||G.round.over||!over.hidden||!resultsEl.hidden||introOpen||!!(me&&!me.alive&&me.diedAt&&now-me.diedAt<1200);
   $('#spectatorName').textContent=focus?t('watching',{n:focus.name}):t('watchWaiting');
   const canSwitch=watching&&!G.round.over&&ranked.length>1;$('#btnWatchPrev').disabled=!canSwitch;$('#btnWatchNext').disabled=!canSwitch;
   $('#hLenLbl').textContent=timed?t(G.rule==='gold'?'goldLbl':'score'):t('lenLbl');hLen.textContent=focus?val(focus):'-';
-  hKills.textContent=watching?(focus?t('hudLen',{n:Math.floor(focus.mass)}):t('watchWaiting')):(timed&&me?t('hudLen',{n:Math.floor(me.mass)})+' · ':'')+t('hudKills',{n:G.kills});
+  /* v28: while watching, the line names the snake being watched (under the death screen it read as if the big number were yours) */
+  hKills.textContent=watching?(focus?t('watching',{n:focus.name})+(timed?' · '+t('hudLen',{n:Math.floor(focus.mass)}):''):t('watchWaiting')):(timed&&me?t('hudLen',{n:Math.floor(me.mass)})+' · ':'')+t('hudKills',{n:G.kills});
   const idx=focus&&focus.alive?ranked.indexOf(focus):-1;
   /* a guest only gets summaries of far-away bots; they still count for the rank */
   const far=hostFar();let farN=0,farAbove=0;if(far&&idx>=0){const mv=val(focus);farN=far.length;for(const f of far)if(f.v>mv)farAbove++;}
@@ -9060,7 +9155,7 @@ function upkeep(now){
   if(G.mode==='host'&&RS){const n=RS.peers().filter(p=>p.kind==='viewer').length||1;if(n!==G.roomCount){G.roomCount=n;lobbyPresence();}}
   updateKing(now);missionUpkeep(now);
   kfxUpkeep(now);}
-let last=performance.now(),hudT=0,miniT=0,lastS=0,lastW=0,upT=0,prevT=0;
+let last=performance.now(),hudT=0,miniT=0,lastS=0,lastW=0,upT=0,prevT=0,growT=0;
 function loop(){const now=performance.now(),realDt=Math.max(0,(now-last)/1000);last=now;const dt=Math.min(0.1,realDt),steps=dt>0.05?2:1;
   try{
     zoneAt(now,ZT);G.zr=ZT.r;G.zx=ZT.x;G.zy=ZT.y;
@@ -9071,6 +9166,8 @@ function loop(){const now=performance.now(),realDt=Math.max(0,(now-last)/1000);l
     if(RS&&(G.mode==='host'||G.mode==='guest')){if(now-lastS>=(G.mode==='host'?66:50)){lastS=now;sendS(now);}
       if(G.mode==='host'&&RW&&now-lastW>=200){lastW=now;sendWorld(now);}}
     if(!lobby.hidden&&now-prevT>90){prevT=now;drawSkinPreview(skinPrev,prof.skin,now,false,prof.accessory,TRAILS[TRAIL_ID[prof.trail]|0].fx||null);}
+    /* v28: the lobby's dots (today's gift, the shop chest) come back on by themselves at midnight or after the chest's hours */
+    if(!lobby.hidden&&now-growT>30000){growT=now;paintGrowth();}
     lockerFrame(now);diyFrame(now);pvPump();
     R3.frame(now,dt,realDt);if(G.mode!=='demo')perfFrame(now,realDt);
     if(now-hudT>200){hudT=now;updateHud();}
@@ -9321,7 +9418,7 @@ function drawEmotePreview(cv,e,now){const g=cv.getContext('2d'),W=cv.width,H=cv.
 /* ---------- reward panel on the death screen and round results ---------- */
 function renderRewards(el,aw){el.textContent='';if(!aw){el.hidden=true;return;}el.hidden=false;
   const top=document.createElement('div');top.className='rew-l';const b1=document.createElement('b');b1.textContent='+'+aw.xp;
-  const b2=document.createElement('b');b2.textContent='+'+aw.coins;const ci=document.createElement('i');ci.className='coin';
+  const b2=document.createElement('b');b2.className='rc';b2.textContent='+'+aw.coins;const ci=document.createElement('i');ci.className='coin';
   const sep=document.createElement('span');sep.className='sep';sep.textContent='·';top.append(b1,' XP ',sep,ci,b2);
   {const tx=[aw.tag?t(aw.tag):aw.place?t('place',{r:aw.place}):'',aw.vip?t('vipDouble'):''].filter(Boolean).join(' · ');
     if(tx){const pl=document.createElement('small');pl.textContent=tx;top.append(pl);}}
@@ -9476,7 +9573,7 @@ paintCloud();
 /* ================= anonymous play statistics =================
    Only sent when the page has an account server, and players can turn it off in the account sheet.
    A random device id (not the account token), a session id, and small events like "match started" or "died to lava". */
-const GAME_VER='27';
+const GAME_VER='28';
 const PLATFORM=/iPhone|iPad|iPod/.test(navigator.userAgent)||(navigator.maxTouchPoints>1&&/Mac/.test(navigator.platform||''))?'ios':/Android/.test(navigator.userAgent)?'android':'desktop';
 const STATS=(()=>{let dev=store.get('ssld-dev','');if(typeof dev!=='string'||!/^[a-z0-9]{12,24}$/.test(dev)){dev=(Math.random().toString(36).slice(2,10)+Math.random().toString(36).slice(2,10)).replace(/[^a-z0-9]/g,'').slice(0,16).padEnd(12,'0');store.set('ssld-dev',dev);}
   return {dev,sid:(Math.random().toString(36).slice(2,12)+'000000').slice(0,10),q:[],on:CLOUD&&store.get('ssld-stats',true)!==false,perf:null};})();
@@ -9796,9 +9893,9 @@ function qmReport(){clearTimeout(QM.timer);if(!QM.pub||G.mode!=='host'||!STANDAL
   QM.timer=setTimeout(qmReport,12000);}
 
 /* ================= sharing a result ================= */
-async function shareResult(rank,score,kills){track('share',{m:G.mode});
+async function shareResult(rank,score,kills,label){track('share',{m:G.mode});
   const link=WEB_URL,txt=t('shareText',{r:rank,s:score,k:kills,g:t('title')});
-  let blob=null;try{blob=await shareCard(rank,score,kills);}catch(e){}
+  let blob=null;try{blob=await shareCard(rank,score,kills,label);}catch(e){}
   try{if(NATIVE&&NK&&NK.Share){let files;
       if(blob&&NK.Filesystem){const b64=await new Promise(res=>{const fr=new FileReader();fr.onload=()=>res(String(fr.result).split(',')[1]);fr.readAsDataURL(blob);});
         const w=await NK.Filesystem.writeFile({path:'snake-brawl-result.png',data:b64,directory:'CACHE'});files=[w.uri];}
@@ -9806,14 +9903,15 @@ async function shareResult(rank,score,kills){track('share',{m:G.mode});
     if(navigator.share){const f=blob?new File([blob],'snake-brawl.png',{type:'image/png'}):null;
       if(f&&navigator.canShare&&navigator.canShare({files:[f]}))await navigator.share({files:[f],text:txt+' '+link});else await navigator.share({title:t('title'),text:txt,url:link});return;}
     await navigator.clipboard.writeText(txt+' '+link);toast(t('linkCopied'));}catch(e){}}
-function shareCard(rank,score,kills){const W=1080,H=1350,c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d');
+/* label: what the middle number is (v28: a round's points, gold or rounds won used to be called the final length) */
+function shareCard(rank,score,kills,label){const W=1080,H=1350,c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d');
   const bg=g.createLinearGradient(0,0,0,H);bg.addColorStop(0,'#fff4d6');bg.addColorStop(0.55,'#e6efff');bg.addColorStop(1,'#cfe0fb');g.fillStyle=bg;g.fillRect(0,0,W,H);
   g.textAlign='center';g.font='900 110px '+DISPLAY_FONT;g.fillStyle='#c4850c';g.fillText(t('title'),W/2,198);g.fillStyle='#ffc93c';g.fillText(t('title'),W/2,190);
   const sk=document.createElement('canvas');sk.width=720;sk.height=220;drawSkinPreview(sk,prof.skin,900);g.drawImage(sk,180,260);
   g.fillStyle='#1f2a44';g.font='800 64px '+BODY_FONT;g.fillText(prof.name,W/2,570);
   const box=(x,label,val)=>{g.fillStyle='rgba(255,255,255,0.8)';g.beginPath();if(g.roundRect)g.roundRect(x-150,640,300,230,28);else g.rect(x-150,640,300,230);g.fill();
     g.fillStyle='#66728c';g.font='600 40px '+BODY_FONT;g.fillText(label,x,715);g.fillStyle='#1f2a44';g.font='900 96px '+DISPLAY_FONT;g.fillText(String(val),x,825);};
-  box(W/2-330,t('overRank'),rank?'#'+rank:'-');box(W/2,t('overLen'),score);box(W/2+330,t('overKills'),kills);
+  box(W/2-330,t('overRank'),rank?'#'+rank:'-');box(W/2,label||t('overLen'),score);box(W/2+330,t('overKills'),kills);
   g.fillStyle='#c96200';g.font='800 54px '+BODY_FONT;g.fillText(t('shareCta'),W/2,1040);g.fillStyle='#66728c';g.font='500 40px '+BODY_FONT;g.fillText(WEB_URL.replace(/^https?:\/\//,'').replace(/\/$/,''),W/2,1110);
   return new Promise(res=>c.toBlob(res,'image/png'));}
 
@@ -9912,10 +10010,17 @@ async function renderRank(){const board=LB.board,list=$('#lbList');for(const b o
 /* after a match or a death: watch an ad to double the coins of that life, and share a result */
 function rewardExtras(el,aw){if(!el||!aw)return;const row=document.createElement('div');row.className='adrow';
   if(Ads.can('double')&&aw.earned>0&&!aw.doubled){const b=document.createElement('button');b.type='button';b.className='btn ghost adbtn';b.textContent=t('adDouble');
-    b.addEventListener('click',async()=>{b.disabled=true;if(await Ads.rewarded('double')){aw.doubled=1;prof.coins+=aw.earned;saveProf();sfx('coin',1,true);toast(t('coinsN',{n:aw.earned}));paintAcct();b.remove();if(!row.children.length)row.remove();}
+    /* v28: the panel's coin figure follows the doubling (it kept showing the single amount) */
+    b.addEventListener('click',async()=>{b.disabled=true;if(await Ads.rewarded('double')){aw.doubled=1;prof.coins+=aw.earned;aw.coins+=aw.earned;saveProf();sfx('coin',1,true);toast(t('coinsN',{n:aw.earned}));paintAcct();
+        const rc=el.querySelector('.rew-l .rc');if(rc)rc.textContent='+'+aw.coins;b.remove();if(!row.children.length)row.remove();}
       else b.disabled=false;});row.append(b);}
-  if(el.id==='resRew'&&G.round.over){const rows=G.round.rows||[],mine=rows.find(r=>r.me);const b=document.createElement('button');b.type='button';b.className='btn ghost';b.textContent=t('shareBtn');
-    b.addEventListener('click',()=>shareResult(mine?mine.rank:0,mine?mine.score:myScore(),G.rs.kills|0));row.append(b);}
+  /* share a result: a round's place and points (read when tapped: a guest's ranking can arrive after the panel), and since v28
+     also an endless run from its death screen (v27 made the default mode an endless run, which never reaches the results) */
+  if(el.id==='resRew'&&G.round.over){const b=document.createElement('button');b.type='button';b.className='btn ghost';b.textContent=t('shareBtn');
+    b.addEventListener('click',()=>{const rows=G.round.rows||[],mine=rows.find(r=>r.me);
+      shareResult(mine?mine.rank:0,mine?mine.score:myScore(),G.rs.kills|0,G.rule==='duel'?t('resWins').trim():t(G.rule==='gold'?'goldLbl':'score'));});row.append(b);}
+  else if(el.id==='oRew'&&G.mode==='solo'&&G.last){const L=G.last,R=G.run,b=document.createElement('button');b.type='button';b.className='btn ghost';b.textContent=t('shareBtn');
+    b.addEventListener('click',()=>shareResult(R&&Number.isFinite(R.best)?R.best:(Number.isFinite(L.rank)?L.rank:0),L.len|0,L.kills|0,t('overLen')));row.append(b);}
   if(row.children.length)el.append(row);}
 /* v27 revives. An endless run (classic and frenzy against bots): up to ads.revive.max a run, keeping ads.revive.keep of the
    length. A timed match against bots: once, half the length. Members revive without the ad; the web has no ads, so a run
